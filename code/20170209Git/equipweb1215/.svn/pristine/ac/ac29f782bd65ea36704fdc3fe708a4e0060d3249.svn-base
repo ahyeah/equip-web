@@ -1,0 +1,70 @@
+﻿using FlowDesigner.customcontrol;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+namespace FlowDesigner.Management
+{
+    /// <summary>
+    /// 工作流管理
+    /// </summary>
+    public class WorkFlowMan
+    {
+        public WorkFlowMan(string name, string desc)
+        {
+            Name = name;
+            Description = desc;
+            designer = new DesignerPage();
+            designer.Title = Name;
+        }
+
+        #region private property
+        /// <summary>
+        /// 工作流设计界面
+        /// </summary>
+        private DesignerPage designer;
+        /// <summary>
+        /// 工作流设计界面插入到父界面元素
+        /// </summary>
+        private TabControl parent;
+        #endregion
+
+        #region public property
+        /// <summary>
+        /// 工作流名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 工作流描述
+        /// </summary>
+        public string Description { get; set; }
+        #endregion
+
+        #region method
+        /// <summary>
+        /// 将设计界面插入到主界面中
+        /// </summary>
+        /// <param name="mainTab"></param>
+        public void LinkToMainTab(TabControl mainTab )
+        {
+            mainTab.Items.Add(this.designer);
+            mainTab.SelectedItem = this.designer;
+            parent = mainTab;
+        }
+
+        public void OnSelected(object sender, MouseButtonEventArgs e)
+        {
+            if ((TabControl)designer.Parent == null)
+                parent.Items.Add(this.designer);
+
+            ((TabControl)designer.Parent).SelectedItem = this.designer;
+        }
+        #endregion
+    }
+}

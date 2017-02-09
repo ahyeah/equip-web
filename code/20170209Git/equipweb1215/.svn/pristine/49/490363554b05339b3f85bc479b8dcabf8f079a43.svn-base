@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<repositories>
+  <repository path="..\EXPRESS_TEST\packages.config" />
+  <repository path="..\FlowEngine.Modals\packages.config" />
+  <repository path="..\FlowEngine\packages.config" />
+  <repository path="..\FlowEngineWebTest\packages.config" />
+  <repository path="..\MVCTest\packages.config" />
+</repositories>

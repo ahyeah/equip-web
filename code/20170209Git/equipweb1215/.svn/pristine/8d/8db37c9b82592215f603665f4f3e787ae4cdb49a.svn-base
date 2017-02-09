@@ -1,0 +1,252 @@
+﻿@model WebApp.Controllers.CommonController.MissInfoModel
+@{
+    ViewBag.Title = "PqAssess";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+           
+            
+                <!-- The time line -->
+                <ul class="timeline">
+                    <!-- timeline time label -->
+                    <li class="time-label">
+                       
+                            <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                                @Model.miModel.WE_Event_Desc
+                           </a>
+                        
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                   
+
+
+                    <li class="collapse" id="collapseExample">
+                           
+                            <i class="fa fa-envelope bg-blue"></i>
+                            <div class="timeline-item">
+                                <span><i class="fa fa-clock-o"></i> @Model.MissTime[1]</span>
+                                <h3 class="timeline-header">装置缺陷提报详情</h3>
+                                <div class="timeline-body">
+
+                                    <table class="table">
+
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:10%">申请时间</td>
+                                                <td style="width:50%">@(Model.miModel.Miss_Params["submit_time"].ToString())</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">申请车间</td>
+                                                <td style="width:50%">@(Model.miModel.Miss_Params["Cj_Name"].ToString())</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">申请装置</td>
+                                                <td style="width:50%">@(Model.miModel.Miss_Params["Zz_Name"].ToString())</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">申请人</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["submit_user"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">设备工艺编号</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Equip_GyCode"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">设备编号</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Equip_Code"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">设备型号</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Equip_Type"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">问题专业分类</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Zy_Type"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">设备问题描述</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Problem_Desc"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">问题描述附件</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Problem_DescFilePath"].ToString() </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+
+
+                                </div>
+                                <div class="timeline-footer">
+                                    <a class="btn btn-primary btn-xs">Read more</a>
+                                    <a class="btn btn-danger btn-xs">Delete</a>
+                                </div>
+                            </div>
+                    </li>
+           
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+
+                    <li class="time-label">
+                        <span class="bg-green">
+                            @ViewBag.curtime
+                        </span>
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i>@ViewBag.curuser</span>
+                             <h3 class="timeline-header"><p class="lead">片区风险矩阵评估</p></h3>
+                        <div class="timeline-body">
+                            <form role="form" class="col-md-offset-1">
+                                <input type="text" id="wef_id"  hidden="hidden" value="@ViewBag.WF_NAME"> 
+                                <input type="text" id="ReAssessFlag"  hidden="hidden" value="@ViewBag.zjtdOpinion"> 
+                                 
+                                <div class="alert alert-warning" role="alert" style="font-size:large;font-weight:300" id="ReAssessWarning" hidden="hidden"><img src="~/images/light2.gif" />&nbsp&nbsp【提示】：上次评估结果已被专家团队否定，本次请谨慎评估!!!</div>
+                                <div id="Danger_Intensity"  class="form-group col-md-6"> 
+                                    <p class="text-red"><strong>隐患强度等级定义：</strong></p>
+                                        <div >
+                                            <label class="radio">S1 - 全厂生产波动，2套以上装置非计划停工或全厂生产降量</label>
+                                            <label class="radio">S2 - 单套装置非计划停工或2套以上装置异常波动</label>
+                                            <label class="radio">S3 - 系统或装置局部停工，大机组急停</label>
+                                            <label class="radio">S4 - 单套生产装置异常波动</label>
+                                            <label class="radio">S5 - 单台设备停运</label>
+                                            <label class="radio">S6 - 无影响</label>                               
+                                       </div>
+                                </div>
+                                  <div id="Time_Level"  class="form-group  col-md-6">
+                                    <p class="text-red"><strong>时间等级定义：</strong></p>
+                                          <div >
+                                            <label class="radio">D1 - 10天内可能发生</label>
+                                            <label class="radio">D2 - 10天至1个月内可能发生</label>
+                                            <label class="radio">D3 - 1个月至3个月内可能发生</label>
+                                            <label class="radio">D4 - 3个月至6个月内可能发生</label>
+                                            <label class="radio">D5 - 6个月至1年内可能发生</label>
+                                            <label class="radio">D6 - 1年内不会发生</label>                               
+                                       </div>
+                                </div>
+	                            <div>
+                                <table id="riskMatrix" class="table table-bordered">
+                                                                    <tr> <td></td>  <td>D1</td>  <td>D2</td>  <td>D3</td>  <td>D4</td>  <td>D5</td>  <td>D6</td> </tr>
+                                                                    <tr> <td>S1</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td> </tr>
+                                                                    <tr> <td>S2</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td> </tr>
+                                                                    <tr> <td>S3</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td> </tr>
+                                                                    <tr> <td>S4</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td> </tr>
+                                                                    <tr> <td>S5</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td> </tr>
+                                                                    <tr> <td>S6</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td> </tr>
+                                  </table>
+	                             </div>
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="button" onclick="submit_click()">确定</button>
+                                </div>
+
+                            </form>
+                        </div>
+                        </div>
+                    </li>
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li>
+</ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+
+
+@section js{
+<script>
+    function PageLoad() {
+        $("#FaultIntensity").hide();
+        //alert($("#ReAssessFlag").val());
+        if ($("#ReAssessFlag").val()=="0")
+            $("#ReAssessWarning").show();
+    };
+    $(document).ready(
+        PageLoad());
+
+    $('#riskMatrix td').each(function () {
+        $(this).css("text-align", "center");
+        $(this).css("vertical-align", "center");
+
+        if (this.parentNode.rowIndex >= 1 && this.cellIndex >= 1) {
+            //$(this).attr('onclick', 'cellclick()');
+            var radioHtml = "<input type=\"radio\" name=\"leveloptionsRadios\" value=\"S"+this.parentNode.rowIndex+"D"+this.cellIndex+"\">"
+            $(this).html(radioHtml);
+
+            if ((this.parentNode.rowIndex == 1 && this.cellIndex >= 1 && this.cellIndex <= 3) || (this.parentNode.rowIndex == 2 && this.cellIndex >= 1 && this.cellIndex <= 2))
+                $(this).css("background-color", "rgb(255, 0, 0)"); //注意："0"前面有空格
+            else if ((this.parentNode.rowIndex == 3 && this.cellIndex >= 3 && this.cellIndex <= 6) || (this.parentNode.rowIndex == 4 && this.cellIndex >= 2 && this.cellIndex <= 6) || (this.parentNode.rowIndex >= 5))
+                $(this).css("background-color", "rgb( 0,128, 0)");
+            else
+                $(this).css("background-color", "rgb(255,255, 0)");
+        }
+        else
+            $(this).css("font", "medium bold");
+
+    })
+
+    $("input:radio[name='leveloptionsRadios']").change(function () { //for test
+        var tt = $("input:radio[name='leveloptionsRadios']:checked").parent().css("background-color");
+        //alert(tt);       
+        //alert(tt == "rgb(255, 0, 0)"); //注意："0"前面有空格
+        var ttr = $("input:radio[name='leveloptionsRadios']:checked").val().substr(0,2);
+        //alert(ttr);
+        var ttc = $("input:radio[name='leveloptionsRadios']:checked").val().substr(2, 2);
+        //alert([tt,ttr,ttc]);
+    });
+    function ZjtdOpinionNo_Click()
+    {
+      $("#FaultIntensity").show();     
+  
+    }
+    function ZjtdOpinionYes_Click() {
+        $("#FaultIntensity").hide();
+
+    }
+    function submit_click() {
+        var flow_name = $("#wef_id").val();
+        //var RiskMatrix_Color = $("input:radio[name='leveloptionsRadios']:checked").parent().css("background-color");
+        //var DangerType_isgreen = "";
+        //if (RiskMatrix_Color == "rgb( 0,255, 0)")
+        //    DangerType_isgreen = "true";
+        //else
+        //    DangerType_isgreen = "false"; 
+        var rcValues = $("input:radio[name='leveloptionsRadios']:checked").val();        
+        var Danger_Intensity=rcValues.substr(0,2);
+        var Time_Level = rcValues.substr(2, 2);
+        $.ajax({
+            type: 'POST',
+            url: '/A11dot2/submitAssess_signal',
+            data: {
+                json1: '{Flow_Name: "' + flow_name
+                          + '", Danger_Intensity: "' + Danger_Intensity
+                          + '", Time_Level: "' + Time_Level
+                          //+ '", RiskMatrix_Color: "' + RiskMatrix_Color
+                          //+ '", DangerType_isgreen: "' + DangerType_isgreen
+                          + '"}'
+            },
+            success: function (data) {
+                location.href = data;
+            },
+            error: function () {
+                alert('error submitAssess_signal A11.2');
+            }
+        });
+    }
+    </script>
+}
+
+

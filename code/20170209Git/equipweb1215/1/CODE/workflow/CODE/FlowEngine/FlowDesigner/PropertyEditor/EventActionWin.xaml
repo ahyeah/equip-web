@@ -1,0 +1,33 @@
+﻿<Window x:Class="FlowDesigner.PropertyEditor.EventActionWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="设置事件的Action" Height="383" Width="430" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label Content="URL:" HorizontalAlignment="Left" Height="27" Margin="22,10,0,0" VerticalAlignment="Top" Width="40"/>
+        <TextBox Name="Action_Url" HorizontalAlignment="Left" Height="27" Margin="67,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="328"/>
+        <GroupBox Header="Action参数" HorizontalAlignment="Right" Height="255" Margin="0,48,7,0" VerticalAlignment="Top" Width="409" RenderTransformOrigin="0.5,0.5">
+            <GroupBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.04"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </GroupBox.RenderTransform>
+            <Grid>
+                <ListView Name="Params_List" Margin="0,0,0,33">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="变量名称" DisplayMemberBinding="{Binding Path=p_name}" Width="170"/>
+                            <GridViewColumn Header="变量值" DisplayMemberBinding="{Binding Path=p_value}" Width="200"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button Content="添加" HorizontalAlignment="Left" Margin="142,203,0,3" Height="27" Width="47" Click="Add_Param"/>
+                <Button Content="删除" HorizontalAlignment="Left" Margin="201,203,0,3" Height="27" Width="47" Click="Del_Param"/>
+            </Grid>
+        </GroupBox>
+        <Button Content="确  定" HorizontalAlignment="Left" Height="27" Margin="79,315,0,0" VerticalAlignment="Top" Width="89" Click="OK_Click"/>
+        <Button Content="取  消" HorizontalAlignment="Left" Height="27" Margin="257,315,0,0" VerticalAlignment="Top" Width="89" Click="Cancel_Click"/>
+    </Grid>
+</Window>

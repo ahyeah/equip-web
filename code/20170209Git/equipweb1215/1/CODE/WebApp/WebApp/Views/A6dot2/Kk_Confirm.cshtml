@@ -1,0 +1,451 @@
+﻿@model WebApp.Controllers.A6dot2Controller.k_model
+@{
+    ViewBag.Title = "Kk_Confirm";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        业务流水号：<button class="btn btn-default" onclick="DispalsySide('@ViewBag.WF_Ser')">@ViewBag.WF_Ser</button>
+                    </span>
+                </li>
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：可靠性工程师判断化验结果
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">可靠性工程师判断化验结果</span></h3>
+                        <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                        <div class="timeline-body">
+
+                            <form class="form-horizontal" role="form">
+                                <table id="equip_table" class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>化验结果文件：</th>
+                                            <th>
+                                            
+                                                    @{
+                                                      
+                                                        string[] FileName = (ViewBag.file).Split(new char[] { '$' });
+                                                        string ExistFilename = Path.Combine("/Upload", FileName[1]);
+                                                        <a href=@ExistFilename target=_blank> @FileName[0]</a>
+                                                    }
+                                             
+
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+                                    <tr><td><h4>设备名称</h4></td><td><h4>是否合格(合格则打钩)</h4></td> <td style="display:none;">check</td><td style="display:none;">设备编号</td><td width="auto"><h4>不合格原因</h4></td></tr>
+                                    <tbody id="tbody"></tbody>
+                                    @foreach (var ea in Model.e_name)
+                                    {
+
+
+                                        <tr><td>@ea.Key</td><td><input type="checkbox" name="check" value="false"></td><td style="display:none;">@ea.Value</td><td id="@ea.Value"><textarea name="text" rows="1"></textarea> </td> </tr>
+
+                                    }
+
+
+                                </table>
+
+
+                            </form>
+                            <div>
+
+                            </div>
+                            <form role="form">
+                                <div class="box-footer">
+                                    <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click()">确定提交</button>
+                                   
+                                   
+                                      <button class="btn btn-primary col-sm-offset-1" type="button" onclick="cancel_click()">取消提交</button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流历史操作-通用部分Star -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前工作流历史操作
+                    </span>
+                </li>
+                <!-- timeline time label -->
+                @for (int i = @Model.ALLHistoryMiss.Count() - 1; i >= 1; i--)
+                {
+                    <li class="time-label">
+                        <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@i" aria-expanded=true aria-controls="@i">
+                            @Model.MissTime[i] - @Model.ALLHistoryMiss[i].WE_Event_Desc
+                        </a>
+                    </li>
+
+                    <li class="collapse" id="@i">
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o">@Model.MissTime[i]</i>操作用户： @Model.MissUser[i]</span>
+                            <h3 class="timeline-header lead"><span class="lead" style="color:red">@Model.ALLHistoryMiss[i].WE_Event_Desc</span></h3>
+                            <div class="timeline-body">
+                                <table class="table  table-hover table-bordered">
+                                    <tbody>
+                                        @foreach (var pp in @Model.ALLHistoryMiss[i].Miss_ParamsAppRes)
+                                        {
+
+
+
+
+                                            if (pp.Value.ToString() != "App_hidden")
+                                            {
+                                                <tr class="info">
+                                                    <th>@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key]</th>
+                                                    @if ((@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key].ToString()).IndexOf("附件") > -1 && @Model.ALLHistoryMiss[i].Miss_Params[pp.Key] != "")
+                                                    {
+                                                        string[] savedFileName = (@Model.ALLHistoryMiss[i].Miss_Params[pp.Key].ToString()).Split(new char[] { '$' });
+                                                        string saveExistFilename = Path.Combine("/Upload", savedFileName[1]);
+                                                        <td><a href=@saveExistFilename target=_blank> @savedFileName[0]</a></td> }
+                                                    else
+                                                    {
+                                                        <td>@Model.ALLHistoryMiss[i].Miss_Params[pp.Key]</td>}
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+                }
+
+                <!-- END timeline item -->
+
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+                <!-- 工作流当前任务-End -->
+            </ul>
+        </div>
+        <div class="col-md-4" id="sidebar"> </div>
+    </div>
+
+</section>
+
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处-->
+<div class="modal fade" id="EquipInfoModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备相关信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="EquipInfoDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+    </div>
+
+</div><!--设备信息显示模态框结束处-->
+
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+
+        function cancel_click() {
+            if (!confirm('确定要取消吗？'))
+                return false;
+
+            var wef_id = $("#wef_id").val();
+            var return_url = "/A6dot2/Index";
+            $.ajax({
+                type: 'POST',
+                url: '/Common/CancelSubmit',
+                data: {
+                    json1: '{wef_id: "' + wef_id
+                         + '", return_url: "' + return_url
+                         + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        };
+
+
+        var mod = "否";
+        var Assay_result = "否";
+        function mm_click() {
+
+            $("#equip_table input[name='check']").each(function () { // 遍历选中的checkbox
+                if ($(this).is(":checked")) {
+                    $(this).val("true");
+                } else {
+                    get_model()
+                    return false;
+
+                }
+            })
+
+
+        }
+      
+
+
+      
+
+    
+
+
+
+        function submit_click() {
+            var i = 0;
+            var i_c = 0;
+            $("#equip_table input[name='check']").each(function () { // 遍历选中的checkbox
+                if ($(this).is(":checked")) {
+                    $(this).val("true");
+                } else {
+                    $(this).val("false");
+
+                }
+                i++;
+
+            })
+
+
+            $("#equip_table input[name='check']:checked").each(function () { // 遍历选中的checkbox
+
+                i_c++;
+
+            })
+
+
+            if (i == i_c) {
+                Assay_result = "是";
+ 
+
+
+            } else {
+                Assay_result = "否";
+            }
+
+
+
+
+
+
+
+
+
+            var flow_name = $("#wef_id").val();
+             
+            var equip_info = "";
+            var tmp_obj = new Object();
+         
+            var obj_reason = document.getElementsByName("text");
+            
+            var iii = 0;
+            $("#equip_table input[name='check']").each(function () { // 遍历checkbox
+                if (this.checked == false) {
+                    tmp_obj.equip_name = $(this).parents("tr").find("td:eq(0)").text();
+                    tmp_obj.equip_check_result = $(this).val();
+                    tmp_obj.equip_code = $(this).parents("tr").find("td:eq(2)").text();
+                    // tmp_obj.equip_reason = $(this).parents("tr").find("td:eq(3):name:text").text();
+
+                    tmp_obj.equip_zj_result = "";
+                    tmp_obj.equip_zj_reason = "";
+                    tmp_obj.equip_detail = "";
+                    tmp_obj.equip_file = "";
+                    tmp_obj.equip_reason = obj_reason[iii].value;
+
+
+
+                    equip_info = equip_info + JSON.stringify(tmp_obj) + ",";
+                    //  alert("值是：" + equip_info);
+                  
+                }
+                iii++;
+            });
+         
+            var equip_json = "[" + equip_info.substr(0, equip_info.length - 1) + "]";
+          //   alert("值是：" + equip_json);
+
+
+
+
+            if (!myValidation())
+                return false;
+            if (!confirm('确定要提交吗？'))
+                return false;
+            $.ajax({
+                type: 'POST',
+                url: '/A6dot2/submit_KkConfirm',
+                data: {
+                
+
+                    json1: '{"Flow_Name": ' + flow_name
+                        + ', "Assay_result": "' + Assay_result
+                        + '", "equip_info": ' + equip_json
+              
+                + '}'
+
+
+
+
+                },
+                success: function (data) {
+                    location.href = data;
+                }
+            });
+
+
+
+
+
+
+
+        }
+     
+
+        $(document).ready(function () {
+            $("table tr").each(function () {
+                var h = "";
+                var s = "";
+                var text = $(this).children("th:eq(0)").text();
+                // alert(text);
+                if (text == "已选择的采样设备") {
+                    var text = $(this).children("td:eq(0)").text();
+                    $(this).children("td:eq(0)").hide();
+                    var obj = $.parseJSON(text);
+
+
+                    for (i = 0; i < obj.length; i++) {
+                        if (obj[i].equip_file != "") {
+                            var file = obj[i].equip_file;
+                            var file_str = file.split("$");
+
+                            var h = "<td>" + "设备工艺编号：" + obj[i].equip_name + "<br/>"
+                         + "设备编号：" + obj[i].equip_code + "<br/>"
+                          + "可靠性工程师判断结果：" + obj[i].equip_check_result + "<br/>"
+                          + "可靠性工程师判断不通过原因：" + obj[i].equip_reason + "<br/>"
+                              + "可靠性工程师整改方案：" + "<a href=\"../Upload/" + file_str[1] + "\">" + file_str[0] + "</a>" + "<br/>"
+                           + "专家团队判断结果：" + obj[i].equip_zj_result + "<br/>"
+                            + "专家团队判断不通过原因：" + obj[i].equip_zj_reason + "<br/>"
+
+                         + "</td>";
+
+                            //  alert(file_str[0]);
+                        } else {
+
+                            var h = "<td>" + "设备工艺编号：" + obj[i].equip_name + "<br/>"
+                     + "设备编号：" + obj[i].equip_code + "<br/>"
+                      + "可靠性工程师判断结果：" + obj[i].equip_check_result + "<br/>"
+                      + "可靠性工程师判断不通过原因：" + obj[i].equip_reason + "<br/>"
+                          + "可靠性工程师整改方案：" + obj[i].equip_file + "<br/>"
+                       + "专家团队判断结果：" + obj[i].equip_zj_result + "<br/>"
+                        + "专家团队判断不通过原因：" + obj[i].equip_zj_reason + "<br/>"
+
+                     + "</td>";
+                        }
+
+
+
+
+
+
+                        $(this).append(h);
+
+                    } //alert(h);
+                    //         var ihtml =
+                    //"<th>" + "已选择的采样设备"
+                    // + "</th>"
+                    // + "<td>" + "设备工艺编号：" + obj[i].equip_name + "<br/>" + "设备编号：" + obj[i].equip_code + "<br/>" + "可靠性工程师判断结果：" + obj[i].equip_check_result + "<br/>" + "可靠性工程师判断不合格原因：" + obj[i].equip_reason
+                    // + "</td>";
+                    //         $(this).html(ihtml);
+
+
+                }
+
+
+
+            })
+
+            $("#ConfirmReason").hide();
+            $("#not_hege").hide();
+
+        });
+
+
+
+
+
+        function showRequest(formData, jqForm, options) {
+            alert('发送前');
+            return true;
+        }
+
+        function showResponse(responseText, statusText) {
+
+        };
+
+    </script>
+}
+
+
+
+
+
+
+

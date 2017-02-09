@@ -1,0 +1,221 @@
+﻿
+@{
+    ViewBag.Title = "ZzSubmit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">装置提报设备隐患</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" role="form">
+                    <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">  
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">申请时间</label>
+                        <div class="col-sm-10">
+                            <div class="input-group" >
+                                   <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input type="text" class="form-control" id="submit_time" onclick="getCurrentTime()">  
+                                </div>
+                                <!-- /.input group -->   
+                         </div>                     
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">申请车间</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" style="width: 100%;" id="cjname">
+                               <option selected="selected">联合三车间</option>
+                                <option>排水车间</option>                                               
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">申请装置</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" style="width: 100%;"id="zzname">
+                                <option selected="selected">制氢装置</option>
+                                <option>干气提浓装置</option>
+                                <option>加氢裂化装置</option>                      
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">申请人</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control " style="width: 100%;" id="personname" placeholder="自动获取的装置设备员姓名">               
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备工艺编号</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" style="width: 100%;" id="sbgybh">
+                                <option selected="selected">制氢加药泵P4205A</option>
+                                 <option>干气提浓含油污水泵P8104A</option>
+                                <option>加裂分馏塔进料泵P6202A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label   class="col-sm-2 control-label">设备编号</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" style="width: 100%;" id="sbcode">
+                                <option selected="selected">210393263</option>
+                                <option>210393481</option>
+                                <option>210394663</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备型号</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" style="width: 100%;"id="sbtype">
+                                <option selected="selected"> TYPE1</option>
+                                <option>TYPE2</option>
+                                <option>TYPE3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">问题专业分类</label>
+                        <div class="col-sm-10">
+                            <label class="checkbox-inline">
+                                <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios1"
+                                       value="动" checked>动
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios2"
+                                       value="静"> 静
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios3"
+                                       value="电"> 电
+                            </label>  
+                            <label class="checkbox-inline">
+                                <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios4"
+                                       value="仪"> 仪
+                            </label>         
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">设备隐患详情描述</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="3" id="problemdesc"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">隐患详情描述附件</label>
+                        <div class="col-sm-10">
+                           （如有附件，请上传） <input type="file" id="inputfile">
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label   class="col-sm-2 control-label">数据来源</label>
+                        <div class="col-sm-10">
+                            <label class="checkbox-inline">
+                                <input type="radio" name="srcoptionsRadiosinline" id="src1"
+                                       value="人工提报" checked>人工提报
+                            </label>         
+                            <label class="checkbox-inline">
+                                <input type="radio" name="srcoptionsRadiosinline" id="src2"
+                                       value="【A7.1】三检特护及状态监测">【A7.1】三检特护及状态监测
+                            </label>
+              
+                            <label class="checkbox-inline">
+                                <input type="radio" name="srcoptionsRadiosinline" id="src3"
+                                       value="【A13.1】缺陷故障管理">【A13.1】缺陷故障管理
+                            </label>
+
+                        </div>
+                    </div>
+ 
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" class="btn btn-default" onclick="submit_click()">提交</button>
+                        </div>
+                    </div>
+                </form>              
+             </div>
+            </div>
+    </div>
+    
+</section>
+
+@section js{
+    <!-- Page script -->
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+
+            getCurrentTime();
+            ////Datepicker
+            //$('.datepicker').datepicker({});
+
+            ////Timepicker
+            //$(".timepicker").timepicker({
+            //    showInputs: false
+            //});
+        });
+
+        function getCurrentTime() {
+
+            var mydate = new Date();
+            var t = mydate.toLocaleString();
+            $("#submit_time").val(t);
+
+        }
+        function submit_click() {
+
+            var flow_name = $("#wef_id").val();            
+            //alert(flow_name);
+            //alert($("input:radio[name='srcoptionsRadiosinline']:checked").val());
+            //alert($("input:radio[name='zyoptionsRadiosinline']:checked").val());
+            //alert($('#inputfile').val());
+            $.ajax({
+                type: 'POST',
+                url: '/A11dot2/submitsignal',
+               // data: { flowname: flow_name },
+                data:{ 
+                    json1: '{Flow_Name: "' + flow_name
+                         + '", submit_time: "' + $('#submit_time').val()
+                         + '", Cj_Name: "' + $('#cjname').val()
+                         + '", Zz_Name: "' + $('#zzname').val()
+                         + '", submit_user: "' + $('#personname').val()
+                         + '", Equip_GyCode: "' + $('#sbgybh').val()
+                         + '", Equip_Code: "' + $('#sbcode').val()
+                         + '", Equip_Type: "' + $('#sbtype').val()
+                         + '", Problem_Desc: "' + $('#problemdesc').val()
+                         + '", Problem_DescFilePath: "' + $('#inputfile').val()
+                         + '", Problem_DataSrc: "' + $("input:radio[name='srcoptionsRadiosinline']:checked").val()
+                        + '", Zy_Type: "' + $("input:radio[name='zyoptionsRadiosinline']:checked").val() + '"}'
+                },
+                //文件路径Problem_DescFilePath？？？？？
+                //dataType: 'json',
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error ZzSubmit A11.2');
+                }
+            });
+
+        }
+
+    </script>
+    }
+
+
+ 
+ 

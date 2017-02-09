@@ -1,0 +1,203 @@
+﻿@model WebApp.Controllers.CommonController.Index_Model
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<style type="text/css">
+    tr.MM_hidden {
+        display: none;
+    }
+
+    tr.MM_shown {
+    }
+
+    tr.selected {
+        background-color: #acbad4;
+    }
+</style>
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+<section class="content" id="table_show_8" style="background-color: #ecf0f5;">   
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title " style="font:bold; color:red">风险登记表</p>
+        </div>
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>生产装置</th>
+                                <th>设备工艺编号</th>
+                                <th>设备编号</th>
+                                <th>风险问题描述</th>
+                                <th>危害识别结果</th>
+                                <th>管控措施描述</th>
+                                <th>管控措施附件</th>
+                                <th>管控措施实施情况</th>
+                                <th>风险是否可接受</th>
+                                <th>跟踪评估结果</th>
+                                <th>计划类别</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.Hm)
+                                {
+                                    <tr>
+                                        <td>@item.missIndex</td>
+                                        <td>@item.wfe_serial</td>
+                                        <td>@item.missStartName</td>
+                                        <td>@item.missStartTime</td>
+                                        <td>@item.miss_LastStatusdesc</td>
+                                        <td><button onclick="JavaScript: location.href='/A8dot2/WorkFolw_Detail?wfe_id=@item.miss_wfe_Id'">查看详情</button></td>
+                                    </tr>
+
+                                }*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+
+
+
+</section>
+<div class="col-md-4" id="sidebar"> </div>
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处-->
+<div class="modal fade" id="EquipInfoModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备相关信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="EquipInfoDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+    </div>
+
+</div><!--设备信息显示模态框结束处-->
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/jquery.ba-resize.js"></script>
+
+    <!-- Page script -->
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");         
+            $("#example").DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    // "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "ajax": {
+                    "data": { "WorkFlow_Name": "A11dot3" },
+                    "url": "/A11dot3/A11HistoryList",
+                    "type": "POST"
+                },
+                columns: [
+
+                          { data: 'index' },
+                          { data: 'zz' },
+                          { data: 'equip_gycode' },
+                          { data: 'sbcode' },
+                          { data: 'problemdesc' },
+                          { data: 'RiskRecognitionResult' },
+                          { data: 'PlanDesc' },
+                       {
+                           "data": "PlanName",
+                           "render": function (data, type, full, meta) {
+                               var PlanName = full.PlanName.split("$$");
+                               if (PlanName[1] != "")
+                                   return ' <a target=\"_blank\"  href=' + PlanName[0] + '>' + "<i class=\"fa fa-fw fa-link\"></i>" + PlanName[1] + '</a> ';
+                               else
+                                   return "无";
+                           }
+
+                       },
+                       { data: 'SSQK' },
+                       { data: 'RiskIsAccept' },
+                       { data: 'FollowResult' },
+                       { data: 'PlanCategory' }
+                ],
+                "bProcessing": true,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "aoColumnDefs": [{ "bSortable": false, "aTargets": [6] }]
+            });
+
+        });
+
+
+
+        function showSide(wfe_serial) {
+            var wfe = wfe_serial;
+
+            $("#table_show_8").attr("class", "col-md-8");
+
+
+            DispalsySide(wfe);
+
+
+        }
+    </script>
+}

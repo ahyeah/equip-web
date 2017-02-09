@@ -1,0 +1,189 @@
+﻿@model WebApp.Controllers.CommonController.WFDetail_Model
+@{
+    ViewBag.Title = "ZytdConfirm";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                    <!-- timeline item -->
+                    <li class="time-label">
+                        <span class="bg-green">
+                           当前任务：专业团队审核
+                        </span>
+                    </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">专业团队审核</span></h3>
+                        <div class="timeline-body">
+                            <form role="form">
+                                <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                                <div id="ZjtdOpinion" class="form-group">
+                                    <p class="text-green">专业团队审核意见</p>
+                                    <div class="radio">
+                                        <label>
+                                            <input name="ZjtdOpinion" id="ZjtdOpinionYes" type="radio" value="1" checked="" onchange="ZjtdOpinionYes_Click()">
+                                            同意
+                                        </label>
+                                        <label>
+                                            <input name="ZjtdOpinion" id="ZjtdOpinionNo" type="radio" value="0" onchange="ZjtdOpinionNo_Click()">
+                                            不同意(需重新设定故障强度等级）
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div id="FaultIntensity" class="form-group">
+                                    <p class="text-green">重新设定故障强度等级</p>
+                                    <div>
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="FaultIntensity" id="FaultIntensity1"
+                                                   value="1级">1级
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="FaultIntensity" id="FaultIntensity2"
+                                                   value="2级">2级
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="FaultIntensity" id="FaultIntensity3"
+                                                   value="3级">3级
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="FaultIntensity" id="FaultIntensity4"
+                                                   value="4级">4级
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="FaultIntensity" id="FaultIntensity5"
+                                                   value="5级">5级
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="FaultIntensity" id="FaultIntensity6"
+                                                   value="6级">6级
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="button" onclick="submit_click()">确定</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+
+            
+              <!-- 工作流历史操作-通用部分Star -->
+                   <li class="time-label">
+                            <span class="bg-green">
+                               当前工作流历史操作
+                            </span>
+                        </li>
+                     <!-- timeline time label -->  
+                    @for (int i = @Model.ALLHistoryMiss.Count()-1; i >=1 ; i--)
+                    {     <li class="time-label">
+                              <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@i" aria-expanded=true aria-controls="@i">
+                                  @Model.MissTime[i] - @Model.ALLHistoryMiss[i].WE_Event_Desc
+                              </a>
+                           </li>
+                    
+                          <li class="collapse" id="@i">
+                            <i class="fa fa-camera bg-purple"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fa fa-clock-o">@Model.MissTime[i]</i>操作用户： @Model.MissUser[i]</span>
+                                <h3 class="timeline-header lead"><span class="lead" style="color:red">@Model.ALLHistoryMiss[i].WE_Event_Desc</span></h3>
+                                <div class="timeline-body">
+                                    <table class="table  table-hover table-bordered">
+                                        <tbody>
+                                             @foreach (var pp in @Model.ALLHistoryMiss[i].Miss_ParamsAppRes)
+                                            {
+                                                if(pp.Value.ToString()!="App_hidden")
+                                                {
+                                                    <tr class="info">
+                                                        <th>@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key]</th>
+                                                        <td>@Model.ALLHistoryMiss[i].Miss_Params[pp.Key]</td>
+                                                    </tr>
+                                                 }
+                                            }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+                }
+                     
+                <!-- END timeline item -->
+
+                  <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li> 
+            <!-- 工作流历史操作-通用部分End -->
+
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+
+
+@section js{
+    <script>
+        function PageLoad() {
+            $("#FaultIntensity").hide();
+        };
+        $(document).ready(
+            PageLoad());
+
+        function ZjtdOpinionNo_Click() {
+            $("input:radio[name='FaultIntensity']").each(function () {
+                //alert($(this).val());
+                //alert($("#fault_intensity_pq").text());
+                if($(this).val()== $("#fault_intensity_pq").text())
+                    $(this).attr('checked','checked');
+            })
+                
+            $("#FaultIntensity").show();
+
+        }
+        function ZjtdOpinionYes_Click() {
+            $("#FaultIntensity").hide();
+
+        }
+
+        function submit_click() {
+            var flow_name = $("#wef_id").val();
+            var fault_intensity = $("#fault_intensity_pq").text();
+            if ($("input:radio[name='ZjtdOpinion']:checked").val() == '0')
+                fault_intensity = $("input:radio[name='FaultIntensity']:checked").val();
+            $.ajax({
+                type: 'POST',
+                url: '/A13dot1/ZytdConfirm_submitsignal',
+                data: {
+                    json1: '{Flow_Name: "' + flow_name
+                        + '", fault_intensity: "' + fault_intensity + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+        }
+    </script>
+}

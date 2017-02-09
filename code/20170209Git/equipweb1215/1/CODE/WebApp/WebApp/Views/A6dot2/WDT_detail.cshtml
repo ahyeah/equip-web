@@ -1,0 +1,230 @@
+﻿@model EquipBLL.AdminManagment.A6dot2Managment.WDT_detailModal
+@{
+    ViewBag.Title = "WDT_detail";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content">
+    <!-- row -->
+    <input id="WDT_Id" value="@Model.Id"  hidden="hidden"/>
+    <div class="row">
+        
+            <div class="col-md-12">
+                <!-- The time line -->
+                
+                <ul class="timeline">
+                    <li class="time-label">
+                        <a class="btn btn-primary" role="button" data-toggle="collapse" href="" aria-expanded=true aria-controls="">
+                            历史记录
+                        </a>
+                    </li>
+                    <li >
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o">aaa</i>操作用户： @Model.userName</span>
+                            <h3 class="timeline-header lead"><span class="lead" style="color:red">上传记录</span></h3>
+
+                            <div class="timeline-body">
+                                <table class="table  table-hover table-bordered">
+                                    <tbody>
+
+                                        <tr class="info">
+                                            <th>上传用户名称</th>
+                                            <th>@Model.userName</th>
+                                        </tr>
+                                        <tr class="info">
+                                            <th>上传时间</th>
+                                            <th>@Model.uploadTime</th>
+                                        </tr>
+                                        <tr class="info">
+                                            <th>上传记录表描述信息</th>
+                                            <th>@Model.uploadDesc</th>
+                                        </tr>
+                                 
+                                        <tr>
+                                            <th>上传文件统计结果</th>
+                                            <th></th>
+                                        </tr>
+                                      
+
+                                    </tbody>
+                                </table>
+                                <div id="TJResult">
+
+                                </div>
+                                <div class="row">
+
+                                </div>
+                                <div class="row" id="TJdetail_Div">
+                                    <div class="col-md-12">
+                                        <div class="box box-warning">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">超期未换油明细</h3>
+                                                <div class="box-tools pull-right">
+                                                    <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <!-- /.box-tools -->
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body">
+
+                                                <div class="row">
+                                                    <div id="WDT_Detail_Table" class="col-md-12">
+
+                                                        <table id="TjDetail_datatable" width="100%" cellpadding="1" style="min-height:100px">
+                                                            <thead>
+
+                                                                <tr>
+                                                                    <th>片区名称</th>
+                                                                    <th>车间名称</th>
+                                                                    <th>装置名称</th>
+                                                                    <th>加油点设备</th>
+                                                                    <th>加油点设备描述</th>
+                                                                    <th>最近一次换油时间</th>
+                                                                    <th>下次换油时间</th>
+                                                                    <th>备注</th>
+                                                                    <th>规定油品描述</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+
+                                </div>
+                               
+                            </div>
+                         
+
+                                <!-- /.col -->
+</li>
+                  
+                    <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li>
+</ul>
+                </div>
+        </div>
+                <!-- /.row -->
+
+</section>
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <script>
+
+        function PageLoad() {
+
+            Tj_PrePrint()
+            $('#TjDetail_datatable').DataTable({
+                "scrollX": true,
+                "scrollY": "30vh",
+                "scrollCollapse": true,
+                "paging": true,
+                "searching": false,
+                "info": false,
+                "ordering": false,
+                "columns": [
+                       { "data": "equip_PqName" },
+                       { "data": "equip_CjName" },
+                       { "data": "equip_ZzName" },
+                       { "data": "equipCode" },
+                       { "data": "equipDesc" },
+                       { "data": "lastOilTime" },
+                       { "data": "NextOilTime" },
+                       { "data": "CQ_demo" },
+                       { "data": "oilCode_desc" }
+                ],
+                "ajax": {
+                    "url": "/A6dot2/CQ_detailId?Id=0", //变量传递
+                    "type": "POST"
+
+
+                }
+
+
+            });
+           
+        };
+        $(document).ready(
+           PageLoad()
+           );
+
+      
+
+      
+       
+      
+
+
+
+        function Tj_PrePrint() {
+            $.ajax({
+                url: '/A6dot2/Tj_PrePrint',
+                type: 'post',
+                data: { "Id": $('#WDT_Id').val() },
+                dataType: 'json',
+                success: function (data) {
+                    var itemHtml = "<table id=\"testTj\" width=\"100%\"  border=1 cellpadding=\"1\" style=\"min-height:100px\"> <thead> <tr><th>片区名称</th> <th>片区超时未换油设备数</th><th>车间名称</th> <th>车间超时未换油设备数</th><th>装置名称</th> <th>装置超时未换油设备数</th></tr>";
+
+                    for (i = 0; i < data.length ; i++) {
+
+                        for (var j = 0; j < data[i].row_ZzInfo.length; j++) {
+                            itemHtml = itemHtml + "<tr >";
+                            if (j == 0) {
+                                itemHtml = itemHtml + " <th rowspan=\"" + data[i].row_PqInfo.cellSpanNum + "\">" + data[i].row_PqInfo.cellName + "</th>";
+                                itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_PqInfo.cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\"><a  onclick=\"Tj_detail(" + $("#WDT_Id").val() + ",'" + data[i].row_PqInfo.cellId + "')\">" + data[i].row_PqInfo.cellNum + "</a></th>";
+                            }
+                            if (j < data[i].row_CjInfo.length) {
+                                itemHtml = itemHtml + " <th rowspan=\"" + data[i].row_CjInfo[j].cellSpanNum + "\">" + data[i].row_CjInfo[j].cellName + "</th>";
+                                itemHtml = itemHtml + " <th rowspan=\"" + data[i].row_CjInfo[j].cellSpanNum + "\">" + data[i].row_CjInfo[j].cellNum + "</th>";
+                            }
+
+                            itemHtml = itemHtml + " <th rowspan=\"" + data[i].row_ZzInfo[j].cellSpanNum + "\">" + data[i].row_ZzInfo[j].cellName + "</th>";
+                            itemHtml = itemHtml + " <th rowspan=\"" + data[i].row_ZzInfo[j].cellSpanNum + "\">" + data[i].row_ZzInfo[j].cellNum + "</th>";
+
+                            itemHtml = itemHtml + "</tr >";
+                        }
+
+
+                    }
+                    itemHtml = itemHtml + "</thead></table>";
+
+                    $("#TJResult").empty().append(itemHtml);
+
+                    document.getElementById("TJdetail_Div").style.visibility = "hidden";
+
+
+
+
+                }
+            ,
+                error: function (err) {
+                    alert(err.toString());
+                }
+            });
+
+        };
+
+        function Tj_detail(Id,pqName) {
+           
+            var str = "/A6dot2/CQ_detailId?Id=" + Id + "&pqName=" +pqName;
+            $('#TjDetail_datatable').DataTable().ajax.url(str).load();
+            document.getElementById("TJdetail_Div").style.visibility = "visible";
+        }
+    </script>
+}
+

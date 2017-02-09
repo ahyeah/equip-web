@@ -1,0 +1,548 @@
+﻿@model WebApp.Controllers.A5dot1Controller.index0model
+@{
+    ViewBag.Title = "Index0";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+@*<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/TableTools/css/dataTables.tableTools.css" />*@
+
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A5.1-设备完好</h3>
+        </div>
+
+        <div class="box-body">
+            <div id="zhiduwenjian" class="row"></div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <p></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <a id="PqSummary" class="btn btn-block btn-social btn-info" onclick="JavaScript: location.href='index'">
+                        <i class="glyphicon glyphicon-log-in"></i>进入[A5.1]设备完好-业务流程
+                    </a>
+                </div>
+            </div>
+
+
+            @*<div class="col-xs-6 col-md-3">
+                    <a id="Add" class="btn btn-block btn-social btn-info" target="_blank" href='/files/A5.1设备完好/设备创完好检查标准.pdf'>
+                        <i class="glyphicon glyphicon-list"></i>设备创完好检查标准
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <a id="Add" class="btn btn-block btn-social btn-info" target="_blank" href='/files/A5.1设备完好/设备使用维护管理制度.pdf'>
+                        <i class="glyphicon glyphicon-list"></i>设备使用维护管理制度
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <a id="Add" class="btn btn-block btn-social btn-info" target="_blank" href='/files/A5.1设备完好/设备完好标准（通用设备）.pdf'>
+                        <i class="glyphicon glyphicon-list"></i>设备完好标准（通用设备）
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <a id="Add" class="btn btn-block btn-social btn-info" target="_blank" href='/files/A5.1设备完好/转动设备包机牌、特护牌管理制度.pdf'>
+                        <i class="glyphicon glyphicon-list"></i>转动设备包机牌、特护牌管理制度
+                    </a>
+                </div>*@
+        </div>
+
+
+
+    </div>
+    </div>
+    <div class="box">
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+                <p>
+
+                </p>
+
+            </div>
+
+        </div>
+        @*<div>
+                <button type="button" class="btn btn-warning" onclick="outputExcel_click()">导出为excel</button>
+            </div>*@
+
+        <div class="col-xs-12">
+            <table>
+                <tr>
+                    <td class="col-sm-2 control-label">
+                        <label>选择时间:</label>
+                    </td>
+                    <td class="col-sm-9">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                            <input type="text" class="form-control" id="reservationtime" name="datepicker">
+                        </div>
+                    </td>
+                    <td class="col-sm-4">
+                        <button type="button" class="btn btn-warning" onclick="Search()">查询</button>
+                    </td>
+                    <td class="col-sm-4">
+                        <button type="button" class="btn btn-warning" onclick="outputExcel_click()">导出excel</button>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+                <p></p>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div style="text-align:center;">  <h2 style="  color:red;" id="titlename">@Model.title</h2></div>
+
+                    <table id="example1" class="table table-hover table-bordered">
+
+                        <thead>
+                            <tr>
+                                <th>车间</th>
+                                <th>装置</th>
+                                <th>设备位号</th>
+                                <th>设备编号</th>
+                                <th>当月不完好数</th>
+                                <th>当前累计未整改不完好数</th>
+                                <th>不完好内容详情</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.worst10)
+                            {
+                                <tr>
+                                    <td>@item.cjName</td>
+                                    <td>@item.zzName</td>
+                                    <td>@item.sbGyCode</td>
+                                    <td>@item.sbCode</td>
+                                    <td>@item.timesNotGood</td>
+                                    <td>@item.countAllNoRectifed</td>
+                                    <td>@item.notGoodContents</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box">
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+                <p>
+
+                </p>
+
+            </div>
+
+        </div>
+        @*<div>
+            <button type="button" class="btn btn-warning" onclick="outputExcel_click2()">导出为excel</button>
+        </div>*@
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example2" class="table table-hover table-bordered">
+                        <caption style="text-align:center;color:red;font-size:large">不完好率统计表</caption>
+                        <thead>
+                            <tr>
+                                <th>片区名称</th>
+                                <th>片区不完好率</th>
+                                <th>车间名称</th>
+                                <th>车间不完好率</th>
+                                <th>全厂不完好率</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>联合一片区</td>
+                                <td>@Model.pq_bwh[0]</td>
+                                <td>联合一车间</td>
+                                <td>@Model.cj_bwh[0]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>联合二片区</td>
+                                <td>@Model.pq_bwh[1]</td>
+                                <td>联合二车间</td>
+                                <td>@Model.cj_bwh[1]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>联合三片区</td>
+                                <td>@Model.pq_bwh[2]</td>
+                                <td>联合三车间</td>
+                                <td>@Model.cj_bwh[2]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>联合四片区</td>
+                                <td>@Model.pq_bwh[3]</td>
+                                <td>联合四车间</td>
+                                <td>@Model.cj_bwh[3]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>联合四片区</td>
+                                <td>@Model.pq_bwh[3]</td>
+                                <td>联合四车间铁路站</td>
+                                <td>@Model.cj_bwh[16]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>化工片区</td>
+                                <td>@Model.pq_bwh[4]</td>
+                                <td>气加车间</td>
+                                <td>@Model.cj_bwh[4]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>化工片区</td>
+                                <td>@Model.pq_bwh[4]</td>
+                                <td>聚丙烯车间</td>
+                                <td>@Model.cj_bwh[5]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>综合片区</td>
+                                <td>@Model.pq_bwh[5]</td>
+                                <td>综合车间</td>
+                                <td>@Model.cj_bwh[6]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>其他</td>
+                                <td>@Model.pq_bwh[6]</td>
+                                <td>储运车间</td>
+                                <td>@Model.cj_bwh[7]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>其他</td>
+                                <td>@Model.pq_bwh[6]</td>
+                                <td>水务车间（股份）</td>
+                                <td>@Model.cj_bwh[8]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>其他</td>
+                                <td>@Model.pq_bwh[6]</td>
+                                <td>热点车间（股份）</td>
+                                <td>@Model.cj_bwh[9]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>其他</td>
+                                <td>@Model.pq_bwh[6]</td>
+                                <td>化验车间</td>
+                                <td>@Model.cj_bwh[10]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>其他</td>
+                                <td>@Model.pq_bwh[6]</td>
+                                <td>消防队</td>
+                                <td>@Model.cj_bwh[11]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>其他</td>
+                                <td>@Model.pq_bwh[6]</td>
+                                <td>计量站</td>
+                                <td>@Model.cj_bwh[12]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>其他</td>
+                                <td>@Model.pq_bwh[6]</td>
+                                <td>热电车间（资产）</td>
+                                <td>@Model.cj_bwh[13]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>其他</td>
+                                <td>@Model.pq_bwh[6]</td>
+                                <td>水务车间（资产）</td>
+                                <td>@Model.cj_bwh[14]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+                            <tr>
+                                <td>其他</td>
+                                <td>@Model.pq_bwh[6]</td>
+                                <td>储运车间油码头</td>
+                                <td>@Model.cj_bwh[15]</td>
+                                <td>@Model.qc_bwh</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+
+
+
+</section>
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    @*<script src="~/Plugins/AdminLTE/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.js"></script>*@
+    <script>
+        // $.fn.dataTable.TableTools.defaults.aButtons = ["copy", "csv", "xls"];
+        $(document).ready(function () {
+            //var table = $('#example1').dataTable();
+            //var tableTools = new $.fn.dataTable.TableTools(table, {
+            //    "buttons": [
+            //        "copy",
+            //        "csv",
+            //        "xls",
+            //        "pdf",
+            //        { "type": "print", "buttonText": "Print me!" }
+            //    ]
+            //});
+            var myDate = new Date();
+            var nowyear = myDate.getFullYear();
+            var nowmonth = myDate.getMonth() + 1;
+            var nowday = myDate.getDate();
+
+
+            //Date picker
+            $('input[name="datepicker"]').datepicker(
+               {
+                   format: 'yyyy-m',
+                   weekStart: 1,
+                   autoclose: true,
+
+                   startView: 2,
+                   maxViewMode: 2,
+                   minViewMode: 1,
+                   forceParse: false,
+                   language: 'zh-CN',
+                   endDate: new Date(nowyear, nowmonth - 1, nowday),
+                   startDate: -Infinity,
+               });
+            $('#example1').DataTable({
+                "columns": [
+
+               { "data": "cjname" },
+              { "data": "zzname" },
+                { "data": "sbGyCode" },
+              { "data": "sbCode" },
+              { "data": "timesNotGood" },
+              { "data": "countAllNoRectifed" },
+              { "data": "notGoodContents" },
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false
+                //"dom": 'T<"clear">lfrtip',
+                //"tableTools": {
+                //    "sSwfPath": "/Plugins/AdminLTE/plugins/datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+                //    "aButtons": [
+
+                //  {
+
+                //      "sExtends": "xls",
+
+                //      "sButtonText": "导出Excel文件",
+
+                //      "sFileName": "*.xls"
+
+                //  },
+
+                //    ]
+                //}
+            });
+            $('#example2').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false
+                //"dom": 'T<"clear">lfrtip',
+                //"initComplete": function (settings, json) {
+
+                //}
+                //"tableTools": {
+                //    "sSwfPath": "/Plugins/AdminLTE/plugins/datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+                //    "aButtons": [
+
+                //    {
+
+                //        "sExtends": "xls",
+
+                //        "sButtonText": "导出Excel文件",
+
+                //        "sFileName": "*.xls"
+
+                //    },
+
+                //    ]
+                //}
+            });
+            $.ajax({
+                url: '/Common/get_zhidubymenu',
+                dataType: 'json',
+                type: 'post',
+                data: { "menu_id": 14 },
+                success: function (backdata) {
+                    if (backdata) {
+                        //var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                        //for (var i = 0; i < backdata.length; i++) {
+                        //    itemHtml = itemHtml + "<option value=\"" + backdata[i].sp_Id + "\">" + backdata[i].sp_Name + "</option>";
+                        //}
+                        //$('#Sps_id').html(itemHtml);
+                        var itemHtml = "";
+                        for (i = 0; i < backdata.length; i++) {
+                            itemHtml = itemHtml + "   <div class=\"col-xs-6 col-md-3\"><a id=\"Add\" class=\"btn btn-block btn-social btn-success\" target=\"_blank\" href='/files/A5.1设备完好/" + backdata[i].pdf_name + "'><i class=\"glyphicon glyphicon-list\"></i>" + backdata[i].pdf_name + "</a></div>";
+                            if ((i + 1) % 4 == 0) {
+                                itemHtml = itemHtml + "<div class=\"row\"><div class=\"col-xs-6 col-md-3\"><p></p></div></div>"
+
+                            }
+
+                        }
+
+                        $("#zhiduwenjian").append(itemHtml);
+                    }
+                    else {
+                        alert("error!!!");
+                    }
+                }
+            }
+       )
+
+        })
+
+
+        function Search() {
+            var str = "/A5dot1/Query_worst10bytime?time=" + $('#reservationtime').val();
+            $('#example1').DataTable().ajax.url(str).load();
+            var itemHtml = " <span  id=\"titlename\">" + $('#reservationtime').val() + "月最差十台机泵" + "</span>";
+
+            $('#titlename').html(itemHtml);
+        }
+
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+
+        function outputExcel_click() {
+
+            // var wef_id = $("#wef_id").val();
+            $.ajax({
+                type: 'POST',
+                url: '/A5dot1/OutputExcel?time=' + $('#reservationtime').val(),
+                success: function (data) {
+                    //alert(data);
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        };
+        function outputExcel_click2() {
+
+            // var wef_id = $("#wef_id").val();
+            $.ajax({
+                type: 'POST',
+                url: '/A5dot1/OutputExcel_2',
+                success: function (data) {
+                    //alert(data);
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        };
+
+        jQuery.fn.rowspan = function (colIdx) { //封装的一个JQuery小插件
+            return this.each(function () {
+                var that;
+                $('tr', this).each(function (row) {
+                    $('td:eq(' + colIdx + ')', this).filter(':visible').each(function (col) {
+                        if (that != null && $(this).html() == $(that).html()) {
+                            rowspan = $(that).attr("rowSpan");
+                            if (rowspan == undefined) {
+                                $(that).attr("rowSpan", 1);
+                                rowspan = $(that).attr("rowSpan");
+                            }
+                            rowspan = Number(rowspan) + 1;
+                            $(that).attr("rowSpan", rowspan);
+                            $(this).hide();
+                        } else {
+                            that = this;
+                        }
+                    });
+                });
+            });
+        }
+        $(function () {
+            $("#example2").rowspan(0);//传入的参数是对应的列数从0开始，哪一列有相同的内容就输入对应的列数值
+            // $("#example2").rowspan(1);
+            $("#example2").rowspan(4);
+        });
+
+
+    </script>
+}
+
+

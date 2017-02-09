@@ -1,0 +1,226 @@
+﻿using FlowDesigner.PropertyEditor;
+using System;
+using System.Activities.Presentation.PropertyEditing;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing.Design;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Xml;
+
+namespace FlowDesigner.ConfigItems
+{
+    /// <summary>
+    /// 事件的定制元素
+    /// </summary>
+    public class ConfigEvent : ConfigItem
+    {
+        /// <summary>
+        /// 宽度
+        /// </summary>
+        private int nWidth;
+
+        /// <summary>
+        /// 高度
+        /// </summary>
+        private int nHeight;
+
+        /// <summary>
+        /// 事件的类型
+        /// </summary>
+        private string eventType;
+
+        //事件
+        [CategoryAttribute("事件")]
+        public string BeforeAction { get; set; }
+        [CategoryAttribute("事件")]
+        public string CurrentAction { get; set; }
+        [CategoryAttribute("事件")]
+        
+        public string AfterAction { get; set; }
+        [CategoryAttribute("权限")]
+        public string authority { get; set; }
+
+        //关联变量
+        private Dictionary<string, string> _LinkParams = new Dictionary<string, string>();
+        [Category("参数")]
+        [Editor(typeof(LinkParamsEditor), typeof(PropertyValueEditor))]
+        public Dictionary<string, string> LinkParams
+        { 
+            get{
+                return _LinkParams;
+            }
+            set {
+                _LinkParams = value;
+            }
+        }
+
+        public string GetEventType()
+        {
+            return eventType;
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public ConfigEvent(string eType)
+        {
+            nWidth = 150;
+            nHeight = 70;
+
+            Color bkColor = Color.FromRgb(255, 255, 255) ;
+            Color storkColor = Color.FromRgb(255, 255, 255);
+            eventType = eType;
+            switch(eventType)
+            {
+                case "NormalEvent":
+                    bkColor = Color.FromRgb(51, 144, 208);
+                    storkColor = Color.FromRgb(17, 50, 72);
+                    break;
+
+                case "StartEvent":
+                    bkColor = Color.FromRgb(4, 181, 13);
+                    storkColor = Color.FromRgb(2, 113, 7);
+                    break;
+
+                case "EndEvent":
+                    bkColor = Color.FromRgb(255, 0, 128);
+                    storkColor = Color.FromRgb(162, 0, 81);
+                    break;
+
+                case "SubProcess":
+                    bkColor = Color.FromRgb(255, 255, 0);
+                    storkColor = Color.FromRgb(128, 128, 0);
+                    break;
+            }
+
+            VisualBrush myVisualBrush = new VisualBrush();
+
+            StackPanel myStackPanel = new StackPanel();
+            myStackPanel.Background = new SolidColorBrush(bkColor);
+
+            TextBlock somtext = new TextBlock();
+            FontSizeConverter myFontSizeConverter = new FontSizeConverter();
+            somtext.FontSize = 0.7F;//(double)myFontSizeConverter.ConvertFrom("6px");
+            somtext.FontFamily = new FontFamily("Arial");
+            somtext.Text = name + "\r\n" + description;
+            somtext.Margin = new Thickness(2);
+            myStackPanel.Children.Add(somtext);
+            
+
+            myVisualBrush.Visual = myStackPanel;
+
+            Show_item = new Rectangle()
+            {
+                Width = nWidth,
+                Height = nHeight,
+                Fill = myVisualBrush,//new SolidColorBrush(Color.FromRgb(51, 144, 208)),
+                Stroke = new SolidColorBrush(storkColor),
+                StrokeThickness = 2,
+                Cursor = Cursors.Cross,
+                Opacity = 0.6,
+                RadiusX = 5,
+                RadiusY = 5
+            };
+
+            builidEventLink();
+        }
+
+        public override void UnSelect()
+        {
+            m_selected = false;
+            Canvas.SetZIndex(this.Show_item, 1);
+            Show_item.Opacity = 0.6;
+        }
+
+        public override void Selected()
+        {
+            m_selected = true;
+            Canvas.SetZIndex(this.Show_item,  Int16.MaxValue - 1 );
+        }
+        
+        /// <summary>
+        /// 重载设置位置
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public override void SetPos(int x, int y)
+        {
+            ((Rectangle)Show_item).Margin = new Thickness(x, y, 0, 0);
+            
+        }
+
+        protected override void NameChanged()
+        {
+            ((TextBlock)((StackPanel)((VisualBrush)Show_item.Fill).Visual).Children[0]).Text = name + "\r\n" + description;
+        }
+
+        protected override void DescChanged()
+        {
+            ((TextBlock)((StackPanel)((VisualBrush)Show_item.Fill).Visual).Children[0]).Text = name + "\r\n" + description;
+        }
+
+        protected override void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && m_selected)
+            {
+                Point ptCur = e.GetPosition(Show_item);
+                double dx = ptCur.X - pt.X;
+                double dy = ptCur.Y - pt.Y;
+
+                Thickness tk = ((Rectangle)Show_item).Margin;
+                tk.Left += (int)dx;
+                tk.Top += (int)dy;
+                ((Rectangle)Show_item).Margin = tk;
+                //pt = ptCur;
+                //Trace.WriteLine("X = " + ptCur.X + "; Y = " + ptCur.Y);
+
+                foreach (ConfigFlow cf in attach_flows)
+                    cf.Connect();
+            }
+        }
+
+        public override XmlElement SaveConfigItem(XmlDocument Owner)
+        {
+            //base
+            XmlElement base_xml = base.SaveConfigItem(Owner);
+            base_xml.SetAttribute("item_type", "event");
+            base_xml.SetAttribute("event_type", eventType);
+            base_xml.SetAttribute("authority", authority);
+
+            //shape
+            XmlElement shape_xml = Owner.CreateElement("shape");
+            shape_xml.SetAttribute("type", Show_item.ToString());
+            shape_xml.SetAttribute("margin", Show_item.Margin.ToString());            
+            base_xml.AppendChild(shape_xml);
+
+            //actions
+            XmlElement actions_xml = Owner.CreateElement("actions");
+            actions_xml.SetAttribute("beforeaction", BeforeAction);
+            actions_xml.SetAttribute("currentaction", CurrentAction);
+            actions_xml.SetAttribute("afteraction", AfterAction);
+            base_xml.AppendChild(actions_xml);
+
+            //link_params
+            XmlElement pas_xml = Owner.CreateElement("link_params");
+            foreach(var pa in _LinkParams)
+            {
+                XmlElement pa_xml = Owner.CreateElement("param");
+                pa_xml.SetAttribute("name", pa.Key);
+                pa_xml.SetAttribute("app_reserve", pa.Value);
+                pas_xml.AppendChild(pa_xml);
+            }
+            base_xml.AppendChild(pas_xml);
+
+            return base_xml;
+        }
+        
+    }
+}

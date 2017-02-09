@@ -1,0 +1,471 @@
+<workflow name="A4dot3" desc="安装施工" current_event="">
+  <paramtable>
+    <param name="Cj_Name" desc="车间名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PlanSubmit</linkevent>
+        <linkevent app_reserve="">CMZySCSD</linkevent>
+        <linkevent app_reserve="">SCSDConfirm</linkevent>
+        <linkevent app_reserve="">Zj</linkevent>
+        <linkevent app_reserve="">JumpToA6dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zz_Name" desc="装置名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PlanSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA6dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PlanSubmit</linkevent>
+        <linkevent app_reserve="">CMConfirmSchedule</linkevent>
+        <linkevent app_reserve="">CMZySCSD</linkevent>
+        <linkevent app_reserve="">SCSDConfirm</linkevent>
+        <linkevent app_reserve="">Zj</linkevent>
+        <linkevent app_reserve="">ZjConfirm</linkevent>
+        <linkevent app_reserve="">ZytdConfirmC</linkevent>
+        <linkevent app_reserve="">CMConfirmC</linkevent>
+        <linkevent app_reserve="">JumpToA4dot4</linkevent>
+        <linkevent app_reserve="">JumpToA6dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="App_hidden">PlanSubmit</linkevent>
+        <linkevent app_reserve="App_hidden">CMConfirmSchedule</linkevent>
+        <linkevent app_reserve="App_hidden">CMZySCSD</linkevent>
+        <linkevent app_reserve="App_hidden">SCSDConfirm</linkevent>
+        <linkevent app_reserve="App_hidden">Zj</linkevent>
+        <linkevent app_reserve="App_hidden">ZjConfirm</linkevent>
+        <linkevent app_reserve="App_hidden">ZytdConfirmC</linkevent>
+        <linkevent app_reserve="App_hidden">CMConfirmC</linkevent>
+        <linkevent app_reserve="App_hidden">JumpToA4dot4</linkevent>
+        <linkevent app_reserve="">JumpToA6dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Data_Src" desc="数据来源" type="string">
+      <linkevents />
+    </param>
+    <param name="PlanSubmit_done" desc="工程计划提报是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">PlanSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA4dot4</linkevent>
+        <linkevent app_reserve="">JumpToA6dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_Order" desc="计划号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PlanSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA4dot4</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_Name" desc="项目名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PlanSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA4dot4</linkevent>
+      </linkevents>
+    </param>
+    <param name="CM_Department" desc="工程管理单位" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PlanSubmit</linkevent>
+        <linkevent app_reserve="">CMConfirmSchedule</linkevent>
+        <linkevent app_reserve="">CMZySCSD</linkevent>
+        <linkevent app_reserve="">CMConfirmC</linkevent>
+        <linkevent app_reserve="">JumpToA4dot4</linkevent>
+      </linkevents>
+    </param>
+    <param name="QM_Department" desc="质量管理单位" type="string">
+      <linkevents />
+    </param>
+    <param name="WzcConfirm_Result" desc="物资处采购是否到货" type="string">
+      <linkevents />
+    </param>
+    <param name="OpenPackage_Result" desc="是否开箱" type="bool">
+      <linkevents />
+    </param>
+    <param name="AllIsOK" desc="清点结果" type="string">
+      <linkevents />
+    </param>
+    <param name="Supplier_Done" desc="供应商已补齐" type="bool">
+      <linkevents />
+    </param>
+    <param name="ZzConfirm_Result" desc="装置处确认工具及配件" type="string">
+      <linkevents />
+    </param>
+    <param name="JscConfirm_Result" desc="技术处确认资料" type="string">
+      <linkevents />
+    </param>
+    <param name="Construct_File" desc="施工方案（附件）" type="string">
+      <linkevents />
+    </param>
+    <param name="CMConfirmPlan_Result" desc="工程管理单位确认施工方案" type="string">
+      <linkevents />
+    </param>
+    <param name="ScheduleConfirm_Done" desc="工期是否确认" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">CMConfirmSchedule</linkevent>
+      </linkevents>
+    </param>
+    <param name="ScheduleTime_Begin" desc="施工起始时间" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CMConfirmSchedule</linkevent>
+      </linkevents>
+    </param>
+    <param name="ScheduleTime_End" desc="施工结束时间" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CMConfirmSchedule</linkevent>
+      </linkevents>
+    </param>
+    <param name="CMConfirmEnd_Done" desc="施工是否完成" type="bool">
+      <linkevents />
+    </param>
+    <param name="QMConfirm_Result" desc="确认施工是否合格" type="string">
+      <linkevents />
+    </param>
+    <param name="SCSDConfirm_Done" desc="三查四定是否在进行" type="string">
+      <linkevents>
+        <linkevent app_reserve="">SCSDConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="SCSD_Time" desc="三查四定时间" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CMZySCSD</linkevent>
+      </linkevents>
+    </param>
+    <param name="SCSD_Place" desc="三查四定地点" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CMZySCSD</linkevent>
+      </linkevents>
+    </param>
+    <param name="SCSD_Speci" desc="三查四定专业" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CMZySCSD</linkevent>
+        <linkevent app_reserve="">Zj</linkevent>
+      </linkevents>
+    </param>
+    <param name="CMZySCSD_Done" desc="组织三查四定是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">CMZySCSD</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zj_Time" desc="中交时间" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Zj</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zj_Place" desc="中交地点" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Zj</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zj_Done" desc="组织中交是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">Zj</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZjConfirm_Done" desc="是否确认已进行中交" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZjConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdConfirmC_Result" desc="施工是否合格" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirmC</linkevent>
+      </linkevents>
+    </param>
+    <param name="CMConfirmC_Done" desc="是否施工整改完毕" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CMConfirmC</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Type" desc="设备型号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirmC</linkevent>
+        <linkevent app_reserve="">JumpToA6dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="currentuser" desc="当前用户" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">PlanSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="start_done" desc="" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">JumpToA4dot4</linkevent>
+        <linkevent app_reserve="">JumpToA6dot1</linkevent>
+      </linkevents>
+    </param>
+  </paramtable>
+  <events>
+    <event name="Start" desc="Start" type="startevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="End" desc="End" type="endevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="PlanSubmit" desc="工程计划提报（人工提报）确认工程管理单位)" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot3/PlanSubmit]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name like '%机动处%' and @OP_currentuser=@IP_currentuser]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="CMConfirmSchedule" desc="工程管理单位确认工期" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot3/CMConfirmSchedule]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name = @IP_CM_Department]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="CMZySCSD" desc="工程各单位组织三查四定（线上确定时间、地点、专业）" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot3/CMZySCSD]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name = @IP_CM_Department]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="SCSDConfirm" desc="相关的专业团队负责人确认已进行三查四定" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot3/SCSDConfirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队负责人')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Zj" desc="中交（线上确定时间、地点、专业）" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot3/Zj]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队负责人')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZjConfirm" desc="相关的专业团队负责人确认已进行中交" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot3/ZjConfirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队负责人')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZytdConfirmC" desc="专业团队确认施工是否合格" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot3/ZytdConfirmC]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="CMConfirmC" desc="工程管理单位确认整改完毕" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot3/CMConfirmC]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name = @IP_CM_Department]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="JumpToA4dot4" desc="跳转到A4dot4" type="subprocess">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where 1<>1]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+      <linkworkflow name="A4dot4" workingmodel="parallel">
+        <paramtransfer>
+          <item parent="Equip_GyCode" child="Equip_GyCode" direction="to" />
+          <item parent="Equip_Code" child="Equip_Code" direction="to" />
+          <item parent="Plan_Order" child="Plan_Order" direction="to" />
+          <item parent="Plan_Name" child="Plan_Name" direction="to" />
+          <item parent="CM_Department" child="CM_Department" direction="to" />
+          <item parent="PlanSubmit_done" child="SySubmit_Done" direction="to" />
+          <item parent="start_done" child="start_done" direction="to" />
+        </paramtransfer>
+      </linkworkflow>
+    </event>
+    <event name="JumpToA6dot1" desc="跳转A6dot1操作规程" type="subprocess">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where 1<>1]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+      <linkworkflow name="A6dot1" workingmodel="parallel">
+        <paramtransfer>
+          <item parent="Cj_Name" child="Cj_Name" direction="to" />
+          <item parent="Zz_Name" child="Zz_Name" direction="to" />
+          <item parent="Equip_GyCode" child="Equip_GyCode" direction="to" />
+          <item parent="Equip_Code" child="Equip_Code" direction="to" />
+          <item parent="PlanSubmit_done" child="SBSubmit_Done" direction="to" />
+          <item parent="Equip_Type" child="Equip_Type" direction="to" />
+          <item parent="start_done" child="start_done" direction="to" />
+        </paramtransfer>
+      </linkworkflow>
+    </event>
+  </events>
+  <flows>
+    <flow source="Start" destination="PlanSubmit">
+      <condition><![CDATA[start_done==true]]></condition>
+    </flow>
+    <flow source="PlanSubmit" destination="CMConfirmSchedule">
+      <condition><![CDATA[PlanSubmit_done==true]]></condition>
+    </flow>
+    <flow source="CMConfirmSchedule" destination="CMZySCSD">
+      <condition><![CDATA[ScheduleConfirm_Done==true]]></condition>
+    </flow>
+    <flow source="CMZySCSD" destination="SCSDConfirm">
+      <condition><![CDATA[CMZySCSD_Done==true]]></condition>
+    </flow>
+    <flow source="SCSDConfirm" destination="Zj">
+      <condition><![CDATA[SCSDConfirm_Done=="是"]]></condition>
+    </flow>
+    <flow source="Zj" destination="ZjConfirm">
+      <condition><![CDATA[Zj_Done==true]]></condition>
+    </flow>
+    <flow source="ZjConfirm" destination="ZytdConfirmC">
+      <condition><![CDATA[ZjConfirm_Done=="是"]]></condition>
+    </flow>
+    <flow source="ZytdConfirmC" destination="CMConfirmC">
+      <condition><![CDATA[ZytdConfirmC_Result!="是"]]></condition>
+    </flow>
+    <flow source="CMConfirmC" destination="ZjConfirm">
+      <condition><![CDATA[CMConfirmC_Done=="是"]]></condition>
+    </flow>
+    <flow source="ZytdConfirmC" destination="JumpToA4dot4">
+      <condition><![CDATA[ZytdConfirmC_Result=="是"]]></condition>
+    </flow>
+    <flow source="JumpToA4dot4" destination="JumpToA6dot1">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="JumpToA6dot1" destination="End">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

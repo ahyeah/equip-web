@@ -1,0 +1,517 @@
+﻿@model WebApp.Controllers.CommonController.Index_Model
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    }
+
+    <style type="text/css">
+        tr.MM_hidden {
+            display: none;
+        }
+
+        /*tr.MM_shown {
+        }*/
+
+        tr.selected {
+            background-color: #acbad4;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+    <section class="content" id="table_show_8" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A7.1-三检特护及状态监测</h3>
+        </div>
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <a id="Add" class="btn btn-block btn-social btn-info" onclick="Create1()">
+                        <i class="fa fa-pencil-square-o"></i>人工提报(特护记录）
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="button" class="btn btn-info" onclick="re_table_1()" value="刷新待处理任务列表" />
+
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title" style="font:bold; color:red">待处理任务列表</p>
+            @*                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example1" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>业务流水号</th>
+                                <th>设备工艺编号</th>
+                                <th>工作流名称</th>
+                                <th>待处理任务描述</th>
+                                <th>任务送达时间</th>
+                                <th>任务传达人</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.Am)
+                                    {
+                                        <tr>
+                                            <td>@item.missIndex</td>
+                                            <td>@item.wfe_serial</td>
+                                            <td>@item.missTime</td>
+                                            <td>@item.miss_desc</td>
+                                            <td>@item.userName</td>
+                                            @if(!string.IsNullOrEmpty(item.miss_url))
+                                            {
+                                             <td><button onclick="JavaScript: location.href='@item.miss_url'">处理</button></td>
+                                            }
+                                            else{
+                                             <td>无需处理，等待返回</td>
+                                            }
+
+                                        </tr>
+
+                                    }
+                                </tbody>*@
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title " style="font:bold; color:red">历史任务列表（已完成）</p>
+
+            @*             <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example2" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>业务流水号</th>
+                                <th>设备工艺编号</th>
+                                <th>工作流名称</th>
+                                <th>任务发起人</th>
+                                <th>任务发起时间</th>
+                                <th>任务进展状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.Hm)
+                                {
+                                    <tr>
+                                        <td>@item.missIndex</td>
+                                        <td>@item.wfe_serial</td>
+                                        <td>@item.missStartName</td>
+                                        <td>@item.missStartTime</td>
+                                        <td>@item.miss_LastStatusdesc</td>
+                                        <td><button onclick="JavaScript: location.href='/A7dot1dot1/WorkFolw_Detail?wfe_id=@item.miss_wfe_Id'">查看详情</button></td>
+                                    </tr>
+
+                                }*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title " style="font:bold; color:red">参与过的任务列表</p>
+
+        </div>
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example3" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>业务流水号</th>
+                                <th>设备工艺编号</th>
+                                <th>工作流名称</th>
+                                <th>任务发起人</th>
+                                <th>任务发起时间</th>
+                                <th>任务进展状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+
+
+
+</section>
+<div class="col-md-4" id="sidebar"> </div>
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处-->
+<div class="modal fade" id="EquipInfoModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备相关信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="EquipInfoDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+    </div>
+
+</div><!--设备信息显示模态框结束处-->
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/jquery.ba-resize.js"></script>
+
+    <!-- Page script -->
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+        <script>
+            $(document).ready(function () {
+
+
+
+                $("#example1").DataTable({
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        // "sZeroRecords": "抱歉， 没有找到",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "没有数据",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "sZeroRecords": "没有检索到数据",
+                        "sSearch": "模糊查询:  ",
+                        "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        }
+                    },
+
+
+                    "ajax": {
+                        "data": { "WorkFlow_Name": "A7dot1dot1" },
+                        "url": "/Common/getdcl_list",
+                        "type": "POST"
+
+                    },
+                    columns: [
+
+                          {
+                              data: 'wfe_serial',
+
+                              "render": function (data, type, full, meta) {
+
+                                  return ' <a style=\"cursor:pointer\";  onclick=\"showSide(' + full.wfe_serial + ')\">' + full.wfe_serial + '</a> ';
+                              }
+
+
+
+                          },
+                          { data: 'equip_gycode' },
+                          { data: 'workflow_name' },
+                          { data: 'miss_desc' },
+                            { data: 'missTime' },
+                              { data: 'userName' },
+                           {
+
+
+                               "render": function (data, type, full, meta) {
+                                   return '<a  href=' + full.miss_url + '><button type="button" class="btn btn-primary" >处理</button></a>';
+                               }
+
+
+
+
+                           }
+                    ],
+                    "bProcessing": true,
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    //"ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "aoColumnDefs": [{ "bSortable": false, "aTargets": [6] }]
+                });
+
+
+
+                $("#example2").DataTable({
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        // "sZeroRecords": "抱歉， 没有找到",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "没有数据",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "sZeroRecords": "没有检索到数据",
+                        "sSearch": "模糊查询:  ",
+                        "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        }
+                    },
+
+
+                    "ajax": {
+                        "data": { "WorkFlow_Name": "A7dot1dot1" },
+                        "url": "/Common/gethistory_listforA7dot1dot1",
+                        "type": "POST"
+
+                    },
+                    columns: [
+
+                          {
+                              data: 'wfe_serial',
+
+                              "render": function (data, type, full, meta) {
+
+                                  return ' <a style=\"cursor:pointer\";  onclick=\"showSide(' + full.wfe_serial + ')\">' + full.wfe_serial + '</a> ';
+                              }
+
+
+
+                          },
+                          { data: 'equip_gycode' },
+                          { data: 'workflow_name' },
+                          { data: 'missStartName' },
+                            { data: 'missStartTime' },
+                              { data: 'miss_LastStatusdesc' },
+                           {
+
+
+                               "render": function (data, type, full, meta) {
+                                   return " <button onclick=\"JavaScript:location.href='/A7dot1dot1/WorkFolw_Detail?wfe_id=" + full.miss_wfe_Id + "'\">查看详情</button>";
+
+                                   // return '<a  href=' + full.miss_url + '><button type="button" class="btn btn-primary" >处理</button></a>';
+                               }
+
+
+
+
+                           }
+                    ],
+                    "bProcessing": true,
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    //"ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "aoColumnDefs": [{ "bSortable": false, "aTargets": [6] }]
+                });
+
+
+                $("#example3").DataTable({
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        // "sZeroRecords": "抱歉， 没有找到",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "没有数据",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "sZeroRecords": "没有检索到数据",
+                        "sSearch": "模糊查询:  ",
+                        "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        }
+                    },
+
+
+                    "ajax": {
+                        "data": { "WorkFlow_Name": "A7dot1dot1" },
+                        "url": "/Common/getactive_list",
+                        "type": "POST"
+
+                    },
+                    columns: [
+
+                          {
+                              data: 'wfe_serial',
+
+                              "render": function (data, type, full, meta) {
+
+                                  return ' <a style=\"cursor:pointer\";  onclick=\"showSide(' + full.wfe_serial + ')\">' + full.wfe_serial + '</a> ';
+                              }
+
+
+
+                          },
+                          { data: 'equip_gycode' },
+                          { data: 'workflow_name' },
+                          { data: 'missStartName' },
+                            { data: 'missStartTime' },
+                              { data: 'miss_LastStatusdesc' },
+                           {
+
+
+                               "render": function (data, type, full, meta) {
+                                   return " <button onclick=\"JavaScript:location.href='/A7dot1dot1/WorkFolw_Detail?wfe_id=" + full.miss_wfe_Id + "'\">查看详情</button>";
+
+                                   // return '<a  href=' + full.miss_url + '><button type="button" class="btn btn-primary" >处理</button></a>';
+                               }
+
+
+
+
+                           }
+                    ],
+                    "bProcessing": true,
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    //"ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "aoColumnDefs": [{ "bSortable": false, "aTargets": [6] }]
+                });
+
+
+
+
+                //var table = $('#example1').DataTable();
+
+                //$('#example1 tbody').on('click', 'tr', function () {
+
+
+                //    if ($(this).hasClass('info')) {
+                //        $(this).removeClass('info');
+                //    }
+                //    else {
+                //        table.$('tr.info').removeClass('info');
+                //        $(this).addClass('info');
+                //    }
+
+
+                //});
+
+            });
+
+
+
+            function showSide(wfe_serial) {
+                var wfe = wfe_serial;
+
+                $("#table_show_8").attr("class", "col-md-8");
+
+
+                DispalsySide(wfe);
+
+
+            }
+
+
+
+            $(function () {
+                $("thead").css("background", "#7CCD7C");
+                $("tbody tr").addClass("info");
+            });
+
+
+            function Create1() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Main/CreateFlow',
+                    data: { flowname: "A7dot1dot1" },
+                    success: function (data) {
+                        if (data == "-1") {
+                            alert("对不起，你没有权限进行该项提报");
+                            return false;
+                        } else if (data == "") {
+                            return false;
+
+                        } else if (data == null) {
+                            return false;
+                        }
+                        else {
+                            location.href = data;
+                        }
+
+
+                    },
+                    error: function (data) {
+                        alert('error: A7.1 index');
+                    }
+                });
+            }
+            function re_table_1() {
+                //  alert("刷新表格");
+                //$("#example1").dataTable().fnDraw();
+                var table = $('#example1').DataTable();
+                table.ajax.url('/Common/getdcl_list').load();
+
+            }
+        </script>
+    
+  
+    }
+
+
+

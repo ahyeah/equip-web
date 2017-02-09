@@ -1,0 +1,1463 @@
+﻿@model WebApp.Controllers.CommonController.Index_Model
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<style type="text/css">
+    tr.MM_hidden {
+        display: none;
+    }
+
+    /*tr.MM_shown {
+        }*/
+
+    tr.selected {
+        background-color: #acbad4;
+    }
+</style>
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/css/buttons.bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/css/editor.bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/css/rowReorder.bootstrap.min.css">
+<section class="content" id="table_show_8" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A14.3-计划管理</h3>
+        </div>
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <a id="Add" class="btn btn-block btn-social btn-warning" target="_blank" href='/files/A14dot3.pdf'>
+                        <i class="fa fa-pencil-square-o"></i>流程图
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <p></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <a id="Add" class="btn btn-block btn-social btn-warning" target="_blank" href='/A11dot2/fengxiandengji'>
+                        <i class="fa fa-pencil-square-o"></i>风险登记表
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <p></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <a id="Add" class="btn btn-block btn-social btn-info" onclick="Create()">
+                        <i class="fa fa-pencil-square-o"></i>专家团队触发计划提报事务
+                    </a>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <p></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a id="Add" class="btn btn-block btn-social btn-info" onclick="Create1()">
+                            <i class="fa fa-pencil-square-o"></i>月度计划人工提报
+                        </a>
+                    </div>
+
+                </div>
+            
+        </div>
+    </div>
+    <input type="button" class="btn btn-info" onclick="re_table_1()" value="刷新待处理任务列表" />
+
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title" style="font:bold; color:red">待处理任务列表</p>
+            @*                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example1" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>业务流水号</th>
+                                <th>设备工艺编号</th>
+                                <th>工作流名称</th>
+                                <th>待处理任务描述</th>
+                                <th>任务送达时间</th>
+                                <th>任务传达人</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.Am)
+                                    {
+                                        <tr>
+                                            <td>@item.missIndex</td>
+                                            <td>@item.wfe_serial</td>
+                                            <td>@item.missTime</td>
+                                            <td>@item.miss_desc</td>
+                                            <td>@item.userName</td>
+                                            @if(!string.IsNullOrEmpty(item.miss_url))
+                                            {
+                                             <td><button onclick="JavaScript: location.href='@item.miss_url'">处理</button></td>
+                                            }
+                                            else{
+                                             <td>无需处理，等待返回</td>
+                                            }
+
+                                        </tr>
+
+                                    }
+                                </tbody>*@
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header" style="text-align:center; ">
+            <p class="box-title " style="text-align:center;  font-size:x-large; font:bold; color:red">停工检维修计划表</p>
+
+        </div>
+        <div class="box-body ">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="jobs_table" class="table table-hover table-bordered display">
+                        <thead>
+                            <tr>
+                                <th></th>
+
+                                <th>序号</th>
+                                <th>装置名称</th>
+                                <th>设备位号</th>
+                                <th>设备编号</th>
+                                <th>设备ABC分类</th>
+                                <th>项目名称</th>
+                                <th>检修原因说明</th>
+                                <th>现场工程师审核及说明</th>
+                                <th>可靠性工程师审核及说明</th>
+                                <th>专家团队审核及说明</th>
+                                <th>通知单号</th>
+                                <th>工单号</th>
+                                <th>已完成任务</th>
+                                <th>当前角色</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <div class="box">
+        <div class="box-header" style="text-align:center; ">
+            <p class="box-title " style="text-align:center;  font-size:x-large; font:bold; color:red">月度计划（人工提报）检维修计划表</p>
+
+        </div>
+        <div class="box-body ">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="jobs_table1" class="table table-hover table-bordered display">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>序号</th>
+                                <th>装置名称</th>
+                                <th>设备位号</th>
+                                <th>设备编号</th>
+                                <th>设备ABC分类</th>
+                                <th>项目名称</th>
+                                <th>检修原因说明</th>                                
+                                <th>可靠性工程师审核及说明</th>
+                                <th>专家团队审核及说明</th>
+                                <th>通知单号</th>
+                                <th>工单号</th>
+                                <th>已完成任务</th>
+                                <th>角色</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+    <div class="box">
+        <div class="box-header" style="text-align:center; ">
+            <p class="box-title " style="text-align:center;  font-size:x-large; font:bold; color:red">月度计划（DRBPM）检维修计划表</p>
+        </div>
+        <div class="box-body ">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="jobs_table2" class="table table-hover table-bordered display">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>序号</th>
+                                <th>装置名称</th>
+                                <th>设备位号</th>
+                                <th>设备编号</th>
+                                <th>设备ABC分类</th>
+                                <th>项目名称</th>
+                                <th>检修原因说明</th>                               
+                                <th>可靠性工程师审核及说明</th>
+                                <th>专家团队审核及说明</th>
+                                <th>通知单号</th>
+                                <th>工单号</th>
+                                <th>已完成任务</th>
+                                <th>角色</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+
+</section>
+<div class="col-md-4" id="sidebar"> </div>
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处--><div class="modal fade" id="ModfiyXc">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">现场工程师审核及说明</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核结果</label>
+                    <select class="col-xs-8 " id="xc_conf">
+                        <option value="同意">同意</option>
+                        <option value="不同意">不同意</option>
+
+                    </select>
+
+                </div>
+
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核说明</label>
+
+
+                    <textarea id="xc_reason" class="col-xs-8" rows="3"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="UploadXc()">确认</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="ModfiyKk">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">可靠性工程师审核及说明</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核结果</label>
+                    <select class="col-xs-8 " id="kk_conf">
+                        <option value="同意">同意</option>
+                        <option value="不同意">不同意</option>
+
+                    </select>
+
+                </div>
+
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核说明</label>
+
+
+                    <textarea id="kk_reason" class="col-xs-8" rows="3"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="UploadKk()">确认</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="ModfiyZytd">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">专家团队审核及说明</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核结果</label>
+                    <select class="col-xs-8 " id="zytd_conf">
+                        <option value="同意">同意</option>
+                        <option value="不同意">不同意</option>
+
+                    </select>
+
+                </div>
+
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核说明</label>
+
+
+                    <textarea id="zytd_reason" class="col-xs-8" rows="3"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="UploadZytd()">确认</button>
+
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+
+<div class="modal fade" id="ModfiyKk1">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">可靠性工程师审核及说明</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核结果</label>
+                    <select class="col-xs-8 " id="kk_conf1">
+                        <option value="同意">同意</option>
+                        <option value="不同意">不同意</option>
+
+                    </select>
+
+                </div>
+
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核说明</label>
+
+
+                    <textarea id="kk_reason1" class="col-xs-8" rows="3"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="UploadKk1()">确认</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="ModfiyZytd1">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">专家团队审核及说明</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核结果</label>
+                    <select class="col-xs-8 " id="zytd_conf1">
+                        <option value="同意">同意</option>
+                        <option value="不同意">不同意</option>
+
+                    </select>
+
+                </div>
+
+                <div class="row">
+                    <label class="col-xs-2 control-label">审核说明</label>
+
+
+                    <textarea id="zytd_reason1" class="col-xs-8" rows="3"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="UploadZytd1()">确认</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal fade" id="Updatejoborder">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">输入工单号</h4>
+            </div>
+            <div class="modal-body">
+                
+
+                <div class="row">
+                    <label class="col-xs-2 control-label">工单号</label>
+
+
+                    <textarea id="joborder" class="col-xs-8" rows="1"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="Update_joborder()">确认</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal fade" id="Updatenoticeorder">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">输入通知单号</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="row">
+                    <label class="col-xs-2 control-label">通知单号</label>
+
+
+                    <textarea id="noticeorder" class="col-xs-8" rows="1"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="Update_noticeorder()">确认</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/jquery.ba-resize.js"></script>
+
+    <!-- Page script -->
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    @*<script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>*@
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/dataTables.editor.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/editor.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+    <style>
+        th {
+            white-space: nowrap;
+            text-align: left;
+        }
+    </style>
+<script>
+    var editor1;
+
+    var itemForEdit1;
+
+    function UploadKk1() {
+        editor1.edit(itemForEdit1, false).set('kkconfirm1', $("#kk_conf1").val() + "$" + $("#kk_reason1").val()).submit();
+        $('#ModfiyKk1').modal('hide');
+        $('#jobs_table1').DataTable().ajax.url("/Common/getA14dot3dot3dcl_list?WorkFlow_Name=\"A14dot3dot3\"").load();
+
+    }
+
+    function UploadZytd1() {
+        editor1.edit(itemForEdit1, false).set('zytdconfirm1', $("#zytd_conf1").val() + "$" + $("#zytd_reason1").val()).submit();
+        $('#ModfiyZytd1').modal('hide');
+        $('#jobs_table1').DataTable().ajax.url("/Common/getA14dot3dot3dcl_list?WorkFlow_Name=\"A14dot3dot3\"").load();
+
+    }
+    function JumpToA8dot2(wfe_id) {
+        $.ajax({
+            type: 'POST',
+            url: '/A14dot3/click_submitsignal',//公用14dot3的跳转8.2方法
+            data: { "wfe_id": wfe_id },
+            success: function (data) {
+                
+                if (data == "工单号与设备不匹配")
+                    alert('工单号与设备不匹配,请修改后重试！');
+                else if (data == "系统中无此工单")
+                    alert('系统中无此工单,请确认后重试！');
+                 else if (data == "/A14dot3/Index")
+                alert('操作已完成！');
+                location.href = "/A14dot3/Index";
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+
+    }
+    ////Editor 初始化
+    editor1 = new $.fn.dataTable.Editor({
+        ajax: "/A14dot3dot3/PostChanges",
+        table: "#jobs_table1",
+        idSrc: "index_Id",
+        fields: [
+            {
+                label: "kkconfirm1",
+                name: "kkconfirm1"
+            },
+            {
+                label: "zytdconfirm1",
+                name: "zytdconfirm1"
+            },
+            {
+                label: "job_order1",
+                name: "job_order1"
+            },
+            {
+                label: "notice_order1",
+                name: "notice_order1"
+            },
+            {
+                label: "JumpA8dot2",
+                name: "JumpA8dot2"
+            }
+
+        ]
+    });
+
+    // 在线编辑事件相应
+
+    $('#jobs_table1').on('click', 'tbody td.kk_confirm1', function (e) {
+
+        if ($(this).parents("tr").find("td:eq(11)").text() == "提报检修计划") {
+            var td13 = $('#jobs_table1').DataTable().cell($(this).parents("tr").index(), 13).data();
+            if (td13.indexOf("可靠性工程师") != -1) {
+                //  editor.inline(this, { onBlur: 'submit' });
+                itemForEdit1 = $(this).parent();
+                editor1.edit($(this).parent(), false).val('kkconfirm1');
+                $('#ModfiyKk1').modal('show');
+            }
+        }
+
+    });
+    $('#jobs_table1').on('click', 'tbody td.zytd_confirm1', function (e) {
+
+        if ($(this).parents("tr").find("td:eq(11)").text() == "可靠性工程师审核及说明" && $(this).parents("tr").find("td:eq(4)").text() == "A") {
+            var td13 = $('#jobs_table1').DataTable().cell($(this).parents("tr").index(), 13).data();
+            if (td13.indexOf("专业团队") != -1) {
+                itemForEdit1 = $(this).parent();
+                editor1.edit($(this).parent(), false).val('zytdconfirm1');
+                $('#ModfiyZytd1').modal('show');
+            }
+        }
+
+    });
+    $('#jobs_table1').on('click', 'tbody td.joborder1,td.noticeorder1', function (e) {
+
+        if ($(this).parents("tr").find("td:eq(4)").text() == "A") {
+            if ($(this).parents("tr").find("td:eq(11)").text() == "专家团队审核及说明") {
+                var td13 = $('#jobs_table1').DataTable().cell($(this).parents("tr").index(), 13).data();
+                if (td13.indexOf("现场工程师") != -1) {
+                    editor1.inline(this, { onBlur: 'submit' });
+                }
+            }
+        }
+        else {
+            
+            if ($(this).parents("tr").find("td:eq(11)").text() == "可靠性工程师审核及说明") {
+                var td13 = $('#jobs_table1').DataTable().cell($(this).parents("tr").index(), 13).data();
+                
+                if (td13.indexOf("现场工程师") != -1) {
+                    editor1.inline(this, { onBlur: 'submit' });
+                }
+            }
+        }
+        
+    });
+</script>
+<script>
+    var editor2;
+
+    var itemForEdit2;
+
+    function Update_joborder() {
+        editor2.edit(itemForEdit2, false).set('job_order2', $("#joborder").val()).submit();
+        $('#Updatejoborder').modal('hide');
+        //$('#jobs_table1').DataTable().ajax.url("/Common/getA14dot3dot3dcl_list?WorkFlow_Name=\"A14dot3dot3\"").load();
+
+    }
+    function Update_noticeorder() {
+        editor2.edit(itemForEdit2, false).set('notice_order2', $("#noticeorder").val()).submit();
+        $('#Updatenoticeorder').modal('hide');
+        //$('#jobs_table1').DataTable().ajax.url("/Common/getA14dot3dot3dcl_list?WorkFlow_Name=\"A14dot3dot3\"").load();
+
+    }
+    function JumpToA8dot2DR(Equip_Code, Job_Order, Jx_Reason) {       
+        $.ajax({
+            type: 'POST',
+            url: '/A14dot3dot4/click_submitsignal',
+            data: {
+                json1: '{Equip_Code: "' + Equip_Code
+                   + '", Jx_Reason: "' + Jx_Reason
+                   + '", Job_Order: "' + Job_Order
+                   + '"}'
+            },
+            success: function (data) {
+                alert(data);
+                if (data == "工单号与设备不匹配")
+                    alert('工单号与设备不匹配,请修改后重试！');
+                else if (data == "系统中无此工单")
+                    alert('系统中无此工单,请确认后重试！');
+                else if (data == "/A14dot3/Index")
+                    alert('操作已完成！');
+                location.href = "/A8dot2/Index";
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+    }
+    ////Editor 初始化
+    editor2 = new $.fn.dataTable.Editor({
+        ajax: "/A14dot3dot4/PostChanges",
+        table: "#jobs_table2",
+        idSrc: "index_Id",
+        fields: [
+            {
+                label: "sb_code",
+                name: "sb_code"
+            },
+            {
+                label: "jxreason",
+                name: "jxreason"
+            },
+            {
+                label: "job_order2",
+                name: "job_order2"
+            },
+            {
+                label: "notice_order2",
+                name: "notice_order2"
+            },
+            //{
+            //    label: "JumpA8dot2DR",
+            //    name: "JumpA8dot2DR"
+            //}
+
+        ]
+    });
+  
+    // 在线编辑事件相应
+    $('#jobs_table2').on('click', 'tbody td.joborder2', function (e) {      
+                var td13 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 13).data();
+                if (td13.indexOf("现场工程师") != -1) {
+                    //editor2.inline(this, { onBlur: 'submit' });
+                    //把4设备编号,7检修原因一起传回去
+                    //td4 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 4).data();
+                    //td7 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 7).data();
+                    //td10 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 10).data();
+                    //td11 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 11).data();
+                    //editor2.inline(this, { onBlur: 'submit' });
+                    
+                    itemForEdit2 = $(this).parent();
+                    editor2.edit($(this).parent(), false).val('job_order2');
+                    $('#Updatejoborder').modal('show');
+                    //editor2.edit(itemForEdit2, false).set('notice_order2', td10+td4+td7).submit();
+                }                       
+    });
+    $('#jobs_table2').on('click', 'tbody td.noticeorder2', function (e) {
+        var td13 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 13).data();
+        if (td13.indexOf("现场工程师") != -1) {
+            //editor2.inline(this, { onBlur: 'submit' });
+            //把4设备编号,7检修原因一起传回去
+            //td4 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 4).data();
+            //td7 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 7).data();
+            //td10 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 10).data();
+            //td11 = $('#jobs_table2').DataTable().cell($(this).parents("tr").index(), 11).data();
+            //editor2.inline(this, { onBlur: 'submit' });          
+            itemForEdit2 = $(this).parent();
+            editor2.edit($(this).parent(), false).val('notice_order2');
+            $('#Updatenoticeorder').modal('show');
+            //editor2.edit(itemForEdit2, false).set('notice_order2', td10+td4+td7).submit();
+        }
+    });
+</script>
+
+    <script>
+        var editor;
+
+        var itemForEdit;
+
+        function UploadXc() {
+            editor.edit(itemForEdit, false).set('xcconfirm', $("#xc_conf").val() + "$" + $("#xc_reason").val()).submit();// $("#xc_conf").val()取自模态框的结果，若需原因，请拼接字段，此值会传入后台
+            $('#UploadXc').modal('hide');
+            $('#jobs_table').DataTable().ajax.url("/Common/getA14dot3dcl_list?WorkFlow_Name=\"A14dot3\"").load();
+        }
+
+
+        function UploadKk() {
+            editor.edit(itemForEdit, false).set('kkconfirm', $("#kk_conf").val() + "$" + $("#kk_reason").val()).submit();
+            $('#ModfiyKk').modal('hide');
+            $('#jobs_table').DataTable().ajax.url("/Common/getA14dot3dcl_list?WorkFlow_Name=\"A14dot3\"").load();
+
+        }
+
+        function UploadZytd() {
+            editor.edit(itemForEdit, false).set('zytdconfirm', $("#zytd_conf").val() + "$" + $("#zytd_reason").val()).submit();
+            $('#ModfiyZytd').modal('hide');
+            $('#jobs_table').DataTable().ajax.url("/Common/getA14dot3dcl_list?WorkFlow_Name=\"A14dot3\"").load();
+
+        }
+        function JumpToA8dot2T(wfe_id) {
+            $.ajax({
+                type: 'POST',
+                url: '/A14dot3/click_submitsignal',
+                data: { "wfe_id": wfe_id },
+                success: function (data) {
+                   
+                    if (data == "工单号与设备不匹配")
+                        alert('工单号与设备不匹配,请修改后重试！');
+                    else if (data == "系统中无此工单")
+                        alert('系统中无此工单,请确认后重试！');
+                    else if (data == "/A14dot3/Index")
+                    alert('操作已完成！');
+                    location.href = "/A14dot3/Index";
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+            
+        }
+        ////Editor 初始化
+        editor = new $.fn.dataTable.Editor({
+            ajax: "/A14dot3/PostChanges",
+            table: "#jobs_table",
+            idSrc: "index_Id",
+            fields: [
+                {
+                    label: "plan_name",
+                    name: "plan_name"
+                },
+                {
+                    label: "jxreason",
+                    name: "jxreason"
+                },
+                {
+                    label: "xcconfirm",
+                    name: "xcconfirm",
+                },
+                {
+                    label: "kkconfirm",
+                    name: "kkconfirm"
+                },
+                {
+                    label: "zytdconfirm",
+                    name: "zytdconfirm"
+                },
+                {
+                    label: "job_order",
+                    name: "job_order"
+                },
+                {
+                    label: "notice_order",
+                    name: "notice_order"
+                },
+                {
+                    label: "JumpA8dot2T",
+                    name: "JumpA8dot2T"
+                }
+
+            ]
+        });
+
+        // 在线编辑事件相应
+        $('#jobs_table').on('click', 'tbody td.planname,td.jx_reason', function (e) {
+
+            if ($(this).parents("tr").find("td:eq(12)").text() == "提报检修计划") {
+                var td14 = $('#jobs_table').DataTable().cell($(this).parents("tr").index(), 14).data();
+                if (td14.indexOf("现场工程师") != -1) {
+                    editor.inline(this, { onBlur: 'submit' });
+                }
+            }
+
+        });
+        $('#jobs_table').on('click', 'tbody td.xc_confirm', function (e) {
+
+            if ($(this).parents("tr").find("td:eq(12)").text() == "填写项目名称及原因") {
+                var td14 = $('#jobs_table').DataTable().cell($(this).parents("tr").index(), 14).data();
+                if (td14.indexOf("现场工程师") != -1) {
+
+
+                    itemForEdit = $(this).parent();
+                    editor.edit($(this).parent(), false).val('xcconfirm');
+                    $('#ModfiyXc').modal('show');
+                }
+
+                //  editor.inline(this, { onBlur: 'submit' });
+            }
+
+        });
+        $('#jobs_table').on('click', 'tbody td.kk_confirm', function (e) {
+
+            if ($(this).parents("tr").find("td:eq(12)").text() == "现场工程师审核及说明") {
+                var td14 = $('#jobs_table').DataTable().cell($(this).parents("tr").index(), 14).data();
+                if (td14.indexOf("可靠性工程师") != -1) {
+                    //  editor.inline(this, { onBlur: 'submit' });
+                    itemForEdit = $(this).parent();
+                    editor.edit($(this).parent(), false).val('kkconfirm');
+                    $('#ModfiyKk').modal('show');
+                }
+            }
+
+        });
+        $('#jobs_table').on('click', 'tbody td.zytd_confirm', function (e) {
+
+            if ($(this).parents("tr").find("td:eq(12)").text() == "可靠性工程师审核及说明" && $(this).parents("tr").find("td:eq(4)").text() == "A") {
+                var td14 = $('#jobs_table').DataTable().cell($(this).parents("tr").index(), 14).data();
+                if (td14.indexOf("专业团队") != -1) {
+                    itemForEdit= $(this).parent();
+                    editor.edit($(this).parent(), false).val('zytdconfirm');
+                    $('#ModfiyZytd').modal('show');
+                }
+            }
+
+        });
+        $('#jobs_table').on('click', 'tbody td.joborder,td.noticeorder', function (e) {
+
+            if ($(this).parents("tr").find("td:eq(4)").text() == "A") {
+                if ($(this).parents("tr").find("td:eq(12)").text() == "专家团队审核及说明") {
+                    var td14 = $('#jobs_table').DataTable().cell($(this).parents("tr").index(), 14).data();
+                    if (td14.indexOf("现场工程师") != -1) {
+                        editor.inline(this, { onBlur: 'submit' });
+                    }
+                }
+            }
+            else {
+                if ($(this).parents("tr").find("td:eq(12)").text() == "可靠性工程师审核及说明") {
+                    var td14 = $('#jobs_table').DataTable().cell($(this).parents("tr").index(), 14).data();
+                    if (td14.indexOf("现场工程师") != -1) {
+                        editor.inline(this, { onBlur: 'submit' });
+                    }
+                }
+            }
+        });
+        $(document).ready(function () {
+            //DataTable初始化
+            $('#jobs_table').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "iDisplayLength": 20,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "info": true,
+                "ajax": {
+                    "data": { "WorkFlow_Name": "A14dot3" },
+                    "url": "/Common/getA14dot3dcl_list",
+                    "type": "POST"
+                },
+                //  "order": [[1, 'desc']],
+                
+                "columns": [
+                    {
+                        data: null,
+                        defaultContent: '',
+                        className: 'select-checkbox',
+                        orderable: false
+                    },
+
+                    { "data": 'index_Id' },
+                    { "data": 'zz_name' },
+                    { "data": 'sb_gycode' },
+                    { "data": 'sb_code' },
+                    { "data": 'sb_ABCMark' },
+                    {
+                        "data": 'plan_name', "className": "planname ",
+                        "render": function (val, type, row) {
+
+
+                            if (val == "") {
+                                val = "待填写";
+                                return val;
+                            }
+                            else
+
+
+
+                                return val;
+                        }
+
+                    },
+                    {
+                        "data": 'jxreason', "className": "jx_reason",
+                        "render": function (val, type, row) {
+                            if (val == "") {
+                                val = "待填写";
+                                return val;
+                            }
+                            else
+
+
+
+                                return val;
+                        }
+
+
+                    },
+                    {
+                        "data": 'xcconfirm', "className": "xc_confirm",
+                        "render": function (val, type, row) {
+                            if (val == "") {
+                                val = "待填写";
+                                return val;
+                            }
+                            else
+
+
+
+                                return val;
+                        }
+
+                    },
+                     {
+                         "data": 'kkconfirm', "className": "kk_confirm",
+                         "render": function (val, type, row) {
+                             if (val == "") {
+                                 val = "待填写";
+                                 return val;
+                             }
+                             else
+
+
+
+                                 return val;
+                         }
+
+                     },
+                       {
+                           "data": 'zytdconfirm', "className": "zytd_confirm",
+                           "render": function (val, type, row) {
+                               if (val == "") {
+                                   val = "待填写(非A类设备无需填)";
+                                   return val;
+                               }
+                               else
+
+
+
+                                   return val;
+                           }
+
+                       },
+
+                       {
+                           "data": 'notice_order', "className": "noticeorder",
+                           "render": function (data, type, full, meta) {
+
+                               if (full.notice_order == "") {
+                                   return "待填写";
+
+                               }
+                               else
+
+
+
+                                   return full.notice_order;
+                           }
+
+                       },
+                       {
+                           "data": 'job_order', "className": "joborder",
+                           "render": function (val, type, row) {
+                               if (val == "") {
+                                   val = "待填写";
+                                   return val;
+                               }
+                               else
+
+
+
+                                   return val;
+                           }
+
+                       },
+                       { "data": 'missionname' },
+                       { "data": 'role' },
+                {
+                    "render": function (data, type, full, meta) {
+                               return '<button type="button" class="btn btn-primary" onclick="JumpToA8dot2T(' + full.index_Id + ')">跳转至A8.2</button>';
+            }
+        }
+                ],
+                "columnDefs": [
+                    { "visible": false, "targets": 0 },
+                    { "visible": false, "targets": 14 }
+                ],
+                "select": {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+                //"buttons": [
+                //    {
+                //        extend: "create",
+                //        text: "新建",
+                //        action: function (e, dt, node, config) {
+                //            editor.create(false)
+                //            .submit();
+                //        }
+                //    },
+                //    {
+                //        extend: "remove",
+                //        text: "删除",
+
+                //        action: function (e, dt, node, config) {
+                //            var rows = dt.rows({ selected: true }).data().pluck('job_name');
+                //            editor
+                //                .title('删除')
+                //                .buttons('确认删除')
+                //                .message('确定删除<ul><li>' + rows.join('</li><li>') + '</li></ul>')
+                //                .remove(dt.rows({ selected: true }).indexes());
+
+                //        }
+                //    }
+                //],
+                "scrollX": true,
+                "dom": 'Bfrtip',
+            });
+
+            $("#example1").DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    // "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "ajax": {
+                    "data": { "WorkFlow_Name": "A14dot3dot1" },
+                    "url": "/Common/getdcl_list",
+                    "type": "POST"
+                },
+
+                columns: [
+                      {
+                          data: 'wfe_serial'
+
+
+                          //"render": function (data, type, full, meta) {
+
+                          //    return ' <a style=\"cursor:pointer\";  onclick=\"showSide(' + full.wfe_serial + ')\">' + full.wfe_serial + '</a> ';
+                          //}
+
+
+
+                      },
+                      { data: 'equip_gycode' },
+                      { data: 'workflow_name' },
+                      { data: 'miss_desc' },
+                        { data: 'missTime' },
+                          { data: 'userName' },
+                       {
+
+
+                           "render": function (data, type, full, meta) {
+                               return '<a  href=' + full.miss_url + '><button type="button" class="btn btn-primary" >处理</button></a>';
+                           }
+
+
+
+
+                       }
+                ],
+                "bProcessing": true,
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "columnDefs": [
+                { "visible": false, "targets": 1 }
+                ],
+            });
+            //月度计划人工提报DataTable初始化
+            $('#jobs_table1').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "iDisplayLength": 20,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "info": true,
+                "ajax": {
+                    "data": { "WorkFlow_Name": "A14dot3dot3" },
+                    "url": "/Common/getA14dot3dot3dcl_list",
+                    "type": "POST"
+                },
+                //  "order": [[1, 'desc']],
+
+                "columns": [
+                    {
+                        data: null,
+                        defaultContent: '',
+                        className: 'select-checkbox',
+                        orderable: false
+                    },
+
+                    { "data": 'index_Id' },
+                    { "data": 'zz_name' },
+                    { "data": 'sb_gycode' },
+                    { "data": 'sb_code' },
+                    { "data": 'sb_ABCMark' },
+                    { "data": 'plan_name' },
+                    { "data": 'jxreason' },
+                    
+                     {
+                         "data": 'kkconfirm1', "className": "kk_confirm1",
+                         "render": function (val, type, row) {
+                             if (val == "") {
+                                 val = "待填写";
+                                 return val;
+                             }
+                             else
+                              return val;
+                         }
+                     },
+                       {
+                           "data": 'zytdconfirm1', "className": "zytd_confirm1",
+                           "render": function (val, type, row) {
+                               if (val == "") {
+                                   val = "待填写(非A类设备无需填)";
+                                   return val;
+                               }
+                               else
+                             return val;
+                           }
+                       },
+
+                       {
+                           "data": 'notice_order1', "className": "noticeorder1",
+                           "render": function (data, type, full, meta) {
+
+                               if (full.notice_order1 == "") {
+                                   return "待填写";
+                               }
+                               else
+                                   return full.notice_order1;
+                           }
+                       },
+                       {
+                           "data": 'job_order1', "className": "joborder1",
+                           "render": function (val, type, row) {
+                               if (val == "") {
+                                   val = "待填写";
+                                   return val;
+                               }
+                               else
+                                   return val;
+                           }
+                       },
+                       { "data": 'missionname' },
+                       { "data": 'role' },
+                       {
+                           "render": function (data, type, full, meta) {
+                               return '<button type="button" class="btn btn-primary" onclick="JumpToA8dot2(' + full.index_Id + ')">跳转至A8.2</button>';
+                           }
+                       }
+
+                ],
+                "columnDefs": [
+                    { "visible": false, "targets": 0 },
+                    { "visible": false, "targets": 13 }
+                ],
+                "select": {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },         
+                "scrollX": true,
+                "dom": 'Bfrtip',
+            });
+
+            //月度计划DRBPMDataTable初始化
+            $('#jobs_table2').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "iDisplayLength": 20,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "info": true,
+                "ajax": {
+                    "data": { "WorkFlow_Name": "A14dot3dot4" },
+                    "url": "/A14dot3dot4/getA14dot3dot4dcl_list",
+                    "type": "POST"
+                },
+                //  "order": [[1, 'desc']],
+
+                "columns": [
+                    {
+                        data: null,
+                        defaultContent: '',
+                        className: 'select-checkbox',
+                        orderable: false
+                    },
+
+                    { "data": 'index_Id' },
+                    { "data": 'zz_name' },
+                    { "data": 'sb_gycode' },
+                    { "data": 'sb_code' },
+                    { "data": 'sb_ABCMark' },
+                    { "data": 'plan_name' },
+                    { "data": 'jxreason' },
+                    { "data": 'kkconfirm2' },
+                    { "data": 'zytdconfirm2' },                    
+                       {
+                           "data": 'notice_order2', "className": "noticeorder2",
+                           "render": function (data, type, full, meta) {
+
+                               if (full.notice_order2 == "") {
+                                   return "待填写";
+                               }
+                               else
+                                   return full.notice_order2;
+                           }
+                       },
+                       {
+                           "data": 'job_order2', "className": "joborder2",
+                           "render": function (val, type, row) {
+                               if (val == "") {
+                                   val = "待填写";
+                                   return val;
+                               }
+                               else
+                                   return val;
+                           }
+                       },
+                       { "data": 'missionname' },
+                       { "data": 'role' },
+                       {
+                           "render": function (data, type, full, meta) {
+                               if (full.missionname == "已跳转至A8.2")
+                                   return ' <button type="button" class="btn btn-primary" disabled="disabled">已跳转至A8.2</button> ';
+                               else
+                                   return '<button type="button" class="btn btn-primary" onclick="JumpToA8dot2DR('+'\''+ full.sb_code + '\''+',' + '\''+full.job_order2 +'\''+ ','+'\'' + full.jxreason +'\''+ ')">跳转至A8.2</button>';
+                           }
+                       }
+
+                ],
+                "columnDefs": [
+                    { "visible": false, "targets": 0 },
+                    { "visible": false, "targets": 13 }
+                ],
+                "select": {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+                "scrollX": true,
+                "dom": 'Bfrtip',
+            });
+        });
+
+
+
+        function showSide(wfe_serial) {
+            var wfe = wfe_serial;
+
+            $("#table_show_8").attr("class", "col-md-8");
+
+
+            DispalsySide(wfe);
+
+
+        }
+
+
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+
+
+        function Create() {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Main/CreateFlow',
+                data: { flowname: "A14dot3dot1" },
+                success: function (data) {
+
+                    if (data == "-1") {
+                        alert("对不起，你没有权限进行该项提报");
+                        return false;
+                    } else if (data == "") {
+                        return false;
+
+                    } else if (data == null) {
+                        return false;
+                    }
+                    else {
+                        location.href = data;
+                    }
+                },
+                error: function (data) {
+                    alert('error: A14.3.1 index...' + data.toString());
+                }
+            });
+        }
+        function Create1() {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Main/CreateFlow',
+                data: { flowname: "A14dot3dot3" },
+                success: function (data) {
+
+                    if (data == "-1") {
+                        alert("对不起，你没有权限进行该项提报");
+                        return false;
+                    } else if (data == "") {
+                        return false;
+
+                    } else if (data == null) {
+                        return false;
+                    }
+                    else {
+                        location.href = data;
+                    }
+                },
+                error: function (data) {
+                    alert('error: A14.3.3 index...' + data.toString());
+                }
+            });
+        }
+        function re_table_1() {
+            //  alert("刷新表格");
+            // $("#example1").dataTable().fnDraw();
+            var table = $('#example1').DataTable();
+            table.ajax.url('/Common/getdcl_list').load();
+
+
+        }
+    </script>
+    
+}

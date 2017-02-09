@@ -1,0 +1,192 @@
+﻿@model WebApp.Controllers.A5dot2Controller.Index_ModelforA5dot2Tab2
+   @{
+       ViewBag.Title = "PqConfirm";
+       Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content" style="background-color: #ecf0f5;">
+        <!-- row -->
+        <div class="box">
+            <div class="box-header">
+                
+                <p class="box-title" style="font:bold; color:red">单台设备竖向问题统计</p>
+                <span class="time" style="float:right"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                @*                <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+
+
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table id="example1" class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>片区</th>
+                                    <th>生产装置</th>
+                                    <th>设备位号</th>
+                                    <th>设备编号</th>
+                                    <th>本月竖向问题次数</th>
+                                    <th>全年竖向问题次数</th>
+
+                                    <th>是否列入最脏十台机泵</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Am)
+                            {
+                            <tr>
+                                <td>@item.cjName</td>
+                                <td>@item.zzName</td>
+                                <td>@item.sbGyCode</td>
+                                <td>@item.sbCode</td>
+                                <td>@item.nProblemsInCurMonth</td>
+                                <td>@item.nProblemsInCurYear</td>
+                                <td><label class="checkbox"><input type="checkbox" name="zyoptionsRadiosinline" id="z" value="@item.Id"></label></td>
+                            </tr>
+
+                            }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <form role="form">
+                        <div class="box-footer">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button class="btn btn-primary col-sm-offset-4" type="button" onclick="submit_click()">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- /.row -->
+
+    </section>
+@section js{
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script>
+        function PageLoad() {
+
+        };
+        $(document).ready(
+            PageLoad());
+
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+
+
+        function submit_click() {
+
+            if (!confirm('确定要提交吗？'))
+                return false;
+            //var flow_name = $("#wef_id").val();
+
+
+            var obj = document.getElementsByName('zyoptionsRadiosinline'); //选择所有name="'zyoptionsRadiosinline'"的对象，返回数组 
+            //取到对象数组后，我们来循环检测它是不是被选中 
+            var s = '';
+            for (var i = 0; i < obj.length; i++) {
+                if (obj[i].checked) s += obj[i].value + ','; //如果选中，将value添加到变量s中 
+            }
+            //那么现在来检测s的值就知道选中的复选框的值了 
+            if (s == "") {
+
+                alert("尚未选择任何一台机泵！");
+                return false;
+            }
+            if (obj.length > 10)
+            {
+                alert("选择的机泵超过十台，请重新选取！");
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/A5dot2/SBShuxiang_submitsignal',
+                data: {
+                    json1: '{ IDArray: "' + s
+                        
+                        + '"}'
+                },
+                success: function (data) {
+                    alert('操作已完成！');
+                    location.href = "Index";
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+        }
+
+    </script>
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "sZeroRecords": "没有检索到数据",
+                "sSearch": "模糊查询:  ",
+                "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                }
+            },
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            //"ordering": true,
+            "info": true,
+            "autoWidth": false,
+
+        });
+        $('#example2').DataTable({
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "sZeroRecords": "没有检索到数据",
+                "sSearch": "模糊查询:  ",
+                "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                }
+            },
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            //"ordering": true,
+            "info": true,
+            "autoWidth": false,
+
+        });
+    });
+</script>
+
+}

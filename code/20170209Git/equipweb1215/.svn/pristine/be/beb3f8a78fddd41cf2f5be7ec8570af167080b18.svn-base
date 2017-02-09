@@ -1,0 +1,34 @@
+﻿using EquipDAL.Implement;
+using EquipModel.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EquipBLL.AdminManagment
+{
+   public  class EquipManagment
+    {
+       private Equip_Archis EAs = new Equip_Archis();
+       private Equips Es=new Equips();
+
+       public List<Equip_Archi> getZzs_ofCj(string Cj_name)
+       {
+           List<Equip_Archi> r = EAs.getEA_Childs(Cj_name);
+           return r;
+       }
+      public  List<Equip_Info> getEquips_OfZz(int Zz_Id)
+       {
+           List<Equip_Info> r = EAs.getEA_Equips(Zz_Id);
+           return r;
+       }
+       public Equip_Info getEquip_Info(int Equip_Id)
+       {
+           Equip_Info e=Es.getEquip_Info(Equip_Id);
+           return e;
+       }
+
+
+    }
+}

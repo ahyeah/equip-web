@@ -1,0 +1,355 @@
+﻿@model WebApp.Controllers.CommonController.WFDetail_Model
+@{
+    ViewBag.Title = "RiskRecognition";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-8">
+            <!-- The time line -->
+            <ul class="timeline">
+               <!-- 工作流当前任务-Star -->
+                    <!-- timeline item -->
+                     <li class="time-label">
+                        <span class="bg-green">
+                           业务流水号：<button class="btn btn-default"  onclick="DispalsySide('@ViewBag.WF_Ser')">@ViewBag.WF_Ser</button>
+                        </span>
+                    </li>
+                    <li class="time-label">
+                        <span class="bg-green">
+                           当前任务：危害识别
+                        </span>
+                    </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">危害识别</span></h3>
+                        <div class="timeline-body">
+                            <form role="form">
+                                <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                                <div id="Risk_Type" class="form-group">
+                                    <p class="text-green">请进行危害识别：</p>
+                                        <div id="Danger_Intensity"  class="form-group col-md-8"> 
+                                        <p class="text-red"><strong>后果的严重性(S)：</strong></p>
+                                            <div>
+                                                <label class="radio">
+                                                    <input type="radio" name="DangerIntensityOptions" id="DangerIntensityOption1"
+                                                           value="S1" >S1 - 造成单台设备停运，直接经济损失5万元以下
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="DangerIntensityOptions" id="DangerIntensityOption2"
+                                                           value="S2" > S2 - 造成单个生产装置局部波动，直接经济损失5-10万元
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="DangerIntensityOptions" id="DangerIntensityOption3"
+                                                           value="S3" > S3 - 造成单个生产装置降量或局部切除，大机组急停，直接经济损失10-100万元
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="DangerIntensityOptions" id="DangerIntensityOption4"
+                                                           value="S4" > S4 - 单个装置非计划停工、多套装置生产波动，直接经济损失100万元以上、1000万以下
+                                                </label>  
+                                                <label class="radio">
+                                                    <input type="radio" name="DangerIntensityOptions" id="DangerIntensityOption5"
+                                                           value="S5" > S5 - 全厂生产波动，全厂生产降量或多个生产装置非计划停工，直接经济1000万元以上；失控火灾或爆炸
+                                                </label>                                 
+                                           </div>
+                                    </div>
+                                        <div id="Time_Level"  class="form-group  col-md-4">
+                                        <p class="text-red"><strong>事件发生的可能性（L）：</strong></p>
+                                              <div >                                             
+                                                <label class="radio">
+                                                    <input type="radio" name="TimeLevelOptions" id="TimeLevelOption1"
+                                                           value="L1" >L1 - 本行业从未发生
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="TimeLevelOptions" id="TimeLevelOption2"
+                                                           value="L2" >L2 - 本行业曾经发生
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="TimeLevelOptions" id="TimeLevelOption3"
+                                                           value="L3" >L3 - 公司内曾经发生
+                                                </label>
+                                                <label class="radio">
+                                                    <input type="radio" name="TimeLevelOptions" id="TimeLevelOption4"
+                                                           value="L4" >L4 - 公司一年内发生过；或每年发生
+                                                </label>  
+                                                <label class="radio">
+                                                    <input type="radio" name="TimeLevelOptions" id="TimeLevelOption5"
+                                                           value="L5" > L5 - 公司范围内一年发生多次
+                                                </label>   
+                                                                       
+                                           </div>
+                                    </div>
+	                               <div id="riskmatrix">
+                                    <table id="riskMatrix" class="table table-bordered">
+                                                                        <tr> <td></td>  <td>L1</td>  <td>L2</td>  <td>L3</td>  <td>L4</td>  <td>L5</td> </tr>
+                                                                        <tr> <td>S1</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  </tr>
+                                                                        <tr> <td>S2</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  </tr>
+                                                                        <tr> <td>S3</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  </tr>
+                                                                        <tr> <td>S4</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  </tr>
+                                                                        <tr> <td>S5</td>  <td></td>  <td></td>  <td></td>  <td></td>  <td></td>  </tr>                                                                       
+                                     </table>
+                                     
+                                     <p><b>【说明】</b></p>
+                                     <p>&nbsp&nbsp&nbsp&nbsp&nbsp<span style="background-color:rgb(255, 0, 0)">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>红色区域为<span style="color:rgb(255, 0, 0)"><b>重大风险(H)</b></span></p>
+                                     <p>&nbsp&nbsp&nbsp&nbsp&nbsp<span style="background-color:rgb(255,255, 0)">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>黄色区域-中等风险(M)或 <span style="background-color:rgb( 0,128, 0)">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>绿色区域-轻微风险(L)，均属于<b>一般风险</b></p>
+	                                 </div>
+
+
+@*                                    <div class="radio" hidden="hidden">
+                                        <label>
+                                            <input name="Risk_Type" id="Risk_TypeNormal" type="radio" value="一般风险" disabled="">
+                                            一般风险
+                                        </label>
+                                        <label>
+                                            <input name="Risk_Type" id="Risk_TypeImportant" type="radio" value="重大风险" disabled="">
+                                            重大风险
+                                        </label>
+                                    </div>*@
+                                </div>
+                                
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="button" onclick="submit_click()">确定</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+
+                 <!-- 工作流历史操作-通用部分Star -->
+                   <li class="time-label">
+                            <span class="bg-green">
+                               当前工作流历史操作
+                            </span>
+                        </li>
+                     <!-- timeline time label -->  
+                    @for (int i = @Model.ALLHistoryMiss.Count()-1; i >=1 ; i--)
+                    {     <li class="time-label">
+                              <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@i" aria-expanded=true aria-controls="@i">
+                                  @Model.MissTime[i] - @Model.ALLHistoryMiss[i].WE_Event_Desc
+                              </a>
+                           </li>
+                    
+                          <li class="collapse" id="@i">
+                            <i class="fa fa-camera bg-purple"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fa fa-clock-o">@Model.MissTime[i]</i>操作用户： @Model.MissUser[i]</span>
+                                <h3 class="timeline-header lead"><span class="lead" style="color:red">@Model.ALLHistoryMiss[i].WE_Event_Desc</span></h3>
+                                <div class="timeline-body">
+                                    <table class="table  table-hover table-bordered">
+                                        <tbody>
+                                             @foreach (var pp in @Model.ALLHistoryMiss[i].Miss_ParamsAppRes)
+                                            {
+                                                if(pp.Value.ToString()!="App_hidden")
+                                                {
+                                                    <tr class="info">
+                                                        <th>@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key]</th>
+                                                       @if ((@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key].ToString()).IndexOf("附件") > -1 && @Model.ALLHistoryMiss[i].Miss_Params[pp.Key]!="")
+                                                       {
+                                                           string[] savedFileName = (@Model.ALLHistoryMiss[i].Miss_Params[pp.Key].ToString()).Split(new char[] { '$' });
+                                                           string saveExistFilename = Path.Combine("/Upload", savedFileName[1]);
+                                                           <td><a href=@saveExistFilename target=_blank> @savedFileName[0]</a></td> }
+                                                       else
+                                                        {<td>@Model.ALLHistoryMiss[i].Miss_Params[pp.Key]</td>}
+                                                    </tr>
+                                                 }
+                                            }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+                }
+                     
+                <!-- END timeline item -->
+
+                  <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li> 
+            <!-- 工作流历史操作-通用部分End -->
+            </ul>
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4" id="sidebar"> </div>
+    </div>
+    <!-- /.row -->
+ 
+</section>
+
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处--> 
+    <!--设备信息显示模态框开始处-->
+    <div class="modal fade" id="EquipInfoModal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">设备相关信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body" id="EquipInfoDiv">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+<!--设备信息显示模态框结束处--> 
+@section js{
+<link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+<script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+<script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+
+        function PageLoad() {
+            $("#riskmatrix").hide();
+        };
+        function RiskMatrixInit() {
+            $('#riskMatrix td').each(function () {
+                $(this).css("text-align", "center");
+                $(this).css("vertical-align", "center");
+
+                if (this.parentNode.rowIndex >= 1 && this.cellIndex >= 1) {
+                    if ((this.parentNode.rowIndex == 1 && this.cellIndex >= 1 && this.cellIndex <= 4) || (this.parentNode.rowIndex == 2 && this.cellIndex >= 1 && this.cellIndex <= 3) || (this.parentNode.rowIndex == 3 && this.cellIndex >= 1 && this.cellIndex <= 2) || (this.parentNode.rowIndex == 4 && this.cellIndex == 1))
+                        $(this).css("background-color", "rgb( 0, 128, 0)"); //注意："0"前面有空格
+                    else if ((this.parentNode.rowIndex == 3 && this.cellIndex == 5) || (this.parentNode.rowIndex == 4 && this.cellIndex >= 4 && this.cellIndex <= 5) || (this.parentNode.rowIndex == 5 && this.cellIndex >= 3 && this.cellIndex <= 5))
+                        $(this).css("background-color", "rgb(255, 0, 0)");
+                    else
+                        $(this).css("background-color", "rgb(255,255, 0)");
+                }
+                else {
+                    $(this).css("font", "medium bold");
+                    $(this).css("background-color", "rgb(200,200, 200)");
+                }
+            })
+
+        }
+
+        $(document).ready(
+            PageLoad());
+        RiskMatrixInit();
+
+        $("input:radio[name='DangerIntensityOptions']").change(function () {
+            $('#riskMatrix td').css("border", "1px solid white");
+            var ttr = $("input:radio[name='DangerIntensityOptions']:checked").val();
+            var ttc = $("input:radio[name='TimeLevelOptions']:checked").val();
+            if (ttr != null && ttc != null) {
+                $("#riskmatrix").show();
+                var idx = 6 * parseInt(ttr.substr(1, 1), 10) + parseInt(ttc.substr(1, 1), 10);
+                $('#riskMatrix td').eq(idx).css("border", "3px solid black");
+                //var rr = parseInt(ttr.substr(1, 1), 10);
+                //var cc = parseInt(ttc.substr(1, 1), 10);
+                //if ((rr == 3 && cc == 5) || (rr == 4 && cc >= 4 && cc <= 5) || (rr == 5 && cc >= 3 && cc <= 5))
+                //    $("#Risk_TypeImportant").attr("checked", 'checked');             
+                //else
+                //    $("#Risk_TypeNormal").attr("checked", 'checked');
+            }
+        });
+
+        $("input:radio[name='TimeLevelOptions']").change(function () {
+            $('#riskMatrix td').css("border", "1px solid white");
+            var ttr = $("input:radio[name='DangerIntensityOptions']:checked").val();
+            var ttc = $("input:radio[name='TimeLevelOptions']:checked").val();
+            if (ttr != null && ttc != null) {
+                $("#riskmatrix").show();
+                var idx = 6 * parseInt(ttr.substr(1, 1), 10) + parseInt(ttc.substr(1, 1), 10);
+                $('#riskMatrix td').eq(idx).css("border", "3px solid black");
+                ///////
+                //var rr=parseInt(ttr.substr(1, 1), 10);
+                //var cc = parseInt(ttc.substr(1, 1), 10);
+                //if ((rr == 3 && cc== 5) || (rr == 4 && cc>= 4 && cc<= 5) || (rr == 5 && cc >= 3 && cc <= 5))                
+                //    $("#Risk_TypeImportant").attr("checked", 'checked'); //              
+                //else
+                //    $("#Risk_TypeNormal").attr("checked", 'checked'); //
+            }
+                
+        });
+
+
+        function submit_click() {
+            var flow_name = $("#wef_id").val();            
+            var RiskRecognition_done = "true";
+            var Risk_Type = "";
+            var ttr = $("input:radio[name='DangerIntensityOptions']:checked").val();
+            var ttc = $("input:radio[name='TimeLevelOptions']:checked").val();
+            if (ttr != null && ttc != null) {
+                var rr = parseInt(ttr.substr(1, 1), 10);
+                var cc = parseInt(ttc.substr(1, 1), 10);
+                if ((rr == 3 && cc == 5) || (rr == 4 && cc >= 4 && cc <= 5) || (rr == 5 && cc >= 3 && cc <= 5))
+                    Risk_Type = "重大风险";
+                else
+                    Risk_Type = "一般风险";
+            }
+            else {
+                alert("后果的严重性(S)和事件发生的可能性（L）均需要选定！\n请重新操作！");
+                return false;
+            }
+
+           // alert(Risk_Type);
+
+            if (confirm("危害识别结果为:" + Risk_Type + ",\n\n是否确定提交？\n")) {
+                //var Risk_Type = $("input:radio[name='Risk_Type']:checked").val();
+                var Danger_Intensity = $("input:radio[name='DangerIntensityOptions']:checked").val();
+                var Time_Level = $("input:radio[name='TimeLevelOptions']:checked").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/A11dot1/RiskRecognition_submitsignal',
+                    data: {
+                        json1: '{Flow_Name: "' + flow_name
+                            + '", Risk_Type: "' + Risk_Type
+                            + '", RiskRecognition_done: "' + RiskRecognition_done
+                            + '", Danger_Intensity: "' + Danger_Intensity
+                            + '", Time_Level: "' + Time_Level
+                            + '"}'
+                    },
+                    success: function (data) {
+                        location.href = data;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            }
+          
+
+
+
+
+        }
+    </script>
+}
+

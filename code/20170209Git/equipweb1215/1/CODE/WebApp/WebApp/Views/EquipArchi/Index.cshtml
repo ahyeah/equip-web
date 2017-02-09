@@ -1,0 +1,366 @@
+﻿@model EquipModel.Entities.Equip_Archi
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <style type="text/css">
+        tr.MM_hidden {
+            display: none;
+        }
+
+        tr.MM_shown {
+        }
+
+        tr.selected {
+            background-color: #acbad4;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Plugins/iconpicker.css" />
+}
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title">设备分层管理</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-2">
+                    <a id="Add" class="btn btn-block btn-social btn-tumblr">
+                        <i class="fa fa-plus"></i>    添加
+                    </a>
+                </div>
+                <div class="col-xs-2">
+                    <a id="Modify" class="btn btn-block btn-social btn-info">
+                        <i class="fa fa-pencil"></i>   修改
+                    </a>
+                </div>
+                <div class="col-xs-2">
+                    <a id="Delete" class="btn btn-block btn-social btn-danger">
+                        <i class="fa fa-times"></i>    删除
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10px"></th>
+                                <th style="width:20%">名称</th>
+                                <th>描述</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--模态窗口-->
+<!-- 模态框（Modal） -->
+<div class="modal" id="Add_Modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="inputname" placeholder="名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">描述</label>
+                            <div class="col-sm-10">
+
+                                <select class="form-control " style="width: 100%;" id="inputicon">
+                                    <option value="请选择">请选择</option>
+                                    <option value="车间">车间</option>
+                                    <option value="装置">装置</option>
+                                </select>
+
+                                @*<input class="form-control" id="inputicon" type="text" name="someName" placeholder="描述" />*@
+
+
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">编号</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="inputurl" placeholder="编号">
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i>取消</button>
+                <button id="submit" type="button" class="btn btn-primary"><i class="fa fa-check"></i>确定</button>
+                <input id="actionname" type="hidden" class="form-control">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+@section js{
+    <!-- DataTables -->
+    <script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script src="~/Plugins/iconpicker.js"></script>
+    <script language="JavaScript">
+        /* Formatting function for row details - modify as you need */
+        var seri_id = 0;
+
+        function format(d) {
+            // `d` is the original data object for the row
+            var str = '<table>';
+            for (var i = 0; i < d.childs.length; i++) {
+                str = str +
+                '<tr>' +
+                    '<td style="width:10px"></td>' +
+                    '<td style="width:20%">' + d.childs[i].EA_Name + '</td>' +
+                    '<td>' + d.childs[i].EA_Title + '</td>' +
+                '</tr>';
+            }
+
+            str = str + '</table>';
+            return str;
+        }
+
+        function closeAllChild(d) {
+
+
+            for (var i = 0; i < d.Childs.length - 1; i++) {
+                $('#Menu_' + d.Childs[i]).click();
+
+            }
+            //$('.MM_Child_of_' + d.Menu_Id).removeClass('MM_shown');
+            //$('.MM_Child_of_' + d.Menu_Id).addClass('MM_hidden');
+        }
+        $(document).ready(function () {
+
+            $(".icon-picker").iconPicker({ "source": "Add_Modal" });
+            var table = $('#example').DataTable({
+                "createdRow": function (row, data, index) {
+                    $('td', row).eq(0).addClass('fa');
+                    $('td', row).eq(0).attr("id", "Menu_" + data.EA_Id);
+                    if (data.Childs.length == 0)
+                        $('td', row).eq(0).addClass('fa-minus');
+                    else
+                        $('td', row).eq(0).addClass('fa-plus');
+
+                    //$(row).attr('id', data.Menu_Id);
+                    data.expand = false;
+                    if (data.Parent_id == 0) {
+                        $(row).addClass('MM_Parent');
+                        $('td', row).eq(0).css("padding-left", 20 * data.level + "px")
+                    }
+                    else {
+                        //for (var i = 0; i < data.Parent_id.length; i++) {
+                        $(row).addClass('MM_Child_of_' + data.Parent_id);
+
+                        //}
+                        $(row).addClass('MM_hidden');
+                        $('td', row).eq(0).css("padding-left", 20 * data.level + "px");
+                    }
+                },
+                "ajax": {
+                    "url": "/EquipArchi/test",
+                    "type": "POST"
+                },
+                "columns": [
+                    {
+                        "class": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    },
+                    { "data": "EA_Name" },
+                    { "data": "EA_Title" }
+                ],
+                "ordering": false,
+                "select": true,
+                "paging": false,
+                "info": false,
+                "searching": false,
+                "processing": false,
+                "initComplete": function (settings, json) {
+                    //$('#Modify').prop('disabled', true);
+                    $('#Modify').addClass('disabled')
+                    $('#Delete').addClass("disabled");
+                    $('#Add').click(function () {
+                        $('#inputname').val(" ");//清空文本框
+                        $('#inputicon').val("请选择");
+                        $('#inputurl').val(" ");
+
+
+                        $('#actionname').val('add');
+                        $('#Add_Modal').modal('show');
+                    });
+                    $('#Modify').click(function () {
+
+
+                        $('#inputname').val(table.row('.selected').data().EA_Name);
+                        $('#inputicon').val(table.row('.selected').data().EA_Title);
+                        $('#inputurl').val(table.row('.selected').data().EA_Code);
+                        $('#actionname').val('modify');
+                        $('#Add_Modal').modal('show');
+                    });
+                    $('#Delete').click(function () {
+                        if (!confirm('确定要删除吗？'))
+                            return false;
+                        $.ajax({
+                            url: '/EquipArchi/Deleteitem',
+                            data: { del: table.row('.selected').data().EA_Id },
+                            dataType: 'json',
+                            type: 'post',
+                            success: function (backdata) {
+                                if (backdata) {
+                                    $('#example').DataTable().ajax.reload();
+                                }
+                                else {
+                                    alert("增加失败");
+                                }
+                            },
+                            error: function (error) {
+                                console.log(error);
+                            }
+                        });
+                    });
+                }
+            });
+            $('.td.details-control').addClass('fn');
+            $('.td.details-control').addClass('fn-plus');
+            // Add event listener for opening and closing details
+            $('#example tbody').on('click', 'td.details-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+                if (row.data().Childs.length == 0)
+                    return;
+                if (row.data().expand) {
+                    // This row is already open - close it
+                    $('.MM_Child_of_' + row.data().EA_Id).removeClass('MM_shown');
+                    $('.MM_Child_of_' + row.data().EA_Id).addClass('MM_hidden');
+                    closeAllChild(row.data());
+                    tr.removeClass('shown');
+                    this.classList.remove('fa-minus');
+                    this.classList.add('fa-plus');
+                    row.data().expand = false;
+                }
+                else {
+                    // Open this row
+                    $('.MM_Child_of_' + row.data().EA_Id).removeClass('MM_hidden');
+                    $('.MM_Child_of_' + row.data().EA_Id).addClass('MM_shown');
+                    //closeAllChild(row.data());
+                    //$('#child_table' + seri_id).DataTable();
+                    tr.addClass('shown');
+                    this.classList.remove('fa-plus');
+                    this.classList.add('fa-minus');
+                    row.data().expand = true;
+                }
+            });
+            $('#example tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    if (!$('#Modify').hasClass('disabled')) {
+                        $('#Modify').addClass('disabled');
+                    }
+                    if (!$('#Delete').hasClass('disabled')) {
+                        $('#Delete').addClass('disabled');
+                    }
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    if ($('#Modify').hasClass('disabled')) {
+                        $('#Modify').removeClass('disabled');
+                    }
+                    if ($('#Delete').hasClass('disabled')) {
+                        $('#Delete').removeClass('disabled');
+                    }
+                }
+            });
+            $('#submit').on('click', function () {
+                var ajax_url;
+                var id;
+                var parentid;
+                if ($('#actionname').val() == 'modify') {
+                    ajax_url = '/EquipArchi/Modifyitem';
+                    id = table.row('.selected').data().EA_Id;
+                    parentid = table.row('.selected').data().Parent_id
+
+                }
+                else if ($('#actionname').val() == 'add') {
+                    ajax_url = '/EquipArchi/Additem';
+                    id = 0;
+
+                    //*-2016-5-12添加根目录改动部分，原代码为:
+                    // parentid = table.row('.selected').data().EA_Id;
+                    //判断如果没有选择一行，则赋值为“8”，“8”为root的EA_Id值，即根目录
+                    var nTrs = $('#example').DataTable().row('.selected').data();
+                    if (nTrs == null || typeof (nTrs) == 'undefined') {
+
+                        parentid = 8;
+
+                    } else {
+
+                        parentid = table.row('.selected').data().EA_Id;
+                    }
+
+
+
+
+
+
+
+
+
+
+
+                }
+
+                $.ajax({
+                    url: ajax_url,
+                    data: {
+                        json1: '{EA_Id: "' + id + '", EA_Name: "' + $('#inputname').val()
+                            + '", EA_Title: "' + $('#inputicon').val()
+                            + '", EA_Code: "' + $('#inputurl').val()
+                            + '", Parent_id: "' + parentid + '"}'
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    success: function (backdata) {
+                        if (backdata) {
+                            $('#example').DataTable().ajax.reload();
+                        }
+                        else {
+                            alert("增加失败");
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+                $('#Add_Modal').modal('hide');
+            });
+
+        });
+    </script>
+}

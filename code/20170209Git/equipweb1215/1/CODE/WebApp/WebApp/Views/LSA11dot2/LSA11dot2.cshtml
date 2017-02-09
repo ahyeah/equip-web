@@ -1,0 +1,276 @@
+﻿@model WebApp.Controllers.CommonController.Index_Model
+@{
+    ViewBag.Title = "LSA11dot2";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/css/editor.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/css/rowReorder.bootstrap.min.css">
+
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">A11.2-隐患排查类临时事务</h3>
+                </div>
+                <div class="box-body">
+                    @*<input type="text" id="run_result" hidden="hidden" value="@ViewBag.run_result" />*@
+                    <table id="LSA11dot2jobs_table" class="table table-hover table-bordered display" width="100%">
+
+                        <thead>
+                            @*<tr>
+                    <td colspan="9"><h3 style="text-align:center">@ViewBag.jobtitle</h3></td>
+                </tr>*@
+                            <tr>
+                                @*<th></th>*@
+                                <th>ID</th>
+                                <th>装置</th>
+                                <th>设备位号</th>
+                                <th>设备编号</th>
+                                <th>隐患问题描述</th>
+                                <th>隐患矩阵评估结果</th>
+                                <th>应急预案或管控措施制定情况</th>
+                                <th>处理情况</th>
+                                <th>已完成任务进度</th>
+
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+@section js {
+    <!-- Page script -->
+<script src="~/Plugins/jquery.ba-resize.js"></script>
+
+<!-- Page script -->
+<script src="~/Scripts/jquery.form.js"></script>
+<script src="~/Scripts/myFormValidator.js"></script>
+<link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+<script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+<script src="~/Scripts/myWorkFlowInfo.js"></script>
+@*<script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>*@
+<script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+<script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/dataTables.editor.min.js"></script>
+<script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/editor.bootstrap.min.js"></script>
+<script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+
+
+    <style>
+        th {
+            background: rgb(124, 205, 124);
+        }
+
+        th, td {
+            white-space: nowrap;
+            text-align: left;
+        }
+    </style>
+
+
+    <script type="text/javascript">
+        var editor;
+
+        ////Editor 初始化
+        editor = new $.fn.dataTable.Editor({
+            ajax: "/LSA11dot2/PostChanges",
+            table: "#LSA11dot2jobs_table",
+            idSrc: "index_Id",
+            fields: [
+                {
+                    label: "problem_desc",
+                    name: "problem_desc"
+                }
+
+            ]
+        });
+
+        // 在线编辑事件相应
+        $('#LSA11dot2jobs_table').on('click', 'tbody td.problem_desc', function (e) {
+            console.debug("t1的值为：" + $(this).parents("tr").index());//获取点击的行号
+
+            var td8 = $('#LSA11dot2jobs_table').DataTable().cell($(this).parents("tr").index(), 8).data();
+          
+
+
+
+
+          //  if ($(this).parents("tr").find("td:eq(8)").text() == "Start") {
+            if (td8 == "Start") {
+
+
+
+
+                editor.inline(this, { onBlur: 'submit' });
+            }
+
+        });
+
+        $(document).ready(function () {
+            console.debug("js开始运行");
+
+             var table = $('#LSA11dot2jobs_table').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "iDisplayLength": 20,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "info": true,
+                "scrollX": true,
+                "ajax": {
+                    "data": { "WorkFlow_Name": "A11dot2" },
+                    "url": "/Common/getA11dot2dcl_list",
+                    "type": "POST"
+                },
+
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0,
+
+                },
+              { "visible": false, "targets": 8 }
+                ],
+                "columns": [
+                    //{
+                    //    data: null,
+                    //    defaultContent: '',
+                    //    className: 'select-checkbox',
+                    //    orderable: false
+                    //},
+
+                    { "data": 'index_Id' },
+                    { "data": 'zz_name' },
+                    { "data": 'sb_gycode' },
+                    { "data": 'sb_code' },
+                 //  { "data": 'sb_ABCMark' },
+                    {
+                        "data": 'problem_desc', "className": "problem_desc ",
+                        "render": function (val, type, row) {
+
+
+                            if (val == "") {
+                                val = "待填写";
+                                return val;
+                            }
+                            else
+
+
+
+                                return val;
+                        }
+
+                    },
+                     { "data": 'riskMatrix_color' },
+                      {
+                          "data": 'sb_code',
+                 "render": function (data, type, full,meta) {
+                     if (full.riskMatrix_color == "green") {
+                         return "制定应急预案";
+                     } else if (full.riskMatrix_color == "") {
+
+                         return "";
+                     }
+
+
+                     {
+
+                         return "确定管控措施";
+
+                     }
+
+
+
+ 
+            }
+
+
+
+                      },
+                       {
+                           "data": 'supervise_done',
+                            "render": function (data, type, full,meta) 
+            {
+                                if (full.riskMatrix_color == "green" && full.Supervise_done=="False") 
+                                {
+                                      return "暂未处理";
+                                }
+                                else if(full.riskMatrix_color == "green" && full.Supervise_done=="True")
+                                {
+                                      return "已处理";
+                                }
+                                else if (full.riskMatrix_color == "yellow" && full.implementplan_done == "False")
+                                {
+                                    return "已风险登记";
+                                } else if (full.riskMatrix_color == "yellow" && full.implementplan_done == "True") {
+                                    return "已处理";
+                                } else if (full.riskMatrix_color == "red") {
+                                    return "已风险登记";
+                                } else {
+                                    return "";
+                                }
+
+
+
+            }
+
+
+
+                       },
+                 
+
+
+
+
+
+                     
+                       { "data": 'missionname' }
+
+                ],
+                //"select": {
+                //    style: 'os',
+                //    selector: 'td:first-child'
+                //},
+                "scrollX": true,
+                "dom": 'Bfrtip',
+
+
+
+
+
+
+
+            });
+      
+        })
+
+    </script>
+}

@@ -1,0 +1,190 @@
+<workflow name="A7dot1" desc="三检特护及状态监测" current_event="">
+  <paramtable>
+    <param name="Cj_Name" desc="车间名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zz_Name" desc="装置名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZzSubmit_done" desc="装置提报是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Type" desc="设备型号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zy_Type" desc="专业分类" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zy_SubType" desc="专业分类子类" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Data_Src" desc="数据来源" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_ABCMark" desc="设备ABC标识" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Problem_Desc" desc="设备问题（描述）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="Problem_DescFilePath" desc="设备问题（附件）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+    <param name="currentuser" desc="当前用户" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="start_done" desc="" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">JumpToA13dot1</linkevent>
+      </linkevents>
+    </param>
+  </paramtable>
+  <events>
+    <event name="Start" desc="Start" type="startevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="End" desc="End" type="endevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZzSubmit" desc="现场工程师提报" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A7dot1/ZzSubmit]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '现场工程师' or  d.Role_Name = '可靠性工程师') and @OP_currentuser=@IP_currentuser]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="JumpToA13dot1" desc="缺陷故障管理" type="subprocess">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where 1<>1]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+      <linkworkflow name="A13dot1" workingmodel="parallel">
+        <paramtransfer>
+          <item parent="Cj_Name" child="Cj_Name" direction="to" />
+          <item parent="Zz_Name" child="Zz_Name" direction="to" />
+          <item parent="Equip_GyCode" child="Equip_GyCode" direction="to" />
+          <item parent="Equip_Code" child="Equip_Code" direction="to" />
+          <item parent="ZzSubmit_done" child="ZzSubmit_done" direction="to" />
+          <item parent="Equip_Type" child="Equip_Type" direction="to" />
+          <item parent="Zy_Type" child="Zy_Type" direction="to" />
+          <item parent="Zy_SubType" child="Zy_SubType" direction="to" />
+          <item parent="Equip_ABCMark" child="Equip_ABCMark" direction="to" />
+          <item parent="Problem_Desc" child="Problem_Desc" direction="to" />
+          <item parent="Problem_DescFilePath" child="Problem_DescFilePath" direction="to" />
+          <item parent="Data_Src" child="Data_Src" direction="to" />
+          <item parent="start_done" child="start_done" direction="to" />
+        </paramtransfer>
+      </linkworkflow>
+    </event>
+  </events>
+  <flows>
+    <flow source="Start" destination="ZzSubmit">
+      <condition><![CDATA[start_done==true]]></condition>
+    </flow>
+    <flow source="ZzSubmit" destination="JumpToA13dot1">
+      <condition><![CDATA[ZzSubmit_done==true]]></condition>
+    </flow>
+    <flow source="JumpToA13dot1" destination="End">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

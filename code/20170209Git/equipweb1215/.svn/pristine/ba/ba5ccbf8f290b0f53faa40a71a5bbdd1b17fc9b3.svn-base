@@ -1,0 +1,290 @@
+﻿using EquipModel.Entities;
+using FlowEngine;
+using FlowEngine.UserInterface;
+using WebApp.Models;
+using WebApp.Models.User;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using EquipModel.Context;
+using System.Text;
+using EquipBLL.AdminManagment;
+using System.IO;
+
+namespace WebApp.Controllers
+{
+    public class A11dot2Controller : CommonController
+    {
+        //
+        // GET: /A11dot2/
+        public ActionResult Index()
+        {
+            return View(getIndexListRecords("A11dot2", (Session["User"] as EquipModel.Entities.Person_Info).Person_Name));          
+        }
+        // GET: /A11dot2/装置提报
+        public ActionResult ZzSubmit(string wfe_id)
+        {
+            return View(getSubmitModel(wfe_id));
+        }
+
+        // GET: /A11dot2/片区风险矩阵评估
+        public ActionResult PqAssess(string wfe_id)
+        { 
+            //判断是否为专家团队不同意，需要重新评估的
+            int num_HistoryMissions = CWFEngine.GetHistoryMissions(int.Parse(wfe_id)).Count;
+            if(num_HistoryMissions>=4)
+                ViewBag.zjtdOpinion = 0;
+
+            return View(getWFDetail_Model(wfe_id));
+        }
+        // GET: /A11dot2/专业团队审核
+        public ActionResult ZytdConfirm(string wfe_id)
+        {
+            return View(getWFDetail_Model(wfe_id));
+        }
+        // GET: /A11dot2/车间确立应急预案
+        public ActionResult CjCreatePlan(string wfe_id)
+        {
+            return View(getWFDetail_Model(wfe_id));
+        }
+        // GET: /A11dot2/车间组织和实施应急方案
+        public ActionResult CjImplementPlan(string wfe_id)
+        {
+            return View(getWFDetail_Model(wfe_id));
+        }
+        // GET: /A11dot2/片区监督执行
+        public ActionResult PqSupervise(string wfe_id)
+        {
+            return View(getWFDetail_Model(wfe_id));
+        }
+
+        // GET: /A11dot2/跳转到[A11.3]风险管控模块--仅用于测试
+        public ActionResult JumpToA11dot3(string wfe_id)
+        {
+            ViewBag.WF_NAME = wfe_id;
+            ViewBag.MODULE_NAME = "【A11.3】风险管控模块";           
+            return View(getWFDetail_Model(wfe_id));
+        }
+
+        public ActionResult WorkFolw_Detail(string wfe_id)
+        {
+            return View(getWFDetail_Model(wfe_id));
+        }
+
+        public string submitsignal(string json1)
+        {
+            try
+            {
+                JObject item = (JObject)JsonConvert.DeserializeObject(json1);
+                string flowname = item["Flow_Name"].ToString();
+                //string cj_name = item["Cj_Name"].ToString();
+                Dictionary<string, string> signal = new Dictionary<string, string>();                
+                signal["submit_user"] = (Session["User"] as EquipModel.Entities.Person_Info).Person_Name;
+                signal["submit_done"] = "true";
+                signal["Cj_Name"] = item["Cj_Name"].ToString();
+                signal["Zz_Name"] = item["Zz_Name"].ToString();
+                //signal["submit_user"] = "\"" + item["submit_user"].ToString() + "\"";
+                signal["Equip_GyCode"] = item["Equip_GyCode"].ToString();
+                signal["Equip_Code"] = item["Equip_Code"].ToString();
+                signal["Equip_Type"] = item["Equip_Type"].ToString();
+                signal["Problem_Desc"] = item["Problem_Desc"].ToString();
+                signal["Problem_DescFilePath"] = item["Problem_DescFilePath"].ToString();
+                signal["Zy_Type"] = item["Zy_Type"].ToString();
+                signal["Zy_SubType"] = item["Zy_SubType"].ToString();
+                signal["submit_time"] = DateTime.Now.ToString();
+                Dictionary<string, string> record = new Dictionary<string, string>();
+                record["username"] = (Session["User"] as EquipModel.Entities.Person_Info).Person_Name;
+                record["time"] = DateTime.Now.ToString();
+                CWFEngine.SubmitSignal(Convert.ToInt32(flowname), signal, record);
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+            return ("/A11dot2/Index");
+        }
+
+        public string submitAssess_signal(string json1)
+        {
+            try
+            {
+                JObject item = (JObject)JsonConvert.DeserializeObject(json1);
+                string flowname = item["Flow_Name"].ToString();
+                //paras
+                Dictionary<string, string> signal = new Dictionary<string, string>();                
+                string Danger_Intensity = item["Danger_Intensity"].ToString();
+                string Time_Level = item["Time_Level"].ToString();
+                signal["Danger_Intensity"] = Danger_Intensity;
+                signal["Time_Level"] = Time_Level;                
+                //RiskMatrix_Color,DangerType_isgreen:根据逻辑判断   
+                RiskMatrixElement rme = riskMatrixAnalysis(Danger_Intensity, Time_Level);
+                signal["RiskMatrix_Color"] = rme.color;
+                signal["DangerType_isgreen"] = rme.DangerType_isgreen;
+                signal["Assess_done"] = "true";
+                //record:
+                Dictionary<string, string> record = new Dictionary<string, string>();
+                record["username"] = (Session["User"] as EquipModel.Entities.Person_Info).Person_Name;
+                record["time"] = DateTime.Now.ToString();
+                //submit
+                CWFEngine.SubmitSignal(Convert.ToInt32(flowname), signal, record);
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+            return ("/A11dot2/Index");
+        }
+
+        public string submitZytdConfirm_signal(string json1)
+        {
+            try
+            {
+                JObject item = (JObject)JsonConvert.DeserializeObject(json1);
+                string flowname = item["Flow_Name"].ToString();
+                //paras
+                Dictionary<string, string> signal = new Dictionary<string, string>();                
+                signal["Confirm_result"] = item["Confirm_result"].ToString();
+                ////DangerType_isgreen:需要根据逻辑判断
+                //UI_MISSION miModel = CWFEngine.GetActiveMission<Person_Info>(int.Parse(flowname), ((IObjectContextAdapter)(new EquipWebContext())).ObjectContext);
+                //RiskMatrixElement rme = riskMatrixAnalysis(miModel.Miss_Params["Danger_Intensity"].ToString(), miModel.Miss_Params["Time_Level"].ToString());
+                //signal["DangerType_isgreen"] = rme.DangerType_isgreen;
+                //record
+                Dictionary<string, string> record = new Dictionary<string, string>();
+                record["username"] = (Session["User"] as EquipModel.Entities.Person_Info).Person_Name;
+                record["time"] = DateTime.Now.ToString();
+                //submit
+                CWFEngine.SubmitSignal(Convert.ToInt32(flowname), signal, record);
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+            return ("/A11dot2/Index");
+        }
+
+        //风险矩阵分析
+        public RiskMatrixElement riskMatrixAnalysis(string Danger_Intensity, string Time_Level)
+        {
+            
+            string DangerType_isgreen = "";
+            string color = "";
+            int danger_intensity=int.Parse(Danger_Intensity.Substring(1,1));
+            int time_level=int.Parse(Time_Level.Substring(1,1));
+            if ((danger_intensity == 1 && time_level <= 3) || (danger_intensity == 2 && time_level <= 2))
+            {
+                color = "red";
+                DangerType_isgreen = "false";
+            }
+            else if (danger_intensity >= 5 || (danger_intensity == 4 && time_level >= 2) || (danger_intensity == 3 && time_level >= 3))
+            {
+                color = "green";
+                DangerType_isgreen = "true";
+            }
+            else
+            {
+                color = "yellow";
+                DangerType_isgreen = "false";
+            }
+            //
+            RiskMatrixElement rme = new RiskMatrixElement();
+            rme.danger_intensity = danger_intensity;
+            rme.time_level = time_level;
+            rme.color = color;
+            rme.DangerType_isgreen = DangerType_isgreen;
+            return rme;
+        }
+
+        public string submitCreatePlan_signal(string json1)
+        {
+            try
+            {
+                JObject item = (JObject)JsonConvert.DeserializeObject(json1);
+                string flowname = item["Flow_Name"].ToString();
+                Dictionary<string, string> signal = new Dictionary<string, string>();
+                //paras
+                signal["Plan_Desc"] = item["Plan_Desc"].ToString();
+                signal["Plan_DescFilePath"] = item["Plan_DescFilePath"].ToString();
+                signal["CreatePlan_done"] = "true";
+                Dictionary<string, string> record = new Dictionary<string, string>();
+
+
+                record["username"] = (Session["User"] as EquipModel.Entities.Person_Info).Person_Name;
+                record["time"] = DateTime.Now.ToString();
+
+                CWFEngine.SubmitSignal(Convert.ToInt32(flowname), signal, record);
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+            return ("/A11dot2/Index");
+        }
+
+        public string submitImplementPlan_signal(string json1)
+        {
+            try
+            {
+                JObject item = (JObject)JsonConvert.DeserializeObject(json1);
+                string flowname = item["Flow_Name"].ToString();
+                Dictionary<string, string> signal = new Dictionary<string, string>();
+                //paras
+                signal["ImplementPlan_done"] = item["ImplementPlan_done"].ToString();
+
+                Dictionary<string, string> record = new Dictionary<string, string>();
+
+
+                record["username"] = (Session["User"] as EquipModel.Entities.Person_Info).Person_Name;
+                record["time"] = DateTime.Now.ToString();
+
+                CWFEngine.SubmitSignal(Convert.ToInt32(flowname), signal, record);
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+            return ("/A11dot2/Index");
+        }
+
+        public string submitSupervise_signal(string json1)
+        {
+            try
+            {
+                JObject item = (JObject)JsonConvert.DeserializeObject(json1);
+                string flowname = item["Flow_Name"].ToString();
+                Dictionary<string, string> signal = new Dictionary<string, string>();
+                //paras
+                signal["Supervise_done"] = item["Supervise_done"].ToString();
+                Dictionary<string, string> record = new Dictionary<string, string>();
+                record["username"] = (Session["User"] as EquipModel.Entities.Person_Info).Person_Name;
+                record["time"] = DateTime.Now.ToString();
+
+                CWFEngine.SubmitSignal(Convert.ToInt32(flowname), signal, record);
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+            return ("/A11dot2/Index");
+        }
+
+        //test
+        public string submitA11dot3_signal(string json1)
+        {
+            JObject item = (JObject)JsonConvert.DeserializeObject(json1);
+            string flowname = item["Flow_Name"].ToString();
+            Dictionary<string, string> signal = new Dictionary<string, string>();
+             //paras
+            signal["temp_A11dot3"] = item["temp_A11dot3"].ToString();
+            Dictionary<string, string> record = new Dictionary<string, string>();
+            record["username"] = (Session["User"] as EquipModel.Entities.Person_Info).Person_Name;
+            record["time"] = DateTime.Now.ToString();
+            CWFEngine.SubmitSignal(Convert.ToInt32(flowname), signal, record);
+                return ("/A11dot2/Index");
+        }
+	}
+}

@@ -1,0 +1,325 @@
+﻿@{
+    ViewBag.Title = "AddEquip";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        填写设备基本信息
+                    </h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" role="form">
+
+                    <!-- 用户姓名 -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备工艺编号</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input type="text" class="form-control" id="EquipName">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备编号</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input type="text" class="form-control" id="EquipCode">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+                    <!-- 用户密码 -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备ABC标志</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control" type="text" id="EquipABCMark">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+                  
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备型号</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control" type="text" id="EquipType">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备所属公司</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control" type="text" id="EquipMan">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                设置设备管辖区域和种类
+            </h3>
+        </div>
+        <form class="form-horizontal" role="form">
+         
+            <div class="form-group">
+                <label class="col-sm-2 control-label">管辖设备区域</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <input id="Equip_Archi" data-toggle="modal" data-target="#EquipArchi" type="text" class="form-control" onclick="EqualArchi_List()" onfocus=this.blur()>
+                        <input id="Equip_Archi_Id" type="text" hidden="hidden" />
+                        <div class="modal-body" id="Equip_Speciaty_div" hidden="hidden">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">专业类型</label>
+                <div class="col-sm-10">
+                    
+                    <select class="form-control select2" style="width: 100%;" id="Sp_id" onchange="Sp_selected()">
+                       
+                        <option value="">请选择</option>
+                        @if (Model.sps != null)
+{
+    foreach (var item in Model.sps)
+    {
+        <option value="@item.Specialty_Id">@item.Specialty_Name</option>
+    }
+}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">专业子类</label>
+                <div id="Zz_Select" class="col-sm-10">
+                    <select class="form-control select2" style="width: 100%;" id="Sps_id">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="submit_click()">提交</button>
+            </div>
+        </form>
+
+      
+    </div>
+</section>
+
+<!--设备结构模态框开始处-->
+<div class="modal fade" id="EquipArchi">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">管辖设备区域</h4>
+            </div>
+            <div class="modal-body">
+
+                <div id="treeview4"></div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="confirmEquipArchi()">确认</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--设备结构模态框结束处-->
+
+@section js{
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+
+    <script type="text/javascript">
+        //专业选择后子类型加载上去
+        function Sp_selected() {
+            //alert($('#Sp_id').val());
+            if ($('#Sp_id').val() != "") {
+                $.ajax({
+                    url: '/EquipQuery/EquipSp_Info',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "Sp_id": $('#Sp_id').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            for (var i = 0; i < backdata.length; i++) {
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].sp_Id + "\">" + backdata[i].sp_Name + "</option>";
+                            }
+                            $('#Sps_id').html(itemHtml);
+
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                }
+                )
+            }
+        };
+        function EqualArchi_List() {
+            $.ajax({
+                type: 'POST',
+                url: '/EquipQuery/List_EquipArchi',
+                dataType: 'json',
+                success: function (defaultData) {
+                    $('#treeview4').treeview({
+                        data: defaultData,
+                        multiSelect: true,
+
+                    });
+                    //初始显示时折叠父节点
+                    $('#treeview4').treeview('collapseAll', {
+                        silent: true
+                    });
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+        }
+
+        function Speciaty_List() {
+            $.ajax({
+                type: 'POST',
+                url: '/EquipQuery/List_Speciaties',
+                dataType: 'json',
+                success: function (defaultData) {
+                    $('#treeview2').treeview({
+                        data: defaultData,
+                        multiSelect: true,
+                    });
+                    //初始显示时折叠父节点
+                    $('#treeview2').treeview('collapseAll', {
+                        silent: true
+                    });
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+        }
+        function confirmEquipArchi() {
+            var test = $('#treeview4').treeview('getSelected', 1);
+
+
+            var member = "", member2 = "";
+            for (var i = 0; i < test.length; i++) {
+
+                if (test[i].text && i < test.length - 1) {
+                    member += test[i].text + ',';
+                    member2 += test[i].id + ',';
+                }
+                else {
+                    member += test[i].text
+                    member2 += test[i].id;
+                }
+            }
+
+            $('#Equip_Archi').val(member);
+            $('#Equip_Archi_Id').val(member2);
+
+
+        }
+        function confirmSpeciaty() {
+            var test = $('#treeview2').treeview('getSelected', 1);
+            $('#Equip_Specialty_div').html("");
+
+
+
+            var itemHtml = " <select class=\"form-control\" multiple=\"\" id=\"UserSpecialtySel\" disabled=true>";
+
+            var member = "", member2 = "";
+            for (var i = 0; i < test.length; i++) {
+                itemHtml = itemHtml + "<option value=\"" + test[i].id + "\">" + test[i].text + "</option>";
+                if (test[i].text && i < test.length - 1) {
+                    member += test[i].text + ',';
+                    member2 += test[i].id + ',';
+                }
+                else {
+                    member += test[i].text
+                    member2 += test[i].id;
+                }
+            }
+            itemHtml = itemHtml + "</select>";
+            $('#EquipSpecialty').val(member);
+            $('#EquipSpecialty_Id').val(member2);
+            $('#EquipSpeciaty_div').html(itemHtml);
+
+        }
+
+        function submit_click() {
+
+            $.ajax({
+                type: 'POST',
+                url: '/EquipQuery/submitNewEquip',
+                data: {
+                    json1: '{EquipName: "' + $('#EquipName').val()
+                         + '", EquipABCMark: "' + $('#EquipABCMark').val()
+                          + '", Equip_Archi_Id: "' + $('#Equip_Archi_Id').val()
+                           + '", EquipSpecialty: "' + $('#Sp_id').val()
+                            + '", EquipPhaseB: "' + $('#Sps_id').val()
+                         + '", EquipCode: "' + $('#EquipCode').val()
+                           + '", EquipType: "' + $('#EquipType').val()
+                      + '", EquipManufacturer: "' + $('#EquipMan').val()
+                          + '"}'
+                },
+                success: function (data) {
+                    alert(data);
+                    location.href = '/EquipQuery/EquipQuery';
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+
+        }
+
+    </script>
+}
+
+

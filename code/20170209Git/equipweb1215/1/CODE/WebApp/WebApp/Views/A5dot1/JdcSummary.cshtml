@@ -1,0 +1,267 @@
+﻿@model WebApp.Controllers.CommonController.A5_Model
+@{
+    ViewBag.Title = "JdcSummary";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<style type="text/css">
+    tr.MM_hidden {
+        display: none;
+    }
+
+    /*tr.MM_shown {
+        }*/
+
+    tr.selected {
+        background-color: #acbad4;
+    }
+</style>
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+     
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title" style="font:bold; color:red">【A5.1】设备完好-机动处汇总列表</p>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example1" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>装置</th>
+                                <th>设备工艺编号</th>
+                                <th>设备编号</th>
+                                <th>不完好内容</th>
+                                <th>是否选为最差10台</th>
+                                <th>ID</th>
+
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+
+                    </table>
+                    <form role="form">
+                        <div class="box-footer">
+                            @*<button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click()">确定提交</button>*@
+                            <button class="btn btn-primary col-sm-offset-2" type="button" id="button">确定提交</button>
+                            <button class="btn btn-primary col-sm-offset-1" type="button" onclick="cancel_click()">取消提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.box -->
+</section>
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <script>
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+
+        $(document).ready(function () {
+            $('#example1').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "columns": [
+
+                     { "data": null},
+                      { "data": "zzname" },
+                    { "data": "sbgybh" },
+                    { "data": "sbcode" },
+                    { "data": "notgood" },
+
+                  {
+                      //"data": "mod_equipcode",
+                      "render": function (data, type, full, meta) {
+
+                          return '<input type="checkbox" name="checkList"  />';
+                          //return '<button type="button" class="btn btn-danger"  onclick="del_equip(' + full.equip_code + "," + meta.row + ')">删除</button>';
+
+                      }
+                  },
+                  {"data":"a_id"},
+                ],
+                "columnDefs": [
+             {
+                       "targets": [6],
+                       "visible": false
+                   }
+                ],
+
+
+                "ajax": {
+                    "url": "/A5dot1/list3",
+                    "type": "POST"
+                }
+
+            });
+
+            var table = $('#example1').DataTable();
+            table.on('order.dt search.dt',
+                   function () {
+                       table.column(0, {
+                           search: 'applied',
+                           order: 'applied'
+                       }).nodes().each(function (cell, i) {
+                           cell.innerHTML = i + 1;
+                       });
+                   }).draw();
+
+
+            $('#example1 tbody').on('click', 'tr input[name="checkList"]', function () {
+                var $tr = $(this).parents('tr');
+                $tr.toggleClass('selected');
+
+            });
+
+            $('#button').click(function () {
+
+                var data = table.rows('.selected').data();
+
+                if (data.length != 10) {
+                    alert('你应该选择10台设备');
+                } else {
+                    if (!myValidation())
+                        return false;
+                    if (!confirm('确定要提交吗？'))
+                        return false;
+                    var s ='';
+                    for (var i = 0; i < data.length; i++) {
+                        if (i != data.length - 1)
+                            s += data[i].a_id + '|';
+                        else
+                            s += data[i].a_id;
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/A5dot1/save10',
+                        data: {
+                            json1: '{a_id:"' + s
+                             + '"}'
+                        },
+                        success: function (data) {
+                            location.href = data;
+                        },
+                        error: function () {
+                            alert('error');
+                        }
+                    });
+
+
+                }
+
+            });
+
+
+
+        });
+
+
+
+
+        //function submit_click() {
+
+        //    alert(table.rows('.selected').data().length + ' row(s) selected');
+        //    for (var i = 0; i < obj.length; i++) {
+        //        if (obj[i].checked) {
+        //            count++;
+        //        }
+        //    }
+
+        //    if (count != 1) {
+        //        alert("请选择1台！！！");
+
+        //    } else {
+        //        //alert(s);
+        //        if (!myValidation())
+        //            return false;
+        //        if (!confirm('确定要提交吗？'))
+        //            return false;
+
+        //        //$.ajax({
+        //        //    type: 'POST',
+        //        //    url: '/A5dot1/save5',
+        //        //    data: {
+        //        //        json1: '{ Cj_Name: "' + $('checkworst5').find("option:checked").
+        //        //             + '", Zz_Name: "' + $('#zzId').find("option:selected").text()
+        //        //             + '", Equip_GyCode: "' + $('#Equip_GyCode').find("option:selected").text()
+        //        //             + '", Equip_Code: "' + $('#E_Code').val()
+        //        //             + '", Equip_Type: "' + $('#E_Type').val()
+        //        //             + '", Zy_Type: "' + $("input:radio[name='zyoptionsRadiosinline']:checked").val()
+        //        //             //+ '", Zy_SubType: "' + $("input:radio[name='subzyoptionsRadiosinline']:checked").val()
+        //        //             + '", Data_Src: "' + $("input:radio[name='srcoptionsRadiosinline']:checked").val()
+        //        //             + '", Incomplete_content: "' + s
+        //        //             + '", ZzsubmitName: "' + $('#ZzsubmitName').val()
+        //        //             + '"}'
+        //        //    },
+        //        //    success: function (data) {
+        //        //        location.href = "Index";
+        //        //    },
+        //        //    error: function () {
+        //        //        alert('error');
+        //        //    }
+        //        //});
+
+        //    }
+
+        // };
+
+
+
+        function cancel_click() {
+            if (!confirm('确定要取消吗？'))
+                return false;
+
+            var wef_id = $("#wef_id").val();
+            var return_url = "/A5dot1/Index";
+            $.ajax({
+                type: 'POST',
+                url: '/Common/CancelSubmit',
+                data: {
+                    json1: '{wef_id: "' + wef_id
+                         + '", return_url: "' + return_url
+                         + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        };
+    </script>
+}

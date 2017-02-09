@@ -1,0 +1,890 @@
+﻿@model WebApp.Controllers.A2Controller.Index_ModelforA2
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@*<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/TableTools/css/dataTables.tableTools.css" />*@
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A2-目标计划</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+
+                    <a id="PqSummary" class="btn btn-block btn-social btn-info" onclick="JavaScript: location.href = '/A15dot1/Index'">
+
+                        <i class="glyphicon glyphicon-log-in"></i>进入[A15.1]设备绩效管理-提报绩效评估表
+                    </a>
+
+                </div>
+                <div class="col-xs-6 col-md-3">
+
+                    <a id="PqSummary" class="btn btn-block btn-social btn-info" onclick="JavaScript: location.href = '/A2/yearreport'">
+
+                        <i class="glyphicon glyphicon-log-in"></i>KPI年报
+                    </a>
+
+                </div>
+            </div>
+            </div>
+      
+        </div>
+
+    <div class="box">
+        
+
+
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <p></p>
+                    </div>
+                </div>
+                <div class="col-xs-12" >
+                    <table>
+                        <tr>
+                            <td class="col-sm-2 control-label">
+                                <label>时间范围:</label>
+                            </td>
+                            <td class="col-sm-9">
+                                <div class="input-group col-sm-9">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control pull-right active" id="reservationtime" type="text">
+                                </div>
+                            </td>
+                            <td class="col-sm-4">
+                                <button type="button" class="btn btn-warning" onclick="Search()">查询</button>
+                            </td>
+                            <td class="col-sm-4">
+                                <button type="button" class="btn btn-warning" onclick="outputExcel_click()">导出excel</button>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <p></p>
+                    </div>
+                </div>
+
+                    <div class="col-xs-12">
+                        <table id="example1" class="table table-hover table-bordered">
+                            <caption style="text-align:center;color:red;font-size:x-large">各片区KPI指标统计</caption>
+                            <thead>
+                                <tr>
+                                    <th>指标类型</th>
+                                    <th>KPI指标</th>
+                                    <th>指标说明</th>
+                                    <th>炼油目标值</th>
+                                    <th>联合一片区</th>
+                                    <th>联合二片区</th>
+                                    <th>联合三片区</th>
+                                    <th>联合四片区</th>
+                                    <th>化工片区</th>
+                                    <th>综合片区</th>
+                                    <th>系统片区</th>
+                                    <th>全厂指标</th>
+                                    @*<th>柱状图</th>*@
+
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+
+                                <tr>
+                                    <td>可靠性指标</td>
+                                    <td>非计划停工次数</td>
+                                    <td>由设备机械原因导致生产装置非计划停工</td>
+                                    <td>0</td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td id="a1">@Model.Am[0].timesNonPlanStop</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].timesNonPlanStop</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].timesNonPlanStop</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].timesNonPlanStop</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].timesNonPlanStop</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].timesNonPlanStop</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].timesNonPlanStop</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>四类以上故障强度扣分</td>
+                                    <td>由设备机械原因导致发生四类以上强度故障扣分</td>
+                                    <td>≤60分/年</td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td>@Model.Am[0].scoreDeductFaultIntensity</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].scoreDeductFaultIntensity</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].scoreDeductFaultIntensity</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].scoreDeductFaultIntensity</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].scoreDeductFaultIntensity</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].scoreDeductFaultIntensity</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].scoreDeductFaultIntensity</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>大机组故障率K</td>
+                                    <td>K=∑(所有考核大机组故障时间)/∑(所有考核大机组计划投用时间)</td>
+                                    <td> ＜1‰ </td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td>@Model.Am[0].rateBigUnitFault</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].rateBigUnitFault</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].rateBigUnitFault</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].rateBigUnitFault</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].rateBigUnitFault</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].rateBigUnitFault</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].rateBigUnitFault</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>故障维修率F</td>
+                                    <td>F=故障维修次数/维修总次数</td>
+                                    <td> ＜7.5 %</td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td>@Model.Am[0].rateFaultMaintenance</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].rateFaultMaintenance</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].rateFaultMaintenance</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].rateFaultMaintenance</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].rateFaultMaintenance</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].rateFaultMaintenance</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].rateFaultMaintenance</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>一般机泵设备平均无故障间隔期MTBF</td>
+                                    <td>MTBF=考核期内机泵设备总数×12/设备故障维修总数</td>
+                                    <td> ＞68月</td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td>@Model.Am[0].MTBF</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].MTBF</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].MTBF</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].MTBF</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].MTBF</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].MTBF</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].MTBF</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>设备投用率R（反映MTTR）</td>
+                                    <td>R=1-（∑(所有设备维修时间)/∑(所有设备计划投用时间)</td>
+                                    <td> ＞99.5 %</td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td>@Model.Am[0].rateEquipUse</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].rateEquipUse</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].rateEquipUse</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].rateEquipUse</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].rateEquipUse</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].rateEquipUse</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].rateEquipUse</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+                                </tr>
+                                <tr>
+                                    <td>专业指标</td>
+                                    <td>S=∑各密封点寿命/动密封总数</td>
+                                    <td>T=∑维修工单实际作业时间/工单总数</td>
+                                    <td> ≥20000小时</td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td>@Model.Am[0].avgLifeSpanSeal</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].avgLifeSpanSeal</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].avgLifeSpanSeal</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].avgLifeSpanSeal</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].avgLifeSpanSeal</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].avgLifeSpanSeal</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].avgLifeSpanSeal</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>轴承平均寿命B</td>
+                                    <td>B=∑各轴承寿命/轴承总数</td>
+                                    <td> ≥280000小时</td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td>@Model.Am[0].avgLifeSpanAxle</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].avgLifeSpanAxle</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].avgLifeSpanAxle</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].avgLifeSpanAxle</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].avgLifeSpanAxle</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].avgLifeSpanAxle</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].avgLifeSpanAxle</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>设备完好率W</td>
+                                    <td>W=∑完好设备台数/总设备台数</td>
+                                    <td> ≥98 %</td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td>@Model.Am[0].percentEquipAvailability</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].percentEquipAvailability</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].percentEquipAvailability</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].percentEquipAvailability</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].percentEquipAvailability</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].percentEquipAvailability</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].percentEquipAvailability</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>检修一次合格率</td>
+                                    <td>∑检修一次合格台数/检修设备总台数</td>
+                                    <td> ≥98%</td>
+                                    @if (Model.Am.Count != 0)
+                                    {
+                                        <td>@Model.Am[0].percentPassOnetimeRepair</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Bm.Count != 0)
+                                    {
+                                        <td>@Model.Bm[0].percentPassOnetimeRepair</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Cm.Count != 0)
+                                    {
+                                        <td>@Model.Cm[0].percentPassOnetimeRepair</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Dm.Count != 0)
+                                    {
+                                        <td>@Model.Dm[0].percentPassOnetimeRepair</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Em.Count != 0)
+                                    {
+                                        <td>@Model.Em[0].percentPassOnetimeRepair</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Fm.Count != 0)
+                                    {
+                                        <td>@Model.Fm[0].percentPassOnetimeRepair</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @if (Model.Gm.Count != 0)
+                                    {
+                                        <td>@Model.Gm[0].percentPassOnetimeRepair</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    @*<td><button type="button" class="btn btn-primary" onclick="graphic_show()">查看</button></td>*@
+                                </tr>
+
+                            </tbody>
+
+
+                        </table>
+
+                    </div>
+                </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade" id="qst" tabindex="-1" role="dialog"
+     aria-labelledby="qst_title" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;height:800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="qst_title">
+                    柱状图
+                </h4>
+            </div>
+        <div class="modal-body">
+            <canvas id="myChart" width="800" height="400"></canvas>
+        </div>
+            
+            </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+    
+@section js{
+    <!-- Page script -->
+<script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+
+<script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+@*<script src="~/Plugins/AdminLTE/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.js"></script>*@
+<script src="~/Plugins/AdminLTE/plugins/chartjs/Chart.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+        //$(document).ready(function () {
+            
+        //});
+        function graphic_show(k) {
+            var a = $(this).parents("tr").find("td:eq(3)").text();
+            alert(a);
+            
+            $('#qst').modal('show');
+            var ctx = document.getElementById("myChart").getContext("2d");
+            alert("加载完毕！");
+            
+                var data = {
+                    labels: ["联合一片区", "联合二片区", "联合三片区", "焦化片区", "化工片区", "综合片区", "系统片区"],
+                    datasets: [
+                        
+                        {
+                            fillColor: "rgba(151,187,205,0.5)",
+                            strokeColor: "rgba(151,187,205,1)",
+                            data: []
+                        }
+                    ]
+                }
+                var myNewChart = new Chart(ctx).Bar(data);
+        }
+    
+        function Search() {
+            //$.ajax({
+            //    type: 'POST',
+            //    url: "/A2/Index?time=" + $('#reservationtime').val()
+
+
+            //});
+            location.href="/A2/Index?time=" + $('#reservationtime').val();
+        }
+ 
+        function outputExcel_click() {
+            if (!confirm('即将导出时间段内数据，若尚未选择时间则默认导出本月数据！'))
+                return false;
+           
+            // var wef_id = $("#wef_id").val();           
+            $.ajax({
+                type: 'POST',
+                url: '/A2/OutputExcel?time=' + $('#reservationtime').val(),
+                success: function (data) {
+                    //alert(data);
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        }
+        
+    </script>
+
+    <script>
+        $(document).ready(function () {
+         
+            $("#reservationtime").daterangepicker({
+                showDropdowns: true,
+                locale: {
+                    applyLabel: '确定',
+                    cancelLabel: '取消',
+                    fromLabel: '起始时间',
+                    toLabel: '结束时间',
+                    customRangeLabel: '自定义',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                },
+                format: 'YYYY-MM-DD', //控件中from和to 显示的日期格式
+
+
+
+                arrows: true
+            });
+
+            $("#example1").DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false
+             
+               
+            });           
+        });
+    </script>
+}

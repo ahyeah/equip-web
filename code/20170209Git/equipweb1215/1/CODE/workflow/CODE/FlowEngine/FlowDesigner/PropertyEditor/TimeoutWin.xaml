@@ -1,0 +1,42 @@
+﻿<Window x:Class="FlowDesigner.PropertyEditor.TimeoutWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TimeoutWin" Height="434" Width="437" Loaded="Window_Loaded">
+    <Grid>
+        <GroupBox Margin="10,10,10,154">
+            <Grid>
+                <RadioButton x:Name="radio_offset" Content="相对时间" HorizontalAlignment="Left" Height="20" Margin="17,20,0,0" VerticalAlignment="Top" Width="139" Unchecked="radio_offset_Unchecked" Checked="radio_offset_Checked"/>
+                <RadioButton x:Name="radio_exact" Content="指定时间" HorizontalAlignment="Left" Height="20" Margin="17,172,0,0" VerticalAlignment="Top" Width="139" Checked="radio_exact_Checked" Unchecked="radio_exact_Unchecked"/>
+                <GroupBox HorizontalAlignment="Left" Margin="35,45,0,0" VerticalAlignment="Top" Height="122" Width="360">
+                    <Grid Margin="-4,0,4,0">
+                        <Label Content="相对时间起点：" Margin="0,17,256,70"/>
+                        <ComboBox x:Name="select_timestart" HorizontalAlignment="Left" Margin="97,15,0,0" VerticalAlignment="Top" Width="241" Height="31">
+                            <ComboBoxItem Content="工作流创建时刻" Tag="wf_create"></ComboBoxItem>
+                            <ComboBoxItem Content="事件执行时刻" Tag="ev_enter"></ComboBoxItem>
+                        </ComboBox>
+                        <Label Content="时间偏移：" Margin="0,63,256,22"/>
+                        <ComboBox x:Name="select_escape" HorizontalAlignment="Left" Margin="244,63,0,0" VerticalAlignment="Top" Width="94" Height="31">
+
+                            <ComboBoxItem Tag="Date">天</ComboBoxItem>
+                            <ComboBoxItem Tag="Hour">小时</ComboBoxItem>
+                            <ComboBoxItem Tag="Minute">分钟</ComboBoxItem>
+                        </ComboBox>
+                        <TextBox x:Name="input_timeoffset" HorizontalAlignment="Left" Height="31" Margin="97,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    </Grid>
+                </GroupBox>
+                <xctk:DateTimePicker x:Name="exact_picker"  Margin="35,192,24,10"></xctk:DateTimePicker>
+            </Grid>
+        </GroupBox>
+        <Label Content="对工作流的操作" Margin="10,254,305,93"/>
+        <ComboBox x:Name="select_action" Margin="115,254,10,122">
+            <ComboBoxItem Tag="SUSPEND">暂停工作流</ComboBoxItem>
+            <ComboBoxItem Tag="DELETE">删除工作流</ComboBoxItem>
+            <ComboBoxItem Tag="INVALID" IsSelected="True">不做操作</ComboBoxItem>
+        </ComboBox>
+        <Label Content="自定义回调URL"  Margin="10,297,305,70"></Label>
+        <TextBox x:Name="input_callback" TextWrapping="Wrap" Text="" Margin="115,297,10,80"/>
+        <Button Content="确定" HorizontalAlignment="Left" Height="30" Margin="99,352,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click"/>
+        <Button Content="取消" HorizontalAlignment="Left" Height="30" Margin="233,352,0,0" VerticalAlignment="Top" Width="94" Click="Button_Click_1" RenderTransformOrigin="0.489,-0.467"/>
+    </Grid>
+</Window>

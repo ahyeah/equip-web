@@ -1,0 +1,77 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using FlowEngine.Event;
+using System.Xml;
+using FlowEngine;
+using FlowEngine.Param;
+
+namespace XML_IO_TEST
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            CWorkFlow wf = new CWorkFlow();
+            wf.name = "test";
+            wf.description = "test";
+
+            CNormlEvent ne = new CNormlEvent();
+            ne.name = "NE";
+            ne.description = "NE";
+            wf.AppendEvent(ne);
+
+            CStartEvent se = new CStartEvent();
+            se.name = "SE";
+            se.description = "SE";
+            wf.AppendEvent(se);
+
+            CEndEvent ee = new CEndEvent();
+            ee.name = "EE";
+            ee.description = "EE";
+            wf.AppendEvent(ee);
+
+            CNormlEvent noe = new CNormlEvent();
+            noe.name = "NOE";
+            noe.description = "NOE";
+            wf.AppendEvent(noe);
+
+            CParam pa1 = new CParam();
+            pa1.name = "pa1";
+            pa1.description = "pa1";
+            pa1.type = "string";
+            pa1.linkEvents.Add("NE");
+            pa1.linkEvents.Add("SE");
+            wf.AppendParam(pa1);
+
+            CParam pa2 = new CParam();
+            pa2.name = "pa2";
+            pa2.description = "pa2";
+            pa2.type = "int";
+            pa2.linkEvents.Add("SE");
+            pa2.linkEvents.Add("EE");
+            wf.AppendParam(pa2);
+
+            CParam pa3 = new CParam();
+            pa3.name = "pa3";
+            pa3.description = "pa3";
+            pa3.type = "float";
+            pa3.linkEvents.Add("EE");
+            pa3.linkEvents.Add("NOE");
+            wf.AppendParam(pa3);
+
+            CParam pa4 = new CParam();
+            pa4.name = "pa4";
+            pa4.description = "pa4";
+            pa4.type = "bool";
+            pa4.linkEvents.Add("NE");
+            pa4.linkEvents.Add("NOE");
+            wf.AppendParam(pa4);
+
+            XmlNode xn = wf.WriteToXmlNode();
+        }
+    }
+}

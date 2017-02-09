@@ -1,0 +1,232 @@
+﻿@model WebApp.Controllers.CommonController.WFDetail_Model
+@{
+    ViewBag.Title = "Xc_Sample";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                      定时任务：选择提报工艺变更设备
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">选择设备</span> </h3>
+                        <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+
+
+
+                        <div class="timeline-body" id="day_20">
+                            <form class="form-horizontal" role="form">
+                                <table style="visibility:hidden" id="equip_table" class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr><td><h4>序号</h4></td><td><h4>设备名称</h4></td><td><h4>设备编号</h4></td><td><h4>设备类型</h4></td><td><h4><input type="checkbox" id="checkAll"><span>全选</span></h4></td></tr>
+                                    </thead>
+                                    @*<tr><td><h4>序号</h4></td><td><h4>设备名称</h4></td><td><h4>是否采样</h4></td></tr>*@
+                                    <tbody id="tbody"></tbody>
+
+
+                                </table>
+
+
+                                <div class="box-footer" id="foot_btn">
+                                    <button class="btn btn-primary col-sm-offset-1" type="button" onclick="save()">提交</button>
+                                    <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click()">取消</button>
+
+                                </div>
+                            </form>
+
+
+
+
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <script>
+
+        $("#checkAll").bind('click', function () {
+            if (this.checked) {
+                $("input[name='sample']").each(function () {
+                    this.checked = true;
+                });
+            } else {
+                $("input[name='sample']").each(function () {
+                    this.checked = false;
+
+                });
+            }
+        });
+
+
+        //$(document).ready(
+        //    get_equip_info());
+
+        var s_submit = "true";
+
+
+        function get_equip_info() {
+            $("#foot_btn").show();
+
+                document.getElementById("equip_table").style.visibility = "visible";//显示
+
+                $('#equip_table').DataTable({
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sZeroRecords": "抱歉， 没有找到",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "没有数据",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "sZeroRecords": "没有检索到数据",
+                        "sSearch": "模糊查询:  ",
+                        "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        }
+                    },
+                    "bProcessing": true,//打开加载数据时提示信息
+                    "paging": false,
+                    "lengthChange": false,
+                    "searching": true,
+                    //"ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "columns": [
+
+                        { "data": "index" },
+                        { "data": "Equip_GyCode" },
+                        { "data": "Equip_Code" },
+                        { "data": "Equip_ABCMark" },
+
+                      {
+                          "render": function (data, type, full, meta) {
+
+                              return '<input type="checkbox" name="sample" value="false" />';
+
+                          }
+                      },
+
+                    ],
+
+                    "ajax": {
+                        "url": "/DSA12dot2dot1/get_equip_info?wfe_id=" +@ViewBag.WF_NAME +"",
+                        "type": "POST"
+                    }
+
+                });
+                var table = $('#equip_table').DataTable();
+                table.on('order.dt search.dt',
+                       function () {
+                           table.column(0, {
+                               search: 'applied',
+                               order: 'applied'
+                           }).nodes().each(function (cell, i) {
+                               cell.innerHTML = i + 1;
+                           });
+                       }).draw();
+        };
+
+        function save() {
+            var flow_name = $("#wef_id").val();
+            $("#equip_table input[name='sample']:checked").each(function () { // 遍历选中的checkbox
+                $(this).val("true");
+                //      $(this).parents("tr").find("td:eq(3)").text("true");
+                //  alert($(this).val())
+            });
+            var equip_info = "";
+            iss = 0;
+            $("#equip_table input[name='sample']:checked").each(function () { // 遍历checkbox
+                var tmp_obj = new Object();
+                tmp_obj.Equip_GyCode = $(this).parents("tr").find("td:eq(1)").text();
+                tmp_obj.Equip_Code = $(this).parents("tr").find("td:eq(2)").text();
+                tmp_obj.Equip_ABCMark = $(this).parents("tr").find("td:eq(3)").text();
+
+                equip_info = equip_info +JSON.stringify(tmp_obj) + ",";
+
+                iss++;
+
+            });
+            var equip_json = "[" + equip_info.substr(0, equip_info.length - 1) + "]";
+           // alert("值是：" + equip_json);
+
+            if (!confirm('确定要提交吗？'))
+                return false;
+
+            $.ajax({
+                type: 'POST',
+                url: '/DSA12dot2dot1/CreateA12dot2_submitsignal',
+
+
+                data: {
+                    json1: '{"Flow_Name": ' + flow_name
+                     + ', "sample": ' + equip_json
+
+                     + '}'
+
+                },
+                success: function (data) {
+                    location.href = data;
+                }
+            });
+        }
+        function submit_click() {
+            var flow_name = $("#wef_id").val();
+            if (!confirm('确定要提取消吗？'))
+                return false;
+            location.href = "/A12dot2/Index";
+        }
+
+        $(document).ready(function () {
+
+
+            get_equip_info()
+
+        });
+
+
+        function showRequest(formData, jqForm, options) {
+            alert('发送前');
+            return true;
+        }
+
+        function showResponse(responseText, statusText) {
+
+        };
+
+    </script>
+}
+
+
+
+
+
+
+

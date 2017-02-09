@@ -1,0 +1,117 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Control="clr-namespace:System.Windows.Controls" xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="FlowDesigner.MainWindow" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="FlowDesigner" Height="605" Width="893" Loaded="Window_Loaded" WindowState="Maximized">
+    <Window.Resources>
+        <ContextMenu x:Key="proj_menu">
+            <MenuItem Header="删除" Click="proj_menu_delete"/>
+        </ContextMenu>
+        <ContextMenu x:Key="param_menu">
+            <MenuItem Header="删除" Click="param_menu_delete"/>
+        </ContextMenu>
+        <ContextMenu x:Key="item_menu">
+            <MenuItem Header="删除" Click="item_menu_delete"/>
+        </ContextMenu>
+        <ContextMenu x:Key="proj_prop">
+            <MenuItem Header="属性" Click="proj_prop_show"/>
+        </ContextMenu>
+    </Window.Resources>
+    <Grid>
+        <ToolBarTray Height="30" VerticalAlignment="Top">
+            <ToolBar VerticalAlignment="Stretch" Height="30">
+                <Button x:Name="new_proj" Width="25" Height="25" ToolTip="新建工作流工程" Click="new_proj_Click">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="new_wfs.ico"/>
+                        </StackPanel>
+                    </ContentControl>
+                </Button>
+                <Button x:Name="AddFlow" Width="25" Height="25" ToolTip="Event" Click="AddFlow_Click" IsEnabled="False">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="workflow.ico"/>
+                        </StackPanel>
+                    </ContentControl>
+                </Button>
+                <Button Name="Save_button" Width="25" Height="25" Click="Button_Click_1" ToolTip="保存事件">
+                    <ContentControl>
+                        <StackPanel>
+                            <Image Source="Save.ICO"/>
+                        </StackPanel>
+                    </ContentControl>
+                </Button>
+                <Button Width="25" Height="25" Click="Button_Click_2"  ToolTip="打开工程">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="open.ico"/>
+                        </StackPanel>
+                    </ContentControl>
+                </Button>
+
+            </ToolBar>
+            <ToolBar VerticalAlignment="Stretch" Height="30">
+                <CheckBox x:Name="AddNEvent" Width="25" Height="25" Click="AddNEvent_Click"  ToolTip="新建Normal事件">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="New_flow.ico"/>
+                        </StackPanel>
+                    </ContentControl>
+                </CheckBox>
+                <CheckBox Name="AddSEvent" Width="25" Height="25" Click="AddNEvent_Click" ToolTip="新建子事件(SubProcess)">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="subP.ico"/>
+                        </StackPanel>
+                    </ContentControl>
+                </CheckBox>
+                <CheckBox Name="AddNewParam" Width="25" Height="25" Click="Button_Click" ToolTip="新建变量">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Param.ico"/>
+                        </StackPanel>
+                    </ContentControl>
+                </CheckBox>
+            </ToolBar>
+            <ToolBar VerticalAlignment="Stretch" Height="30">
+                <CheckBox x:Name="AddNewFlow" Width="25" Height="25" Click="AddNewFlow_Click" ToolTip="添加流(Flow)">
+                    <ContentControl>
+                        <StackPanel>
+                            <Image Source="Flow.ICO"/>
+                        </StackPanel>
+                    </ContentControl>
+                </CheckBox>
+            </ToolBar>
+            <ToolBar VerticalAlignment="Stretch" Height="30">
+                <Button x:Name="Complie" Width="25" Height="25" Click="Comple_Click" ToolTip="编译">
+                    <ContentControl>
+                        <StackPanel>
+                            <Image Source="Complie.ICO"/>
+                        </StackPanel>
+                    </ContentControl>
+                </Button>
+                <Button x:Name="ToDb" Width="25" Height="25"  ToolTip="更新到数据库" Click="Refresh_toDB">
+                    <ContentControl>
+                        <StackPanel>
+                            <Image Source="ToDb.ICO"/>
+                        </StackPanel>
+                    </ContentControl>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Margin="0,30,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65*"/>
+                <ColumnDefinition Width="241*"/>
+                <ColumnDefinition Width="65*"/>
+            </Grid.ColumnDefinitions>
+            <TreeView x:Name="main_treeView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" SelectedItemChanged="main_treeView_SelectedItemChanged"/>
+            <GridSplitter Width="5"/>
+            <TabControl x:Name="mainTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" SelectionChanged="mainTab_SelectionChanged" >
+                
+            </TabControl>
+            <GridSplitter Width="5" Grid.Column="1"/>
+            <Control:WpfPropertyGrid x:Name="property" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </Grid>
+    </Grid>
+</Window>

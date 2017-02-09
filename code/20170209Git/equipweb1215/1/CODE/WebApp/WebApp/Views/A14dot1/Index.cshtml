@@ -1,0 +1,205 @@
+﻿@model WebApp.Controllers.A14dot1Controller.A14dot1_Model
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+    <style type="text/css">
+        tr.MM_hidden {
+            display: none;
+        }
+
+        /*tr.MM_shown {
+        }*/
+
+        tr.selected {
+            background-color: #acbad4;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+    <section class="content" style="background-color: #ecf0f5;">
+        <div class="box box-primary">
+            <div class="box-header with-border bg-gray">
+                <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A14.1-DRBPM预防性计划</h3> 
+            </div>
+
+        </div>
+            <div class="box">
+            <div class="box-header">
+                <p class="box-title" style="font:bold; color:red">DRBPM系统<a href="http://10.128.189.203/drbpm_index.aspx"> 设备状态自动分析结果一览<span style="color:red">(点击查看）</span></a></p>
+            </div>
+       <!-- /.box-header -->
+            <div >
+                <div class="row">
+                    <div class="col-xs-12">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box -->
+ @*       <div class="box">
+            <div class="box-header">
+                <p class="box-title" style="font:bold; color:red">DRBPM预防性计划表</p>
+            </div>
+       <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table id="example1" class="table table-hover table-bordered">                           
+                                <thead>
+                                    <tr>
+                                    <th>车间名称</th><th>装置名称</th><th>设备编号</th><th>工艺编号</th><th>设备型号</th><th>专业分类</th><th>专业分类子类</th><th>设备ABC分类</th><th>计划检修原因</th><th>计划检修时间</th><th>操作</th>
+                                 </tr>
+                                </thead> 
+                            <tbody>
+                                @foreach (var item in Model.A14dot1_ModelInfoList)
+                                {
+                                    <tr>
+                                        <td>@item.Cj_Name</td><td>@item.Zz_Name</td><td>@item.Equip_Code</td><td>@item.Equip_GyCode</td><td>@item.Equip_Type</td><td>@item.Zy_Type</td><td>@item.Zy_SubType</td><td>@item.Equip_ABCMark</td><td>@item.Jx_Reason</td><td>@item.jxPlanDate</td>
+                                        <td><button name="JumpToA8dot2" onclick="submit_click('@item.Equip_Code','@item.Jx_Reason')">转入A8.2-检修计划实施管理</button></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        <!-- /.box -->
+
+                <div class="box">
+            <div class="box-header">
+                <p class="box-title" style="font:bold; color:red">当月正在进行的预防性检修设备</p>
+            </div>
+       <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table id="example2" class="table table-hover table-bordered">                           
+                                <thead>
+                                    <tr>
+                                    <th>车间名称</th><th>装置名称</th><th>设备编号</th><th>工艺编号</th><th>故障强度</th><th>报警状态</th><th>运行趋势</th><th>上次检修时间</th><th>计划检修原因</th>
+                                      <th>工单号</th><th>当前计划状态</th><th>检修方案</th><th>计划是否可实施</th><th>计划实施情况</th><th>完工时间</th>
+                                        @if (Model.isJx == "true")
+                                        {
+                                        <th>操作</th>
+                                        }
+                                 </tr>
+                                </thead> 
+                            <tbody>
+                                @foreach (var item in Model.A14dot1_ModelInfoList)
+                                {
+                                    <tr>
+                                       <td>@item.Cj_Name</td><td>@item.Zz_Name</td><td>@item.Equip_Code</td><td>@item.Equip_GyCode</td><td>@item.faultIntensity</td><td>@(item.alarmState=="0"?"正常":@item.alarmState+"级")</td><td>@(item.runTrend=="0"?"好":"差")</td><td>@item.latestDate</td><td>@item.Jx_Reason</td>
+                                        <td>@item.Job_Order</td><td>@item.Job_OrderState</td><td>@item.Plan_DescFilePath</td><td>@item.ZzConfirmPlan_Result</td><td>@item.JxdwConfirmEnd_done</td><td>@item.PlanFinishDate</td>
+                                         @if (Model.isJx == "true") { 
+                                            if (string.IsNullOrEmpty(item.JxSubmit_done.Trim()))
+                                        {
+                                         <td><button name="JumpToA8dot2" onclick="submit_click('@item.Equip_Code','@item.Jx_Reason')" >转入A8.2-检修计划实施管理</button></td>
+                                        }
+                                        else
+                                        {
+                                         <td></td>
+                                        }
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box -->
+    </section>
+
+    @section js{
+        <!-- Page script -->
+        <script>
+            $(function () {
+                $("thead").css("background", "#7CCD7C");
+                $("tbody tr").addClass("info");
+            });
+
+            function submit_click(Equip_Code, Jx_Reason) {
+                if (!confirm('确定要转入吗？'))
+                    return false;
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/A14dot1/click_submitsignal',
+                    data: {
+                        json1: '{Equip_Code: "' + Equip_Code
+                           + '", Jx_Reason: "' + Jx_Reason
+                           + '"}'
+                    },
+                    success: function (data) {
+                        location.href = data;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+
+            };
+
+            //$("button[name='JumpToA8dot2']").click(function () {               
+            //    if (!confirm('确定要转入吗？'))
+            //        return false;
+            //    var strAll = "";
+            //    //alert($(this));
+            //    //alert($(this).parent().text());
+            //    //alert($(this).parent().prev().text());
+            //    $(this).parent().prevAll().each(function () {
+            //        strAll += $(this).text() + "$";
+            //    });
+            //    $.ajax({
+            //        type: 'POST',
+            //        url: '/A14dot1/click_submitsignal',
+            //        data: {
+            //            json1: '{strAll: "' + strAll
+            //                 + '"}'
+            //        },
+            //        success: function (data) {
+            //            location.href = data;
+            //        },
+            //        error: function () {
+            //            alert('error');
+            //        }
+            //    });
+
+            //});
+
+             $(function () {
+                 $("#example1,#example2").DataTable({
+                    "oLanguage": {
+                                     "sLengthMenu": "每页显示 _MENU_ 条记录",
+                                     "sZeroRecords": "抱歉， 没有找到",
+                                     "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                                     "sInfoEmpty": "没有数据",
+                                     "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                                     "sZeroRecords": "没有检索到数据",
+                                     "sSearch": "模糊查询:  ",
+                                     "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                                     "oPaginate": {
+                                         "sFirst": "首页",
+                                         "sPrevious": "前一页",
+                                         "sNext": "后一页",
+                                         "sLast": "尾页"
+                                     }
+                                  },
+                     "paging": true,
+                     "lengthChange": false,
+                     "searching": true,
+                     //"ordering": true,
+                     "info": true,
+                     "autoWidth": false,
+                     "aoColumnDefs": [{ "bSortable": false, "aTargets": [2, 3, 8, 9, 10, 11, 12, 13, 14, 15] },
+                     { "visible": false, "aTargets":[9,10,11,12,13,14,15]}]
+                    
+                 });
+
+             });
+      </script>
+    }

@@ -1,0 +1,110 @@
+﻿@model WebApp.Controllers.A11dot2Controller.MainModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<style type="text/css">
+    tr.MM_hidden {
+        display: none;
+    }
+
+    tr.MM_shown {
+    }
+
+    tr.selected {
+        background-color: #acbad4;
+    }
+</style>
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title">设备隐患排查模块</h3>
+        </div>
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-2">
+                    <a id="Add" class="btn btn-block btn-social btn-info" onclick="Create()">
+                        <i class="fa fa-plus"></i>   设备隐患人工申报
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+            <div class="box">
+            <div class="box-header">
+                <h3 class="box-title"><p>待处理任务列表</p></h3>
+
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- /.box-header -->
+              <div class="box-body table-responsive no-padding">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <table class="table table-hover">
+                              <tbody>
+                                  <tr>
+                                      <th>序号</th>
+                                      <th>任务送达时间</th>
+                                      <th>任务描述</th>
+                                      <th>任务传达人</th>
+                                      <th>任务处理</th>
+                                  </tr>
+                                  @foreach (var item in Model.miss)
+                                  {
+                                      <tr>
+                                          <th>@(Model.miss.IndexOf(item) + 1)</th>
+                                          <th>11-7-2014</th>
+                                          <th>@item.WE_Event_Desc</th>
+                                          <th>fhp</th>
+                                          <th><button onclick="JavaScript: location.href='@item.Mission_Url'">处理</button></th>
+                                      </tr>
+                                  }
+                              </tbody>
+                          </table>
+                      </div>
+                      </div>
+                  </div>
+                      <!-- /.box-body -->
+                  </div>
+                  <!-- /.box -->
+         
+
+
+
+   
+</section>
+@section js{
+    <!-- Page script -->
+    <script>
+
+        function Create() {
+           
+            $.ajax({
+                type: 'POST',
+                url: '/Main/CreateFlow',
+                data: { flowname:"A11dot2" },
+                success: function (data) {                   
+                    location.href = data;
+                },
+                error: function (data) {
+                    alert('a11.2 error');
+                }
+            });
+        }
+
+    </script>
+}

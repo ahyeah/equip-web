@@ -1,0 +1,170 @@
+﻿@model WebApp.Controllers.A2Controller.Index_ModelforA2
+@{
+    ViewBag.Title = "A5";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@*<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/TableTools/css/dataTables.tableTools.css" />*@
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A6-设备使用维护</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <a id="PqSummary" class="btn btn-block btn-social btn-info" onclick="guicheng()">
+                        <i class="glyphicon glyphicon-log-in"></i>设备操作规程
+                    </a>
+                </div>               
+            </div>
+        </div>
+
+    </div>
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">全厂润滑间（站）总貌</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+
+                <div class=" col-md-6">
+                    <img src="~/images/bluehouse.jpg">
+                    <span>全厂所有润滑间（站）台数：18 台</span>
+                </div>
+                
+                <div class=" col-md-6">
+                    <img src="~/images/greenhouse.jpg">
+                    <span>当前完好润滑间（站）台数：@ViewBag.CompleteCount 台</span>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="box">
+
+    </div>
+</section>
+<div class="modal fade" id="qst" tabindex="-1" role="dialog"
+     aria-labelledby="qst_title" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;height:800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="qst_title">
+                    操作规程
+                </h4>
+            </div>
+            <div class="modal-body" id="qst_graphic" style="width:800px;height:50%">
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/chartjs/Chart.js"></script>
+    <style>
+        th {
+            white-space: nowrap;
+            text-align: left;
+        }
+    </style>
+    <script type="text/javascript">
+
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+        function guicheng() {
+            $("#qst_graphic").empty();
+            var ihtml = "<table id=\"example\" class=\"table table-striped table-bordered\">" + "<thead><tr role=\"row\"><th>序号</th><th>车间</th><th>装置</th><th>设备位号</th><th>设备编号</th><th>设备型号</th><th>操作规程</th></tr> </thead></table>";
+            $("#qst_graphic").append(ihtml);
+
+
+            $('#qst').modal('show');
+
+
+
+            var t = $('#example').DataTable({
+
+                "aoColumnDefs": [
+
+                    { "sWidth": "1", "aTargets": [0] },
+                    //{ "sWidth": "80%", "aTargets": [ 1 ] }
+
+                ],
+                //每页显示十条数据
+                pageLength: 10,
+                columns: [{ "data": "index" },                         
+                          { "data": "cjname" },
+                          { "data": "zzname" },
+                          { "data": "sbGyCode" },
+                          { "data": "sbCode" },
+                          { "data": "sbType" },
+                          {
+                              "data": "GCnewname",
+                              "render": function (data, type, full, meta) {
+                                  var GCname=full.GCnewname.split("$$");
+                                  return ' <a target=\"_blank\"  href=' + GCname[0] + '>' +"<i class=\"fa fa-fw fa-link\"></i>"+ GCname[1] + '</a> ';
+                              }
+
+                          },//待处理，应返回链接
+                          
+                ],
+                "ajax": {
+                    "url": "/A6dot1/A6guicheng",
+                    "type": "POST"
+                },
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                         "bProcessing": true,
+                         "paging": true,
+                         "lengthChange": false,
+                         "searching": false,
+                //"ordering": true,
+                         "info": true,
+                         "autoWidth": false,
+                         "scrollX": true
+
+            });
+
+
+
+        }
+
+  
+
+
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+}

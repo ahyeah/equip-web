@@ -1,0 +1,120 @@
+﻿using FlowDesigner.ConfigItems;
+using FlowDesigner.customcontrol;
+using FlowDesigner.Management;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Control;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace FlowDesigner
+{
+    /// <summary>
+    /// MainWindow.xaml 的交互逻辑
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        private WorkFlowsProj main_proj;
+
+        private int id_for_workflow = 0;
+        public MainWindow()
+        {
+            InitializeComponent();
+            
+            
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
+        
+        private void OnConfigItem_Selected(ConfigItem sender)
+        {
+            property.SelectedObject = sender;
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void mainCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// 新建工作流工程
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void new_proj_Click(object sender, RoutedEventArgs e)
+        {
+            NewWorkFlowProj newWF = new NewWorkFlowProj();
+            if (!newWF.ShowDialog().Value)
+                return;
+
+            string proj_name = newWF.newProj_name;
+            string proj_path = newWF.newProj_path;
+            if (main_proj == null)
+            {
+                main_proj = new WorkFlowsProj();
+                main_proj.Name = proj_name;
+                main_proj.Path = proj_path;
+                TreeViewItem projItem = new TreeViewItem();
+                StackPanel stack = new StackPanel();
+                stack.Orientation = Orientation.Horizontal;
+                Image im = new Image();
+                im.Width = 16;
+                im.Height = 16;
+                im.Source = new BitmapImage(new Uri("new_wfs.ico", UriKind.RelativeOrAbsolute));
+                stack.Children.Add(im);
+                TextBlock tb = new TextBlock();
+                tb.VerticalAlignment = VerticalAlignment.Center;
+                tb.Text = main_proj.Name;
+                stack.Children.Add(tb);
+                projItem.Header = stack;
+                
+                main_treeView.Items.Add(projItem);
+            }
+        }
+
+        private void AddEvent_Click(object sender, RoutedEventArgs e)
+        {
+            if (main_proj != null)
+            {
+                WorkFlowMan new_wf = main_proj.NewWrokFlowMan("test" + id_for_workflow.ToString(), "test" + id_for_workflow.ToString());
+                TreeViewItem projItem = new TreeViewItem();
+                StackPanel stack = new StackPanel();
+                stack.Orientation = Orientation.Horizontal;
+                Image im = new Image();
+                im.Width = 16;
+                im.Height = 16;
+                im.Source = new BitmapImage(new Uri("workflow.ico", UriKind.RelativeOrAbsolute));
+                stack.Children.Add(im);
+                TextBlock tb = new TextBlock();
+                tb.VerticalAlignment = VerticalAlignment.Center;
+                tb.Text = new_wf.Name;
+                stack.Children.Add(tb);
+                projItem.Header = stack;
+
+                
+                ((TreeViewItem)main_treeView.Items[0]).Items.Add(projItem);
+                projItem.MouseDoubleClick += new_wf.OnSelected;
+                new_wf.LinkToMainTab(mainTab);
+                id_for_workflow += 1;
+            }
+        }
+    }
+}

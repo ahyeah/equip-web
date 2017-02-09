@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>C5</id>
+    <version>2.4.5947.17249</version>
+    <title>C5</title>
+    <authors>Niels Kokholm, Peter Sestoft, and Rasmus Lystrøm</authors>
+    <owners>Niels Kokholm, Peter Sestoft, and Rasmus Lystrøm</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The C5 Generic Collection Library for C# and CLI is a comprehensive collection library supporting lists, sets, bags, dictionaries, priority queues, (FIFO) queues, and (LIFO) stacks. C5 runs on .NET 3.5+, Silverlight 5, Windows Phone 8, Xamarin.iOS, Xamarin.Android, and Mono.</description>
+    <summary />
+    <copyright>Copyright © Niels Kokholm, Peter Sestoft, and Rasmus Lystrøm 2003-2016</copyright>
+  </metadata>
+</package>

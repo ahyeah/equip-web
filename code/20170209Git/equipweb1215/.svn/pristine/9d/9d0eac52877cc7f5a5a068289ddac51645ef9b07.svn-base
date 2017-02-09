@@ -1,0 +1,53 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+
+namespace FlowDesigner.ConfigItems
+{
+    public enum WorkModel { parallel, serial};
+    class ConfigSubEvent : ConfigEvent
+    {
+        public ConfigSubEvent(string eType) : base(eType)
+        {
+
+        }
+
+        [CategoryAttribute("子工作流")]
+        public WorkModel WorkingModel { get; set; }
+
+        public void SetWorkModel(string wm)
+        {
+            switch(wm)
+            {
+                case "parallel":
+                    WorkingModel = WorkModel.parallel;
+                    break;
+
+                case "serial":
+                    WorkingModel = WorkModel.serial;
+                    break;
+            }
+        }
+
+        [CategoryAttribute("子工作流")]
+        public string LinkWorkFLow { get; set; }
+
+        public override XmlElement SaveConfigItem(XmlDocument Owner)
+        {
+            //base
+            XmlElement base_xml = base.SaveConfigItem(Owner);
+            
+            //LinkWrokFlow
+            XmlElement linkwf = Owner.CreateElement("LinkWorkflow");
+            linkwf.SetAttribute("name", LinkWorkFLow);
+            linkwf.SetAttribute("model", WorkingModel.ToString("G"));
+
+            base_xml.AppendChild(linkwf);
+            return base_xml;
+        }
+    }
+}

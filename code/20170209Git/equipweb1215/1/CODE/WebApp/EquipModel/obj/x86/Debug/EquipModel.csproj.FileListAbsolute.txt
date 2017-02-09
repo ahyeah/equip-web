@@ -1,0 +1,11 @@
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\bin\x86\Debug\EquipModel.dll.config
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\bin\x86\Debug\EquipModel.dll
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\bin\x86\Debug\EquipModel.pdb
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\bin\x86\Debug\EntityFramework.dll
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\bin\x86\Debug\EntityFramework.SqlServer.dll
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\bin\x86\Debug\EntityFramework.xml
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\bin\x86\Debug\EntityFramework.SqlServer.xml
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\obj\x86\Debug\EquipModel.Migrations.init20160702.resources
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\obj\x86\Debug\EquipModel.csproj.GenerateResource.Cache
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\obj\x86\Debug\EquipModel.dll
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipModel\obj\x86\Debug\EquipModel.pdb

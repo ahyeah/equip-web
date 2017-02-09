@@ -1,0 +1,45 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Control="clr-namespace:System.Windows.Control" x:Class="FlowDesigner.MainWindow"
+        Title="FlowDesigner" Height="605" Width="893" Loaded="Window_Loaded">
+    <Grid>
+        <ToolBarTray Height="30" VerticalAlignment="Top">
+            <ToolBar VerticalAlignment="Stretch" Height="30">
+                <RadioButton Name="new_proj" Width="25" Height="25" ToolTip="新建工作流工程" Click="new_proj_Click">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="new_wfs.ico"/>
+                        </StackPanel>
+                    </ContentControl>
+                </RadioButton>
+                <RadioButton Name="AddFlow" Width="25" Height="25" ToolTip="Event" Click="AddFlow_Click">
+                    <ContentControl>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="workflow.ico"/>
+                        </StackPanel>
+                    </ContentControl>
+                </RadioButton>
+                
+            </ToolBar>
+            <ToolBar VerticalAlignment="Stretch" Height="30">
+                <RadioButton Name="AddNEvent" Width="25" Height="25" Content="N" Click="AddNEvent_Click"/>
+                <RadioButton Width="25" Height="25" Content="P"/>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Margin="0,30,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65*"/>
+                <ColumnDefinition Width="241*"/>
+                <ColumnDefinition Width="65*"/>
+            </Grid.ColumnDefinitions>
+            <TreeView Name="main_treeView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" SelectedItemChanged="main_treeView_SelectedItemChanged"/>
+            <GridSplitter Width="5"/>
+            <TabControl Name="mainTab" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" SelectionChanged="mainTab_SelectionChanged" >
+                
+            </TabControl>
+            <GridSplitter Width="5" Grid.Column="1"/>
+            <Control:WpfPropertyGrid x:Name="property" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </Grid>
+    </Grid>
+</Window>

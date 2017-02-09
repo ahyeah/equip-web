@@ -1,0 +1,217 @@
+﻿using FlowDesigner.ConfigItems;
+using FlowDesigner.customcontrol;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+namespace FlowDesigner.Management
+{
+    /// <summary>
+    /// 工作流管理
+    /// </summary>
+    public class WorkFlowMan
+    {
+        public WorkFlowMan(string name, string desc)
+        {
+            Name = name;
+            Description = desc;
+            designer = new DesignerPage();
+            designer.Title = Name;
+            designer.parent_man = this;
+            designer.LinkClick(this.OnCanvasClick);
+            designer.LinkMouseMove(this.OnCanvasMouseMove);
+            
+            //PerAddNEvent = false;
+            perAddNFlow = 0;
+        }
+
+        #region private property
+        /// <summary>
+        /// 工作流设计界面
+        /// </summary>
+        private DesignerPage designer;
+        /// <summary>
+        /// 工作流设计界面插入到父界面元素
+        /// </summary>
+        private TabControl parent;
+        
+
+        /// <summary>
+        /// 工作流的定义元素
+        /// </summary>
+        private List<ConfigItem> wf_itmes = new List<ConfigItem>();
+        private int for_events = 1;
+        private bool m_perAddNEvent = false;
+
+        private ConfigItem Curr_Selected = null;
+
+
+        public void InitStartAndEnd()
+        {
+            //start
+            ConfigEvent newSE = new ConfigEvent("StartEvent");
+            newSE.name = "Start";
+            newSE.description = "Start";
+            newSE.OnSelected += this.Proj.win_main.OnConfigItem_Selected;
+            newSE.SetPos(50, 50);
+            wf_itmes.Add(newSE);
+            this.designer.Client.Children.Add(newSE.GetShowItem());
+
+            //end
+            ConfigEvent newEE = new ConfigEvent("EndEvent");
+            newEE.name = "End";
+            newEE.description = "End";
+            newEE.OnSelected += this.Proj.win_main.OnConfigItem_Selected;
+            newEE.SetPos(50, 150);
+            wf_itmes.Add(newEE);
+            this.designer.Client.Children.Add(newEE.GetShowItem());
+        }
+        #endregion
+
+        #region public property
+        /// <summary>
+        /// 工作流名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 工作流描述
+        /// </summary>
+        public string Description { get; set; }
+
+
+        public bool PerAddNEvent 
+        { 
+            get
+            {
+                return m_perAddNEvent;
+            }
+            set
+            {
+                m_perAddNEvent = value;
+                if (m_perAddNEvent == false)
+                {
+                    this.Proj.win_main.EndAddNEvent();
+                }
+            } 
+        }
+
+        public int perAddNFlow { get; set; }
+
+        public WorkFlowsProj Proj { get; set; }
+
+        //新添加的flow
+        private ConfigFlow ForAdd = null;
+        public ConfigItem SelectedItem { 
+            get {
+                return Curr_Selected;
+            }
+            set {
+                
+                foreach(ConfigItem ce in wf_itmes)
+                {
+                    if (ce != value)
+                        ce.UnSelect();
+                    else
+                        ce.Selected();
+                }
+
+                if (perAddNFlow == 1) //为flow设置起始Event
+                {
+                    if (value.GetType().Name == "ConfigEvent")
+                    {
+                        //创建新flow
+                        ForAdd = new ConfigFlow();
+                        ForAdd.Start = ((ConfigEvent)value);
+                        designer.Client.Children.Add(ForAdd.GetShowItem());
+                        perAddNFlow = 2;
+                    }
+
+                }
+                else if (perAddNFlow == 2) //为flow设置
+                {
+                    //暂时不允许flow的start, end相等
+                    if (value.GetType().Name == "ConfigEvent" && value != Curr_Selected)
+                    {                                             
+                        ForAdd.End = ((ConfigEvent)value);
+                        ForAdd.Connect();
+                        wf_itmes.Add(ForAdd);
+                        ((ConfigEvent)ForAdd.Start).AttachFlows(ForAdd);
+                        ((ConfigEvent)ForAdd.End).AttachFlows(ForAdd);
+                        perAddNFlow = 0;
+                    }
+                }
+                Curr_Selected = value;
+            }
+        }
+        #endregion
+
+        #region method
+        /// <summary>
+        /// 将设计界面插入到主界面中
+        /// </summary>
+        /// <param name="mainTab"></param>
+        public void LinkToMainTab(TabControl mainTab )
+        {
+            mainTab.Items.Add(this.designer);
+            mainTab.SelectedItem = this.designer;
+            parent = mainTab;
+        }
+
+        /// <summary>
+        /// 添加一个事件
+        /// </summary>
+        /// <param name="eType"></param>
+        public ConfigEvent AddNewEvent(string eType)
+        {
+            ConfigEvent newE = new ConfigEvent(eType);
+            newE.name = "event" + for_events.ToString();
+            newE.description = "event" + for_events.ToString();
+            newE.OnSelected += this.Proj.win_main.OnConfigItem_Selected;
+            wf_itmes.Add(newE);
+            for_events += 1;
+            return newE;
+        }
+
+        /// <summary>
+        /// 左边树形菜单有元素被选择(双击)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void OnSelected(object sender, MouseButtonEventArgs e)
+        {
+            if ((TabControl)designer.Parent == null)
+                parent.Items.Add(this.designer);
+
+            ((TabControl)designer.Parent).SelectedItem = this.designer;
+            Proj.CurrentWF = this;
+            Proj.win_main.OnConfigItem_Selected(SelectedItem);
+        }
+
+        public void OnCanvasClick(object sender, MouseButtonEventArgs e)
+        {
+            if (PerAddNEvent == true)
+            {
+                ConfigEvent ne = AddNewEvent("NormalEvent");                
+                ne.SetPos((int)e.GetPosition((Canvas)sender).X - 75, (int)e.GetPosition((Canvas)sender).Y - 35);
+                designer.Client.Children.Add(ne.GetShowItem());
+                PerAddNEvent = false;
+                
+            }
+        }
+
+        public void OnCanvasMouseMove(object sender, MouseEventArgs e)
+        {
+            if (perAddNFlow == 2) //已设置好起点
+            {
+                ForAdd.DynamicDraw(e.GetPosition((Canvas)sender));
+            }
+        }
+        #endregion
+    }
+}

@@ -1,0 +1,222 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/css/editor.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/css/rowReorder.bootstrap.min.css">
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">设备完好临时任务编辑</h3>
+                </div>
+                <div class="box-body">
+                    @*<button class="btn btn-default" id="addrow" onclick="newRow()">新建</button>
+                        <button class="btn btn-default disabled" id="deletrow" onclick="deleteRow()">删除</button>*@
+
+                    <table id="A6dot2jobs_table" class="table table-hover table-bordered display">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>装置</th>
+                                <th>设备位号</th>
+                                <th>设备编号</th>
+                                <th>不完好描述</th>
+                                <th>整改情况</th>
+                                <th>备注</th>
+                                
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section js {
+    <!-- Page script -->
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/dataTables.editor.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/editor.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+    <style>
+        th, td {
+            white-space: nowrap;
+            text-align: left;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var editor;
+        var t;
+        $(document).ready(function () {
+
+            //在线编辑
+            //Editor 初始化
+            editor = new $.fn.dataTable.Editor({
+                ajax: "/A5TimeJob/A5PostChanges",
+                table: "#A6dot2jobs_table",
+                idSrc: "ID",//必须指定行中某列，一般是指向隐藏列id，否则，删除和在线编辑无法实现
+                fields: [
+                    {
+                        label: "zz_name",
+                        name: "zz_name"
+                    },
+                      {
+                          label: "jz_name",
+                          name: "jz_name"
+                      },
+                        {
+                            label: "sb_code",
+                            name: "sb_code"
+                        },
+                          {
+                              label: "last_check_month",
+                              name: "last_check_month"
+                          },
+                            {
+                                label: "check_result",
+                                name: "check_result"
+                            },
+                              {
+                                  label: "zz_file",
+                                  name: "zz_file"
+                              }
+                ]
+            });
+
+
+            //$('#A6dot2jobs_table').on('click', 'tbody td.ForEdit, tbody td:contains("空任务")', function (e) {
+
+
+            //    editor.inline(this, { onBlur: 'submit' });
+            //});
+            $('#A6dot2jobs_table').on('click', 'tbody td:not(:first-child)', function (e) {
+                editor.inline(this, { onBlur: 'submit' });
+            });
+
+            //$('#A6dot2jobs_table').on('click', 'tbody td:not(:first-child)', function (e) {
+            ////  alert("123");
+            //    editor.inline(this, {
+            //        onBlur: 'submit'
+            //    });
+            //});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //   $.fn.dataTable.ext.errMode = 'none';//屏蔽表格初始化出现错误时的提醒框，默认值为“alert”。现改为“none”
+            t = $('#A6dot2jobs_table').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "iDisplayLength": 20,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "info": true,
+                "ajax": {
+                    "url": "/A5TimeJob/A5dot1GetTimerJobs",
+                    "type": "POST"
+                },
+                "columnDefs": [
+                { "targets": 1, "visible": false },
+                 // { "targets": [0, 2, 3, 4, 5, 6, 7, 8], "orderable": false }
+                ],
+                columns: [
+                         {
+                             data: null,
+                             defaultContent: '',
+                             className: 'select-checkbox',
+                             orderable: false
+                         },
+                                 { data: "ID" },
+                                 { data: "zz_name" },
+                                 { data: "jz_name" },
+                                 { data: "sb_code" },
+                                 { data: "last_check_month" },
+                                 { data: "check_result" },
+                                 { data: "zz_file" },
+                                 
+                ],
+
+
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+                "buttons": [
+                    {
+                        extend: "create",
+                        text: "新建",
+                        action: function (e, dt, node, config) {
+                            editor
+                            .create(false)
+                            .submit();
+                        }
+                    },
+                    {
+                        extend: "remove",
+                        text: "删除",
+
+                        action: function (e, dt, node, config) {
+                            var rows = dt.rows({ selected: true }).data().pluck('zz_name');
+                            editor
+                                .title('删除')
+                                .buttons('确认删除')
+                               .message('确定删除<ul><li>' + rows.join('</li><li>') + '</li></ul>')
+                                .remove(dt.rows({ selected: true }).indexes());
+
+                        }
+                    }
+                ],
+                "dom": 'Bfrtip',
+
+            });
+            //添加， 删除后重新排序， 确保新添加的记录在第一行，便于用户操作
+            editor.on('postCreate postRemove', function () {
+                t.column('1:visible').order('desc').draw();
+            });
+
+        });
+
+
+
+    </script>
+}

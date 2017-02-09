@@ -1,0 +1,8 @@
+﻿
+@{
+    ViewBag.Title = "RiskRecognition";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>RiskRecognition</h2>
+

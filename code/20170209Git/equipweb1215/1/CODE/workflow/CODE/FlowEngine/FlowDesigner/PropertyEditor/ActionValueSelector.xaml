@@ -1,0 +1,29 @@
+﻿<Window x:Class="FlowDesigner.PropertyEditor.ActionValueSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ActionValueSelector" Height="332" Width="300" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TreeView Name="LinkValue" HorizontalAlignment="Left" Height="249" Margin="10,10,0,0" VerticalAlignment="Top" Width="282" RenderTransformOrigin="0.5,0.5">
+            <TreeView.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform />
+                    <RotateTransform/>
+                    <TranslateTransform X="-6.861"/>
+                </TransformGroup>
+            </TreeView.RenderTransform>
+            <TreeViewItem Header="工作流属性" IsExpanded="True">
+                <TreeViewItem Header="Entity_ID"/>
+                <TreeViewItem Header="Name"/>
+                <TreeViewItem Header="Description"/>
+                <TreeViewItem Header="Serial"/>
+            </TreeViewItem>
+            <TreeViewItem Header="当前事件关联变量" IsExpanded="True">
+
+            </TreeViewItem>
+        </TreeView>
+        <Button Content="确定" HorizontalAlignment="Left" Height="27" Margin="95,264,0,0" VerticalAlignment="Top" Width="48" Click="Ok_Click"/>
+        <Button Content="取消" HorizontalAlignment="Left" Height="27" Margin="158,264,0,0" VerticalAlignment="Top" Width="48"/>
+
+    </Grid>
+</Window>

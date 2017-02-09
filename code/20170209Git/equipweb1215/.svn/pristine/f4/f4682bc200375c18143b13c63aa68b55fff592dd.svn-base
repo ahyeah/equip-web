@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "CjCreatePlan";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">车间确立应急预案</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" role="form">
+                    <input type="text" id="wef_id"  hidden="hidden" value="@ViewBag.WF_NAME">  
+
+
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">车间应急预案描述</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="3" id="plan_desc"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">车间应急预案附件</label>
+                        <div class="col-sm-10">
+                           （如有附件，请上传） <input type="file" id="plan_desc_file">
+                        </div>
+                    </div>
+ 
+ 
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" class="btn btn-default" onclick="submit_click()">提交</button>
+                        </div>
+                    </div>
+                </form>              
+             </div>
+            </div>
+    </div>
+    
+</section>
+
+@section js{
+    <!-- Page script -->
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+
+            getCurrentTime();
+            ////Datepicker
+            //$('.datepicker').datepicker({});
+
+            ////Timepicker
+            //$(".timepicker").timepicker({
+            //    showInputs: false
+            //});
+        });
+
+        function getCurrentTime() {
+
+            var mydate = new Date();
+            var t = mydate.toLocaleString();
+            $("#submit_time").val(t);
+
+        }
+        function submit_click() {
+
+            var flow_name = $("#wef_id").val();            
+            //alert(flow_name);
+          
+            $.ajax({
+                type: 'POST',
+                url: '/A11dot2/submitCreatePlan_signal',
+               // data: { flowname: flow_name },
+                data:{ 
+                    json1: '{Flow_Name: "' + flow_name
+                         + '", Plan_Desc: "' + $('#plan_desc').val()
+                         + '", Plan_DescFilePath: "' + $('#plan_desc_file').val()
+                         + '"}'
+                },
+                //文件路径Problem_DescFilePath？？？？？
+                //dataType: 'json',
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error submitCreatePlan_signal');
+                }
+            });
+
+        }
+
+    </script>
+    }
+
+
+ 
+ 
+

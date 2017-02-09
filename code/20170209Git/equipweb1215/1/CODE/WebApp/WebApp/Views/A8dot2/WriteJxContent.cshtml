@@ -1,0 +1,249 @@
+﻿@model WebApp.Controllers.CommonController.WFDetail_Model
+@{
+    ViewBag.Title = "ZzSubmit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        业务流水号：<button class="btn btn-default" onclick="DispalsySide('@ViewBag.WF_Ser')">@ViewBag.WF_Ser</button>
+                    </span>
+                </li>
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：填写检修内容及关键工序，关联作业指导书
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">填写检修内容及关键工序，关联作业指导书</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">检修内容及关键工序</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="Jx_Content"></textarea>
+                                    </div>
+                                </div>
+
+                                 <div class="form-group">
+                                    <label class="col-sm-2 control-label">作业指导书</label>
+                                    <div class="col-sm-10">
+                                        <select style="width: 100%;" id="Job_Guidebook" onchange="change(this)">
+                                            <option value="">请选择</option>
+                                            <option value="http://localhost:2279/files/离心泵.pdf">离心泵维护检修  WHJX-WX-2009-0001A</option>   
+                                            <option value="http://localhost:2279/files/蒸汽往复泵维护检修.pdf">蒸汽往复泵维护检修作业指导书 WHJX-WX-2009-0002A</option>
+                                            <option value="http://localhost:2279/files/螺杆泵维护检修.pdf">螺杆泵维护检修作业指导书 WHJX-WX-2009-0003A</option>
+                                            <option value="http://localhost:2279/files/齿轮泵维护检修.pdf">齿轮泵维护检修作业指导书 WHJX-WX-2009-0004A</option>
+                                            <option value="http://localhost:2279/files/活塞式压缩机维护检修.pdf">活塞式压缩机维护检修作业指导书 WHJX-WX-2009-0005A</option>
+                                            <option value="http://localhost:2279/files/螺杆压缩机维护检修.pdf">螺杆压缩机维护检修作业指导书 WHJX-WX-2009-0006A</option>
+                                            <option value="http://localhost:2279/files/离心式鼓风机.pdf">离心式鼓风机维护检修作业指导书 WHJX-WX-2009-0007A</option>
+                                            <option value="http://localhost:2279/files/轴流式风机维护检修.pdf">轴流式风机维护检修作业指导书 WHJX-WX-2009-0008A</option>
+                                            <option value="http://localhost:2279/files/罗茨鼓风机维护检修.pdf">罗茨鼓风机维护检修作业指导书 WHJX-WX-2009-0009A</option>
+                                            <option value="http://localhost:2279/files/高速泵维护检修.pdf">高速离心泵维护检修作业指导书 WHJX-WX-2009-0010A</option>
+                                            <option value="http://localhost:2279/files/平衡对动活塞压缩机维护检修.pdf">平衡对动活塞压缩机维护检修作业指导书 WHJX-WX-2009-0025A</option>
+                                            <option value="http://localhost:2279/files/通用零部件检修.pdf">石油化工转动设备通用部件维护检修作业指导书 WHJX-WX-2009-0028A</option>
+                                            <option value="http://localhost:2279/files/变速机维护检修.pdf">变速机维护检修作业指导书 WHJX-WX-2009-0029A</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                            </form>
+                         
+                            <form role="form">
+                                <div class="box-footer">
+                                    <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click()">确定提交</button>
+                                   
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+                <!-- 工作流历史操作-通用部分Star -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前工作流历史操作
+                    </span>
+                </li>
+                <!-- timeline time label -->
+                @for (int i = @Model.ALLHistoryMiss.Count() - 1; i >= 1; i--)
+                {
+                    <li class="time-label">
+                        <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@i" aria-expanded=true aria-controls="@i">
+                            @Model.MissTime[i] - @Model.ALLHistoryMiss[i].WE_Event_Desc
+                        </a>
+                    </li>
+
+                    <li class="collapse" id="@i">
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o">@Model.MissTime[i]</i>操作用户： @Model.MissUser[i]</span>
+                            <h3 class="timeline-header lead"><span class="lead" style="color:red">@Model.ALLHistoryMiss[i].WE_Event_Desc</span></h3>
+                            <div class="timeline-body">
+                                <table class="table  table-hover table-bordered">
+                                    <tbody>
+                                        @foreach (var pp in @Model.ALLHistoryMiss[i].Miss_ParamsAppRes)
+                                        {
+                                            if (pp.Value.ToString() != "App_hidden")
+                                            {
+                                                <tr class="info">
+                                                    <th>@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key]</th>
+                                                    @if ((@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key].ToString()).IndexOf("附件") > -1 && @Model.ALLHistoryMiss[i].Miss_Params[pp.Key] != "")
+                                                    {
+                                                        string[] savedFileName = (@Model.ALLHistoryMiss[i].Miss_Params[pp.Key].ToString()).Split(new char[] { '$' });
+                                                        string saveExistFilename = Path.Combine("/Upload", savedFileName[1]);
+                                                        <td><a href=@saveExistFilename target=_blank> @savedFileName[0]</a></td> }
+                                                    else
+                                                    {
+                                                        <td>@Model.ALLHistoryMiss[i].Miss_Params[pp.Key]</td>}
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+                }
+
+                <!-- END timeline item -->
+
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+                <!-- 工作流历史操作-通用部分End -->
+            </ul>
+        </div>
+        <div class="col-md-4" id="sidebar"> </div>
+    </div>
+
+</section>
+
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处-->
+<div class="modal fade" id="EquipInfoModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备相关信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="EquipInfoDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+    </div>
+
+</div><!--设备信息显示模态框结束处--> 
+
+
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/json2.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Plugins/jquery.dataTables.min.css" />
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+        function change(temp) {
+           // alert(temp.value);
+            window.open(temp.value);
+        }
+            function submit_click() {
+                if (!myValidation())
+                    return false;
+                if (!confirm('确定要提交吗？'))
+                    return false;
+
+                var Jx_Content = $('#Jx_Content').val();
+                var flow_name = $("#wef_id").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/A8dot2/WriteJxContent_submitsignal',
+                    data: {
+                        json1: '{"Jx_Content":"' + Jx_Content
+                             + '","Flow_Name":"' + flow_name
+                             + '","Job_Guidebook":"' + $('#Job_Guidebook').find("option:selected").text()
+
+                             + '"}'
+
+                        //json1: '{Flow_Name: "' + flow_name
+                        //     + '", Cj_Name: "' + $('#cjname').find("option:selected").text()
+                        //     + '", Zz_Name: "' + $('#zzId').find("option:selected").text()
+                        //     + '", Equip_GyCode: "' + $('#Equip_GyCode').find("option:selected").text()
+                        //     + '", Equip_Code: "' + $('#E_Code').val()
+                        //     + '", Equip_Type: "' + $('#E_Type').val()
+                        //     + '", Thjl_data: "' + thjl_json
+                        //     + '", Problem_data": ' + problem_data_json
+                        //     + '",workdetail":"' + workdetail
+                        //     + '"}'
+                    },
+                    success: function (data) {
+                        location.href = data;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+
+
+            }
+
+        
+</script>
+
+}
+
+
+
+
+

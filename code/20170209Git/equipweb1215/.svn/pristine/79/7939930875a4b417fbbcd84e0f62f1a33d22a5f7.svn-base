@@ -1,0 +1,267 @@
+﻿@model WebApp.Controllers.CommonController.Index_Model
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    }
+
+    <style type="text/css">
+        tr.MM_hidden {
+            display: none;
+        }
+
+        /*tr.MM_shown {
+        }*/
+
+        tr.selected {
+            background-color: #acbad4;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+    <section class="content" style="background-color: #ecf0f5;">
+        <div class="box box-primary">
+            <div class="box-header with-border bg-gray">
+                <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A7.1-三检特护及状态监测</h3>
+            </div>
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a id="Add" class="btn btn-block btn-social btn-info" onclick="Create1()">
+                            <i class="fa fa-pencil-square-o"></i>人工提报(特护会）
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a id="Add2" class="btn btn-block btn-social btn-info" onclick="Create2()">
+                            <i class="fa fa-pencil-square-o"></i>人工提报(S8000）
+                        </a>
+                    </div>
+                </div>
+                 <div class="row">
+                  <div class="col-xs-6 col-md-3">
+                  <p></p>
+                 </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a id="Select" class="btn btn-block btn-social btn-info" onclick="Select()">
+                            <i class="fa fa-pencil-square-o"></i>美迅平台数据筛选
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <p class="box-title" style="font:bold; color:red">待处理任务列表</p>
+@*                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+
+
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table id="example1" class="table table-hover table-bordered">                           
+                                <thead>
+                                    <tr>
+                                    <th>序号</th>
+                                    <th>业务流水号</th>
+                                    <th>任务送达时间</th>
+                                    <th>任务描述</th>
+                                    <th>任务传达人</th>
+                                    <th>操作</th>
+                                 </tr>
+                                </thead> 
+                            <tbody>
+                                @foreach (var item in Model.Am)
+                                {
+                                    <tr>
+                                        <td>@item.missIndex</td>
+                                        <td>@item.wfe_serial</td>
+                                        <td>@item.missTime</td>
+                                        <td>@item.miss_desc</td>
+                                        <td>@item.userName</td>
+                                        <td><button onclick="JavaScript: location.href='@item.miss_url'">处理</button></td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <p class="box-title " style="font:bold; color:red">历史任务列表（已完成）</p>
+
+   @*             <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+            <div class="box-body table-responsive no-padding">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table id="example2" class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>业务流水号</th>
+                                    <th>任务发起人</th>
+                                    <th>任务发起时间</th>
+                                    <th>任务最后状态</th>
+                                    <th>操作</th>
+                                </tr>
+                             </thead>
+                            <tbody>
+                                @foreach (var item in Model.Hm)
+                                {
+                                    <tr>
+                                        <td>@item.missIndex</td>
+                                        <td>@item.wfe_serial</td>
+                                        <td>@item.missStartName</td>
+                                        <td>@item.missStartTime</td>
+                                        <td>@item.miss_LastStatusdesc</td>
+                                        <td><button onclick="JavaScript: location.href='/A7dot1/WorkFolw_Detail?wfe_id=@item.miss_wfe_Id'">查看详情</button></td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+
+
+
+    </section>
+    @section js{
+        <!-- Page script -->
+        <script>
+
+            $(function () {
+                $("thead").css("background", "#7CCD7C");
+                $("tbody tr").addClass("info");
+            });
+
+
+            function Create1() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Main/CreateFlow',
+                    data: { flowname: "A7dot1dot1" },
+                    success: function (data) {
+                        location.href = data;
+                    },
+                    error: function (data) {
+                        alert('error: A7.1 index');
+                    }
+                });
+            }
+
+            function Create2() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Main/CreateFlow',
+                    data: { flowname: "A7dot1" },
+                    success: function (data) {
+                        location.href = data;
+                    },
+                    error: function (data) {
+                        alert('error: A7.1 index');
+                    }
+                });
+            }
+            function Select() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/A7dot1/MxptSelect',
+                    data: { flowname: "A7dot1" },
+                    success: function (data) {
+                        location.href = '/A7dot1/MxptSelect';
+                    },
+                    error: function (data) {
+                        alert('error: A7.1 index-select');
+                    }
+                });
+            }
+        </script>
+
+     <script>
+             $(function () {
+                 $("#example1").DataTable({
+                    "oLanguage": {
+                                     "sLengthMenu": "每页显示 _MENU_ 条记录",
+                                     "sZeroRecords": "抱歉， 没有找到",
+                                     "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                                     "sInfoEmpty": "没有数据",
+                                     "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                                     "sZeroRecords": "没有检索到数据",
+                                     "sSearch": "模糊查询:  ",
+                                     "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                                     "oPaginate": {
+                                         "sFirst": "首页",
+                                         "sPrevious": "前一页",
+                                         "sNext": "后一页",
+                                         "sLast": "尾页"
+                                     }
+                                  },
+                     "paging": true,
+                     "lengthChange": false,
+                     "searching": true,
+                     //"ordering": true,
+                     "info": true,
+                     "autoWidth": false,
+                     "aoColumnDefs": [ { "bSortable": false, "aTargets": [0,3,4,5] }] 
+                 });
+                 $('#example2').DataTable({
+                     "oLanguage": {
+                                     "sLengthMenu": "每页显示 _MENU_ 条记录",
+                                     "sZeroRecords": "抱歉， 没有找到",
+                                     "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                                     "sInfoEmpty": "没有数据",
+                                     "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                                     "sZeroRecords": "没有检索到数据",
+                                     "sSearch": "模糊查询:  ",
+                                     "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                                     "oPaginate": {
+                                         "sFirst": "首页",
+                                         "sPrevious": "前一页",
+                                         "sNext": "后一页",
+                                         "sLast": "尾页"
+                                     }
+                                },
+                     "paging": true,
+                     "lengthChange": false,
+                     "searching": true,
+                     //"ordering": true,
+                     "info": true,
+                     "autoWidth": false,
+                     "aoColumnDefs": [ { "bSortable": false, "aTargets": [0,4,5] }] 
+                 });
+             });
+      </script>
+    }
+
+

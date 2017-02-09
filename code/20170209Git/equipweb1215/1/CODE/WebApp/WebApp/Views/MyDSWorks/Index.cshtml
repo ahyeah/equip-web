@@ -1,0 +1,288 @@
+﻿@model WebApp.Controllers.MyDSWorksController.DSIndex_Model
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<style type="text/css">
+    tr.MM_hidden {
+        display: none;
+    }
+
+    /*tr.MM_shown {
+        }*/
+
+    tr.selected {
+        background-color: #acbad4;
+    }
+</style>
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+<section class="content" id="table_show_8" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">我的定时性任务</h3>
+        </div>
+    </div>
+    @*<input type="button" class="btn btn-info" onclick="re_table_1()" value="刷新待处理任务列表" />*@
+
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title" style="font:bold; color:red">待处理的定时任务</p>
+        </div>
+
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example1" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>定时性项目</th>
+                                <th>时间要求</th>
+                                @foreach (var item in Model.title) 
+                                { 
+                                 <th>@item</th>
+                                }
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.Am)
+                                    {
+                                        <tr>
+                                            <td>@item.missIndex</td>
+                                            <td>@item.wfe_serial</td>
+                                            <td>@item.missTime</td>
+                                            <td>@item.miss_desc</td>
+                                            <td>@item.userName</td>
+                                            @if(!string.IsNullOrEmpty(item.miss_url))
+                                            {
+                                             <td><button onclick="JavaScript: location.href='@item.miss_url'">处理</button></td>
+                                            }
+                                            else{
+                                             <td>无需处理，等待返回</td>
+                                            }
+
+                                        </tr>
+
+                                    }
+                                </tbody>*@
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title " style="font:bold; color:red">已完成的定时任务</p>
+        </div>
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example2" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>定时性项目</th>
+                                <th>时间要求</th>
+                                @foreach (var item in Model.title)
+                                {
+                                    <th>@item</th>
+                                }
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.Hm)
+                                {
+                                    <tr>
+                                        <td>@item.missIndex</td>
+                                        <td>@item.wfe_serial</td>
+                                        <td>@item.missStartName</td>
+                                        <td>@item.missStartTime</td>
+                                        <td>@item.miss_LastStatusdesc</td>
+                                        <td><button onclick="JavaScript: location.href='/A4dot1/WorkFolw_Detail?wfe_id=@item.miss_wfe_Id'">查看详情</button></td>
+                                    </tr>
+
+                                }*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+
+
+
+</section>
+<div class="col-md-4" id="sidebar"> </div>
+
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/jquery.ba-resize.js"></script>
+
+    <!-- Page script -->
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+        $(document).ready(function () {
+
+
+
+            $("#example1").DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    // "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+
+                columns: [
+
+                      {
+                          data: 'wfe_serial',
+
+                          "render": function (data, type, full, meta) {
+
+                              return ' <a style=\"cursor:pointer\";  onclick=\"showSide(' + full.wfe_serial + ')\">' + full.wfe_serial + '</a> ';
+                          }
+
+
+
+                      },
+                      { data: 'equip_gycode' },
+                      { data: 'workflow_name' },
+                      { data: 'miss_desc' },
+                        { data: 'missTime' },
+                          { data: 'userName' },
+                       {
+
+
+                           "render": function (data, type, full, meta) {
+                               return '<a  href=' + full.miss_url + '><button type="button" class="btn btn-primary" >处理</button></a>';
+                           }
+
+
+
+
+                       }
+                ],
+                "bProcessing": true,
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "aoColumnDefs": [{ "bSortable": false, "aTargets": [6] }]
+            });
+
+
+
+            $("#example2").DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    // "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                columns: [
+
+                      {
+                          data: 'wfe_serial',
+
+                          "render": function (data, type, full, meta) {
+
+                              return ' <a style=\"cursor:pointer\";  onclick=\"showSide(' + full.wfe_serial + ')\">' + full.wfe_serial + '</a> ';
+                          }
+
+
+
+                      },
+                      { data: 'equip_gycode' },
+                      { data: 'workflow_name' },
+                      { data: 'missStartName' },
+                        { data: 'missStartTime' },
+                          { data: 'miss_LastStatusdesc' },
+                       {
+
+
+                           "render": function (data, type, full, meta) {
+                               return " <button onclick=\"JavaScript:location.href='/A4dot1/WorkFolw_Detail?wfe_id=" + full.miss_wfe_Id + "'\">查看详情</button>";
+
+                               // return '<a  href=' + full.miss_url + '><button type="button" class="btn btn-primary" >处理</button></a>';
+                           }
+
+
+
+
+                       }
+                ],
+                "bProcessing": true,
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "aoColumnDefs": [{ "bSortable": false, "aTargets": [6] }]
+            });
+
+
+
+        });
+
+
+
+        function showSide(wfe_serial) {
+            var wfe = wfe_serial;
+
+            $("#table_show_8").attr("class", "col-md-8");
+
+
+            DispalsySide(wfe);
+
+
+        }
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+        //function re_table_1() {
+        //    //  alert("刷新表格");
+        //    // $("#example1").dataTable().fnDraw();
+
+        //    var table = $('#example1').DataTable();
+        //    table.ajax.url('/Common/getdcl_list').load();
+
+        //}
+
+    </script>
+}

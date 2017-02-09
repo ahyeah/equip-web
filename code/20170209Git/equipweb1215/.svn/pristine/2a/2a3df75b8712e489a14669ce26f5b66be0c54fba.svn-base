@@ -1,0 +1,308 @@
+﻿<?xml version="1.0"?>
+<workflow name="A11dot2" desc="【A11.2】设备隐患排查" current_event="">
+  <paramtable>
+    <param name="submit_user" desc="提交人" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="submit_time" desc="装置提报时间" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Cj_Name" desc="车间名称" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zz_Name" desc="装置名称" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Type" desc="设备型号" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Problem_Desc" desc="设备问题描述" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Problem_DescFilePath" desc="设备问题描述文档（附件）" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zy_Type" desc="问题专业分类" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Problem_DataSrc" desc="（隐患）数据来源" type="string">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Danger_Intensity" desc="隐患强度等级" type="string">
+      <linkevents>        
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Time_Level" desc="时间等级" type="string">
+      <linkevents>       
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Id" desc="设备ID" type="int">
+      <linkevents>
+        <linkevent>submition</linkevent>
+        <linkevent>Assess</linkevent>
+        <linkevent>Confirm</linkevent>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_Desc" desc="应急预案描述" type="string">
+      <linkevents>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_DescFilePath" desc="应急预案描述文档（附件）" type="string">
+      <linkevents>
+        <linkevent>CreatePlan</linkevent>
+        <linkevent>ImplementPlan</linkevent>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="submit_done" desc="装置提报隐患是否完成" type="bool">
+      <linkevents>
+        <linkevent>submition</linkevent>        
+      </linkevents>
+    </param>
+    <param name="Assess_done" desc="片区风险矩阵评估是否完成" type="bool">
+      <linkevents>
+        <linkevent>Assess</linkevent>        
+      </linkevents>
+    </param>
+    <param name="Confirm_result" desc="专业团队审核结果-是否同意" type="bool">
+      <linkevents>       
+        <linkevent>Confirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="DangerType_isgreen" desc="隐患分类结果-是否绿色区域" type="bool">
+      <linkevents>        
+        <linkevent>Confirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="CreatePlan_done" desc="车间确立应急预案是否完成" type="bool">
+      <linkevents>
+        <linkevent>CreatePlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="ImplementPlan_done" desc="车间组织实施是否完成" type="bool">
+      <linkevents>
+        <linkevent>ImplementPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="Supervise_done" desc="片区监督执行是否完成" type="bool">
+      <linkevents>
+        <linkevent>Supervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="temp_A11dot3" desc="" type="bool">
+      <linkevents>
+        <linkevent>A11dot3</linkevent>
+      </linkevents>
+    </param>
+
+  </paramtable>
+  <events>
+    <event name="submition" desc="装置提报隐患" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A11dot2/ZzSubmit]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="Assess" desc="片区风险矩阵评估" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A11dot2/PqAssess]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="Confirm" desc="专业团队审核" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A11dot2/ZytdConfirm]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="CreatePlan" desc="车间确立应急预案" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A11dot2/CjCreatePlan]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="ImplementPlan" desc="车间组织和实施应急方案" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A11dot2/CjImplementPlan]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="Supervise" desc="片区监督执行" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A11dot2/PqSupervise]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="A11dot3" desc="跳转到【A11.3】风险管控模块" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A11dot2/JumpToA11dot3]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="SE" desc="Start" type="startevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="EE" desc="End" type="endevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>    
+  </events>
+  <flows>
+    <flow source="SE" destination="submition">
+      <condition><![CDATA[1 == 1]]></condition>
+    </flow>
+    <flow source="submition" destination="Assess">
+      <condition><![CDATA[submit_done == true]]></condition>
+    </flow>
+    <flow source="Assess" destination="Confirm">
+      <condition><![CDATA[Assess_done == true]]></condition>
+    </flow>
+    <flow source="Confirm" destination="Assess">
+      <condition><![CDATA[Confirm_result == false]]></condition>
+    </flow>
+    <flow source="Confirm" destination="A11dot3">
+      <condition><![CDATA[Confirm_result == true AND DangerType_isgreen == false]]></condition>
+    </flow>
+    <flow source="Confirm" destination="CreatePlan">
+      <condition><![CDATA[Confirm_result == true AND DangerType_isgreen == true]]></condition>
+    </flow>
+    <flow source="CreatePlan" destination="ImplementPlan">
+      <condition><![CDATA[CreatePlan_done == true]]></condition>
+    </flow>   
+     <flow source="ImplementPlan" destination="Supervise">
+      <condition><![CDATA[ImplementPlan_done == true]]></condition>
+    </flow>
+    <flow source="Supervise" destination="EE">
+      <condition><![CDATA[Supervise_done == true]]></condition>
+    </flow>
+    <flow source="A11dot3" destination="EE">
+      <condition><![CDATA[temp_A11dot3 == true]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

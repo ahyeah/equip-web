@@ -1,0 +1,198 @@
+﻿@model WebApp.Controllers.CommonController.WFDetail_Model
+@using Newtonsoft.Json.Linq;
+@using Newtonsoft.Json;
+
+
+@{
+    ViewBag.Title = "WorkFolw_Detail";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <a href="~/A6dot2/Index"><input type="button" class="btn btn-info" value="返回" /></a>
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- timeline time label -->
+                @for (int i = @Model.ALLHistoryMiss.Count() - 1; i >= 1; i--)
+                {
+                    <li class="time-label">
+                        <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@i" aria-expanded=true aria-controls="@i">
+                            @Model.MissTime[i] - @Model.ALLHistoryMiss[i].WE_Event_Desc
+                        </a>
+                    </li>
+
+                    <li class="collapse" id="@i">
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o">@Model.MissTime[i]</i>操作用户： @Model.MissUser[i]</span>
+                            <h3 class="timeline-header lead"><span class="lead" style="color:red">@Model.ALLHistoryMiss[i].WE_Event_Desc</span></h3>
+                            <div class="timeline-body">
+                                <table class="table  table-hover table-bordered">
+                                    <tbody>
+
+
+
+
+                                        @foreach (var pp in @Model.ALLHistoryMiss[i].Miss_ParamsAppRes)
+                                        { 
+                                                        
+                                            if (pp.Value.ToString() != "App_hidden")
+                                            {
+                                                <tr class="info">
+                                                    <th>@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key]</th>
+                                                    @if ((@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key].ToString()).IndexOf("附件") > -1 && @Model.ALLHistoryMiss[i].Miss_Params[pp.Key] != "")
+                                                    {
+                                                        string[] savedFileName = (@Model.ALLHistoryMiss[i].Miss_Params[pp.Key].ToString()).Split(new char[] { '$' });
+                                                        string saveExistFilename = Path.Combine("/Upload", savedFileName[1]);
+                                                        <td><a href=@saveExistFilename target=_blank> @savedFileName[0]</a></td> }
+                                                    @*else if ((@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key].ToString()).IndexOf("已选择的采样设备") > -1 && @Model.ALLHistoryMiss[i].Miss_Params[pp.Key] != "")
+                                                    {
+                                                        string a = Model.ALLHistoryMiss[i].Miss_Params[pp.Key].ToString();
+                                                        
+                                                        JArray jsonVal = JArray.Parse(a) as JArray;
+                                                        dynamic table2 = jsonVal;
+                                                        List<string> e_name = new List<string>();
+                                                        foreach (dynamic T in table2)
+                                                        {
+                                                            
+                                                            //if (T.equip_zj_result == "true")
+                                                            //{
+                                                            string name = T.equip_name;
+                                                            //   string tcode = T.equip_code;
+
+                                                            e_name.Add(name);
+
+                                                            //}
+                                                        }
+                                                        foreach (var aa in e_name)
+                                                        {
+                                                        <td> @aa</td>
+
+                                                        }
+
+
+                                                    }*@
+                                                    else
+                                                    {
+                                                    <td>@Model.ALLHistoryMiss[i].Miss_Params[pp.Key]</td>}
+
+
+
+
+
+
+
+
+                                                </tr>
+                                            }
+
+
+
+
+
+
+
+
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+                }
+
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+
+
+@section js{
+    <script>
+
+
+        $(document).ready(function () {
+
+            $("table tr").each(function () {
+                var h = "";
+                var s = "";
+                var text = $(this).children("th:eq(0)").text();
+               // alert(text);
+                if (text == "已选择的采样设备") {
+                    var text = $(this).children("td:eq(0)").text();
+                 $(this).children("td:eq(0)").hide();
+                    var obj = $.parseJSON(text);
+                    
+                   
+                    for (i = 0; i < obj.length; i++) {
+                        if (obj[i].equip_file != "") {
+                            var file = obj[i].equip_file;
+                            var file_str = file.split("$");
+
+                            var h = "<td>" + "设备工艺编号：" + obj[i].equip_name + "<br/>"
+                         + "设备编号：" + obj[i].equip_code + "<br/>"
+                          + "可靠性工程师判断结果：" + obj[i].equip_check_result + "<br/>"
+                          + "可靠性工程师判断不通过原因：" + obj[i].equip_reason + "<br/>"
+                              + "可靠性工程师整改方案：" + "<a href=\"../Upload/"+file_str[1]+"\">"+file_str[0]+"</a>" + "<br/>"
+                           + "专家团队判断结果：" + obj[i].equip_zj_result + "<br/>"
+                            + "专家团队判断不通过原因：" + obj[i].equip_zj_reason + "<br/>"
+
+                         + "</td>";
+
+                         //  alert(file_str[0]);
+                        } else {
+
+                            var h = "<td>" + "设备工艺编号：" + obj[i].equip_name + "<br/>"
+                     + "设备编号：" + obj[i].equip_code + "<br/>"
+                      + "可靠性工程师判断结果：" + obj[i].equip_check_result + "<br/>"
+                      + "可靠性工程师判断不通过原因：" + obj[i].equip_reason + "<br/>"
+                          + "可靠性工程师整改方案：" + obj[i].equip_file + "<br/>"
+                       + "专家团队判断结果：" + obj[i].equip_zj_result + "<br/>"
+                        + "专家团队判断不通过原因：" + obj[i].equip_zj_reason + "<br/>"
+
+                     + "</td>";
+                        }
+
+
+
+                     
+                      
+                     
+                        $(this).append(h);
+
+                    } //alert(h);
+           //         var ihtml =
+           //"<th>" + "已选择的采样设备"
+           // + "</th>"
+           // + "<td>" + "设备工艺编号：" + obj[i].equip_name + "<br/>" + "设备编号：" + obj[i].equip_code + "<br/>" + "可靠性工程师判断结果：" + obj[i].equip_check_result + "<br/>" + "可靠性工程师判断不合格原因：" + obj[i].equip_reason
+           // + "</td>";
+           //         $(this).html(ihtml);
+
+
+                }
+
+
+
+            })
+
+        });
+
+
+
+
+    </script>
+}
+

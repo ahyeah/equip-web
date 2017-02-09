@@ -1,0 +1,139 @@
+<workflow name="A6dot2dot1" desc="润滑管理-机泵类" current_event="">
+  <paramtable>
+    <param name="RH_Name" desc="不完好润滑间" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="ProblemDesc" desc="问题描述" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="Submit_Done" desc="提报是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="ConfirmRectified_Done" desc="确认整改完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">ConfirmRectified</linkevent>
+      </linkevents>
+    </param>
+    <param name="PqDirectorConfirm_Done" desc="片区主任核实完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">PqDirectorConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="App_hidden">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+  </paramtable>
+  <events>
+    <event name="Start" desc="Start" type="startevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="End" desc="End" type="endevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZzSubmit" desc="提报不完好润滑间" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2dot1/Submit]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '可靠性工程师') ]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ConfirmRectified" desc="润滑间确认整改" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2dot1/ConfirmRectified]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '可靠性工程师') ]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="PqDirectorConfirm" desc="片区主任核实" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2dot1/PqDirectorConfirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '片区主任') ]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+  </events>
+  <flows>
+    <flow source="Start" destination="ZzSubmit">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="ZzSubmit" destination="ConfirmRectified">
+      <condition><![CDATA[Submit_Done==true]]></condition>
+    </flow>
+    <flow source="ConfirmRectified" destination="PqDirectorConfirm">
+      <condition><![CDATA[ConfirmRectified_Done==true]]></condition>
+    </flow>
+    <flow source="PqDirectorConfirm" destination="End">
+      <condition><![CDATA[PqDirectorConfirm_Done==true]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

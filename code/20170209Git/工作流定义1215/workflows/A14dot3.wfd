@@ -1,0 +1,350 @@
+<workflow name="A14dot3" desc="计划管理" current_event="">
+  <paramtable>
+    <param name="Cj_Name" desc="车间名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zz_Name" desc="装置名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">SubmitJxPlan</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">SubmitJxPlan</linkevent>
+        <linkevent app_reserve="">XcConfirmAndExplain</linkevent>
+        <linkevent app_reserve="">KkConfirmAndExplain</linkevent>
+        <linkevent app_reserve="">ZytdConfirmAndExplain</linkevent>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">SubmitJxPlan</linkevent>
+        <linkevent app_reserve="">XcConfirmAndExplain</linkevent>
+        <linkevent app_reserve="">KkConfirmAndExplain</linkevent>
+        <linkevent app_reserve="">ZytdConfirmAndExplain</linkevent>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Type" desc="设备型号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zy_Type" desc="专业分类" type="string">
+      <linkevents>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zy_SubType" desc="专业分类子类" type="string">
+      <linkevents>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_ABCMark" desc="设备ABC标识" type="string">
+      <linkevents>
+        <linkevent app_reserve="">SubmitJxPlan</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_Name" desc="项目名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CompleteNameReason</linkevent>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="JxCauseDesc" desc="检修原因说明" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CompleteNameReason</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="SubmitJxPlan_Done" desc="检修计划提报是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">SubmitJxPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="XcConfirm_Result" desc="现场工程师审核结果" type="string">
+      <linkevents>
+        <linkevent app_reserve="">XcConfirmAndExplain</linkevent>
+      </linkevents>
+    </param>
+    <param name="KkConfirm_Result" desc="可靠性工程师审核结果" type="string">
+      <linkevents>
+        <linkevent app_reserve="">KkConfirmAndExplain</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdConfirm_Result" desc="专家团队审核结果" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirmAndExplain</linkevent>
+      </linkevents>
+    </param>
+    <param name="NoticeOrder" desc="通知单号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+      </linkevents>
+    </param>
+    <param name="JobOrder" desc="工单号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="JxdwAttachPlanOrder_Done" desc="检修单位关联计划号是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+      </linkevents>
+    </param>
+    <param name="CompleteNameReason_Done" desc="填写项目名称及原因是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">CompleteNameReason</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="XcConfirm_Reason" desc="现场工程师原因" type="string">
+      <linkevents>
+        <linkevent app_reserve="">XcConfirmAndExplain</linkevent>
+      </linkevents>
+    </param>
+    <param name="KkConfirm_Reason" desc="可靠性工程师原因" type="string">
+      <linkevents>
+        <linkevent app_reserve="">KkConfirmAndExplain</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdConfirm_Reason" desc="专业团队原因" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirmAndExplain</linkevent>
+      </linkevents>
+    </param>
+    <param name="Data_Src" desc="数据来源" type="string">
+      <linkevents>
+        <linkevent app_reserve="">JxdwAttachPlanOrder</linkevent>
+        <linkevent app_reserve="">JumpToA8dot2</linkevent>
+      </linkevents>
+    </param>
+  </paramtable>
+  <events>
+    <event name="Start" desc="Start" type="startevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="End" desc="End" type="endevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="SubmitJxPlan" desc="提报检修计划" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="CompleteNameReason" desc="填写项目名称及原因" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="XcConfirmAndExplain" desc="现场工程师审核及说明" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="KkConfirmAndExplain" desc="可靠性工程师审核及说明" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZytdConfirmAndExplain" desc="专家团队审核及说明" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="JxdwAttachPlanOrder" desc="检修单位关联计划号" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="JumpToA8dot2" desc="跳转至A8.2检修计划实施管理" type="subprocess">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+      <linkworkflow name="A8dot2" workingmodel="parallel">
+        <paramtransfer>
+          <item parent="Cj_Name" child="Cj_Name" direction="to" />
+          <item parent="Zz_Name" child="Zz_Name" direction="to" />
+          <item parent="Equip_GyCode" child="Equip_GyCode" direction="to" />
+          <item parent="Equip_Code" child="Equip_Code" direction="to" />
+          <item parent="Equip_Type" child="Equip_Type" direction="to" />
+          <item parent="Zy_Type" child="Zy_Type" direction="to" />
+          <item parent="Zy_SubType" child="Zy_SubType" direction="to" />
+          <item parent="Equip_ABCMark" child="Equip_ABCMark" direction="to" />
+          <item parent="JxCauseDesc" child="Jx_Reason" direction="to" />
+          <item parent="Plan_Name" child="Job_Name" direction="to" />
+          <item parent="JobOrder" child="Job_Order" direction="to" />
+          <item parent="CompleteNameReason_Done" child="JxSubmit_done" direction="to" />
+          <item parent="Data_Src" child="Data_Src" direction="to" />
+        </paramtransfer>
+      </linkworkflow>
+    </event>
+  </events>
+  <flows>
+    <flow source="Start" destination="SubmitJxPlan">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="SubmitJxPlan" destination="CompleteNameReason">
+      <condition><![CDATA[SubmitJxPlan_Done==true]]></condition>
+    </flow>
+    <flow source="CompleteNameReason" destination="XcConfirmAndExplain">
+      <condition><![CDATA[CompleteNameReason_Done==true]]></condition>
+    </flow>
+    <flow source="XcConfirmAndExplain" destination="KkConfirmAndExplain">
+      <condition><![CDATA[XcConfirm_Result=="同意"]]></condition>
+    </flow>
+    <flow source="KkConfirmAndExplain" destination="ZytdConfirmAndExplain">
+      <condition><![CDATA[KkConfirm_Result=="同意" AND Equip_ABCMark=="A"]]></condition>
+    </flow>
+    <flow source="ZytdConfirmAndExplain" destination="JxdwAttachPlanOrder">
+      <condition><![CDATA[ZytdConfirm_Result=="同意"]]></condition>
+    </flow>
+    <flow source="KkConfirmAndExplain" destination="JxdwAttachPlanOrder">
+      <condition><![CDATA[KkConfirm_Result=="同意" AND Equip_ABCMark!="A"]]></condition>
+    </flow>
+    <flow source="ZytdConfirmAndExplain" destination="End">
+      <condition><![CDATA[ZytdConfirm_Result=="不同意"]]></condition>
+    </flow>
+    <flow source="KkConfirmAndExplain" destination="End">
+      <condition><![CDATA[KkConfirm_Result=="不同意"]]></condition>
+    </flow>
+    <flow source="XcConfirmAndExplain" destination="End">
+      <condition><![CDATA[XcConfirm_Result=="不同意"]]></condition>
+    </flow>
+    <flow source="JxdwAttachPlanOrder" destination="JumpToA8dot2">
+      <condition><![CDATA[JxdwAttachPlanOrder_Done==true]]></condition>
+    </flow>
+    <flow source="JumpToA8dot2" destination="End">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

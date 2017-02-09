@@ -1,0 +1,203 @@
+﻿@model WebApp.Controllers.A11dot3Controller.RiskRegisterModel
+@{
+    ViewBag.Title = "RiskRegister";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-8">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        业务流水号：<button class="btn btn-default" onclick="DispalsySide('@Model.WF_Ser')">@Model.WF_Ser</button>
+                    </span>
+                </li>
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：风险登记
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">                       
+                        <h3 class="timeline-header"><span class="lead" style="color:red">风险登记表</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <input type="text" id="wef_id" hidden="hidden" value="@Model.WF_Id">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">生产装置：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" value="@Model.zz" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备位号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" value="@Model.sbGycode" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备编号：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" value="@Model.sbCode" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">风险问题描述：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" value="@Model.problemDesc" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">危害识别结果：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" value="@Model.RiskRecognitionResult" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">管控措施描述：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" value="@Model.PlanDesc" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">管控措施：</label>
+                                    <div class="col-sm-10">
+                                        <a target=_blank href="/Upload/@Model.PlanPath">@Model.PlanName</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">风险是否可接受：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" value="可接受" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">车间定期跟踪评估结果：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" value="可控" disabled="">
+                                    </div>
+                                </div>
+                                <div id="Jxdw" class="form-group">
+                                    <p class="text-green">&nbsp;&nbsp;&nbsp;转为停工检修计划或月度计划？</p>
+                                    <div class="radio">
+                                        <label>
+                                            &nbsp;&nbsp;&nbsp;<input name="YDorTG_Result" id="YDorTG_ResultTG" type="radio" value="停工检修计划">
+                                            停工检修计划
+                                        </label>
+                                        <label>
+                                            <input name="YDorTG_Result" id="YDorTG_ResultYD" type="radio" value="月度计划">
+                                            月度计划
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="button" onclick="submit_click()">确定</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+            </ul>
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4" id="sidebar"> </div>
+    </div>
+    <!-- /.row -->
+
+</section>
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处-->
+<div class="modal fade" id="EquipInfoModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备相关信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="EquipInfoDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+    </div>
+
+</div><!--设备信息显示模态框结束处-->
+@section js{
+    <!-- Page script -->
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+        function PageLoad() {
+
+        };
+        $(document).ready(
+            PageLoad());
+
+
+
+        function submit_click() {
+
+            var flow_name = $("#wef_id").val();
+            var YDorTG_Result = $("input:radio[name='YDorTG_Result']:checked").val();
+            if ($("input:radio[name='YDorTG_Result']:checked").val() != "停工检修计划" && $("input:radio[name='YDorTG_Result']:checked").val() != "月度计划")
+            { alert("请确认计划类别！"); }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/A11dot3/RiskRegister_submitsignal',
+                    data: {
+                        json1: '{Flow_Name: "' + flow_name
+                            + '", YDorTG_Result: "' + YDorTG_Result
+                            + '"}'
+                    },
+                    success: function (data) {
+                        location.href = data;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            }
+        }
+    </script>
+}
+

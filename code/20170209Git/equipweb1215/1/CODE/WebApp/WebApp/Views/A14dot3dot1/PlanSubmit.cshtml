@@ -1,0 +1,320 @@
+﻿@model WebApp.Controllers.CommonController.ZzSubmitModel
+@{
+    ViewBag.Title = "PlanSubmit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/css/editor.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/css/rowReorder.bootstrap.min.css">
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="box">
+                <h3 class="box-title"><span style="color: red; text-align: center;">专家团队触发计划提报事务</span></h3>
+                <div class="box-body">
+                    <form class="form-horizontal" role="form">
+                        <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                        
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">申请车间：</label>
+                            <div class="col-sm-10">
+                                <select class="form-control select2 " multiple="multiple" style="width: 100%;" id="cjname">
+                                    <option value="">请选择</option>
+                                    @if (Model.UserHasEquips != null)
+                                    {
+                                        foreach (var item in Model.UserHasEquips)
+                                        {
+                                            <option value="@item.EA_Id">@item.EA_Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">申请装置：</label>
+                            <div id="Zz_Select" class="col-sm-10">
+                                <select class="form-control select2" multiple="multiple" style="width: 100%;" id="zzId" name="zzname">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                        </div>                                               
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">详细工作说明：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" rows="3" id="workdesc"></textarea>
+                            </div>
+                        </div>
+                    </form>                    
+                    <form role="form">
+                        <div class="box-footer">
+                            <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click(0)">确定提交</button>
+                            <button class="btn btn-primary col-sm-offset-1" type="button" onclick="cancel_click()">取消提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+
+</section>
+
+@section js {
+    <!-- Page script -->
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/dataTables.editor.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/editor.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript">
+        var AllZz = "";//选择车间后存其中的所有装置
+
+        function list_Zz() {
+            if ($('#cjname').val() != "") {
+                //alert("here");
+                //alert($('#cjname').val());
+                aa = $('#cjname').val().toString();
+                $.ajax({
+                    url: '/Common/Cj_ZzsForA16',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "cj_id": aa },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            var AllZzTemp = "";
+                            for (var i = 0; i < backdata.length; i++) {
+
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Zz_Id + "\">" + backdata[i].Zz_Name + "</option>";
+
+                                AllZzTemp += backdata[i].Zz_Id + ",";
+
+                            }
+                            AllZz = AllZzTemp;
+                            $('#zzId').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+
+            }
+        };
+        function Zz_selected() {
+            if ($('#zzId').val() != "") {
+                $.ajax({
+                    url: '/Common/Zz_Equips',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "Zz_id": $('#zzId').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            for (var i = 0; i < backdata.length; i++) {
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Equip_Id + "\">" + backdata[i].Equip_GyCode + "</option>";
+                            }
+                            $('#Equip_GyCode').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+            }
+        };
+
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+        $(document).ready(function () {
+
+            $("#reservationtime").daterangepicker({
+                showDropdowns: true,
+                locale: {
+                    applyLabel: '确定',
+                    cancelLabel: '取消',
+                    fromLabel: '起始时间',
+                    toLabel: '结束时间',
+                    customRangeLabel: '自定义',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                },
+                format: 'YYYY-MM-DD', //控件中from和to 显示的日期格式
+
+
+
+                arrows: true
+            });
+
+            if ($("input:radio[name='Minute_Select']:checked").val() == 0)
+                $("#Speciry_Minute").attr('disabled', true);
+
+
+
+
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+
+            });
+
+
+            $(function () {
+                var myDate = new Date();
+                var nowyear = myDate.getFullYear();
+                var nowmonth = myDate.getMonth() + 1;
+                var nowday = myDate.getDate();
+
+
+                //Date picker
+                $('input[name="EquipMaintain_Time"]').datepicker(
+                   {
+                       autoclose: true,
+                       beforeShowDay: $.noop,
+                       calendarWeeks: false,
+                       clearBtn: false,
+                       daysOfWeekDisabled: [],
+                       endDate: Infinity,
+                       forceParse: true,
+                       format: 'yyyy-mm-dd',
+                       keyboardNavigation: true,
+                       language: 'zh-CN',
+                       minViewMode: 0,
+                       orientation: "auto",
+                       rtl: false,
+                       startDate: new Date(nowyear, nowmonth - 1, nowday),
+                       startView: 0,
+                       todayBtn: false,
+                       todayHighlight: true,
+                       weekStart: 0
+                   });
+
+            });
+
+            $('.select2').select2();
+            //车间下拉框的选择值发生变化时，响应
+            $("#cjname").select2().on('change', function (e) {
+                //alert("point1");
+                //alert($('#cjname').val());
+                list_Zz();
+            });
+
+        });
+        var submit_done = 1;
+        function submit_click(k) {
+            submit_done = k;
+            
+            if (!confirm('确定要提交吗？'))
+                return false;
+
+            var flow_name = $("#wef_id").val();
+            alert(flow_name);
+            $.ajax({
+                type: 'POST',
+                url: '/A14dot3dot1/PlanSubmit_submitsignal',
+                data: {
+                    json1: '{  Flow_Name: "' + flow_name
+                         + '", Cj_Name: "' + $('#cjname').val()
+                         + '", Zz_Name: "' + $('#zzId').val()                        
+                         + '", WorkDetail: "' + $('#workdesc').val()
+                         + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+           
+        };
+        function cancel_click() {
+            submit_done = 0;
+            if (!confirm('确定要取消吗？'))
+                return false;
+
+            var wef_id = $("#wef_id").val();
+            var return_url = "/A14dot3/Index";
+            $.ajax({
+                type: 'POST',
+                url: '/Common/CancelSubmit',
+                data: {
+                    json1: '{wef_id: "' + wef_id
+                         + '", return_url: "' + return_url
+                         + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+           
+        };
+        window.onbeforeunload = function () {//离开当前页面触发//火狐可用
+
+            if (submit_done == 1) {
+                //   alert("1");
+                qx();
+            }
+        }
+
+
+        window.onunload = function () {//谷歌可用
+
+            if (submit_done == 1) {
+                //  alert("2");
+                qx();
+            }
+
+        }
+        function qx() {
+
+
+            var wef_id = $("#wef_id").val();
+            var return_url = "/A14dot3/Index";
+            $.ajax({
+                type: 'POST',
+                url: '/Common/CancelSubmit',
+                async: false,
+                data: {
+                    json1: '{wef_id: "' + wef_id
+                         + '", return_url: "' + return_url
+                         + '"}'
+                },
+                success: function (data) {
+
+
+                    location.href = data;
+
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+
+
+
+        }
+    </script>
+}

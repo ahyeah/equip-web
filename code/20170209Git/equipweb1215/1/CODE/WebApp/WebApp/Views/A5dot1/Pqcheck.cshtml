@@ -1,0 +1,171 @@
+﻿@model WebApp.Controllers.A5dot1Controller.PqcheckModel
+@{
+    ViewBag.Title = "Pqcheck";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：片区检查，确定是否整改
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@Model.currenttime</i>当前用户：@Model.UserName</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">片区检查</span></h3>
+                        <div class="timeline-body">
+                            <form role="form">
+                                <input type="text" id="pqUserName" hidden="hidden" value="@Model.UserName">
+                                <input type="text" id="a_id" hidden="hidden" value="@Model.a5dot1Tab1.Id">
+                                是否整改？
+                                <div class="radio">
+                                    <label>
+                                        <input name="IsDone" id="IsDoneYes" type="radio" value="1" onchange="IsDoneYes_Click()">是
+
+                                    </label>
+                                    <label>
+                                        <input name="IsDone" id="IsDoneNo" type="radio" value="0" onchange="IsDoneNo_Click()">否
+
+                                    </label>
+                                </div>
+
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="button" onclick="submit_click()">确定</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+                <!-- 工作流历史操作-通用部分Star -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前工作流历史操作
+                    </span>
+                </li>
+
+                <!-- timeline time label -->
+
+                <li class="time-label">
+                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#1" aria-expanded=true aria-controls="1">
+                        @Model.a5dot1Tab1.zzSubmitTime - 现场工程师提报
+                    </a>
+                </li>
+
+                <li class="collapse" id="1">
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"> @Model.a5dot1Tab1.zzSubmitTime</i>操作用户： @Model.a5dot1Tab1.zzUserName</span>
+                        <h3 class="timeline-header lead"><span class="lead" style="color:red">现场工程师提报</span></h3>
+                        <div class="timeline-body">
+                            <table class="table  table-hover table-bordered">
+                                <tbody>
+
+                                    <tr class="info">
+                                        <th>车间名称</th>
+                                        <td>@Model.a5dot1Tab1.cjName</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>装置名称</th>
+                                        <td>@Model.a5dot1Tab1.zzName</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>设备工艺编号</th>
+                                        <td>@Model.a5dot1Tab1.sbGyCode</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>设备编号</th>
+                                        <td>@Model.a5dot1Tab1.sbCode</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>设备型号</th>
+                                        <td>@Model.a5dot1Tab1.sbType</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>不完好内容</th>
+                                        <td>@Model.a5dot1Tab1.notGoodContent</td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </li>
+
+
+                <!-- END timeline item -->
+
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+                <!-- 工作流历史操作-通用部分End -->
+            </ul>
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4" id="sidebar"> </div>
+    </div>
+    <!-- /.row -->
+
+</section>
+@section js{
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+        function PageLoad() {
+
+        };
+        $(document).ready(
+            PageLoad());
+
+        function IsDoneNo_Click() {
+
+        }
+        function IsDoneYes_Click() {
+        }
+
+        function submit_click() {
+            
+            // var faulty_intensity = $("#faulty_intensity").val();
+            if ($("input:radio[name='IsDone']:checked").val() == '1') {
+                $.ajax({
+                    type: 'POST',
+                    url: '/A5dot1/Pqcheck_submitsignal',
+                    data: {
+                        json1: '{pqUserName: "' + $('#pqUserName').val()
+                            + '", a_id: "' + $('#a_id').val()
+                            + '"}'
+                    },
+                    success: function (data) {
+                        location.href = data;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+
+            }
+            else {
+                alert("整改尚未确认！");
+                // location.href = '/A8dot2/Index';
+            }
+        }
+    </script>
+}
+

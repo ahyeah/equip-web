@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "ERP";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h1 style="color:red ;text-align:center" id="actext">进入ERP固定资产转资</h1>
+
+
+
+@section js{
+    <!-- Page script -->
+    <script>
+
+        var i = 0;
+
+        function getColor() {
+            i++;
+            switch (i) {
+                case 1: return "#FF0000";
+                case 2: return "#0000CD";
+                case 3: return "#FF0000";
+                default: return "0000CD";
+            }
+        }
+
+        function colorful() {
+            var o = document.getElementById('actext');
+            o.style.color = getColor();
+            if (i == 3) i = 0;
+            setTimeout('colorful()', 100);
+        }
+
+        colorful();
+    </script>
+
+}
+
+
+
+
+
+

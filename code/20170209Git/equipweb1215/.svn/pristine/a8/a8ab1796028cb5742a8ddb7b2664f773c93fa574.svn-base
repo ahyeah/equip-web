@@ -1,0 +1,58 @@
+﻿using FlowDesigner.Management;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Control;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+
+namespace FlowDesigner.customcontrol
+{
+    class DesignerPage : CloseableTab
+    {
+        public WorkFlowMan parent_man { get; set; }
+
+        private Canvas main_Canvas = new Canvas()
+        {
+            VerticalAlignment = VerticalAlignment.Stretch,
+            HorizontalAlignment = HorizontalAlignment.Stretch
+        };
+
+        public Canvas Client
+        {
+            get
+            {
+                return main_Canvas;
+            }
+        }
+
+        public DesignerPage()
+        {
+            this.AddChild(main_Canvas);
+
+            main_Canvas.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        }
+
+        public void LinkClick(MouseButtonEventHandler e)
+        {
+            main_Canvas.MouseLeftButtonUp += e;
+        }
+
+        public void LinkMouseMove(MouseEventHandler e)
+        {
+            main_Canvas.MouseMove += e;
+        }
+        protected override void OnSelected(RoutedEventArgs e)
+        {
+            base.OnSelected(e);
+            parent_man.Proj.CurrentWF = parent_man;
+            parent_man.Proj.win_main.OnConfigItem_Selected(parent_man.SelectedItem);
+        }
+
+    }
+}

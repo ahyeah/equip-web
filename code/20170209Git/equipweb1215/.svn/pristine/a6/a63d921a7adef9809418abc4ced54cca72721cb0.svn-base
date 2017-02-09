@@ -1,0 +1,8 @@
+﻿
+@{
+    ViewBag.Title = "MxptSelect";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>这里是美迅平台数据筛选页面</h2>
+

@@ -1,0 +1,998 @@
+﻿@model WebApp.Controllers.CommonController.ZzSubmitModel
+@{
+    ViewBag.Title = "ZzSubmit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：人工提报(特护记录）
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">人工提报(特护记录）</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <input type="text" id="Equipid" hidden="hidden" value="@ViewBag.equip_id"> 
+                                <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                               
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">申请车间</label>
+                                    <div class="col-sm-10">
+                                        @if (ViewBag.cj_id == 0)
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="cjname" onchange="list_Zz()">
+                                                <option value="">请选择</option>
+                                                @if (Model.UserHasEquips != null)
+                                                {
+                                                    foreach (var item in Model.UserHasEquips)
+                                                    {
+                                                        <option value="@item.EA_Id">@item.EA_Name</option>
+                                                    }
+                                                }
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="cjname" disabled="disabled">
+                                                <option value="@ViewBag.cj_id">@ViewBag.cj_name</option>
+                                            </select>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">申请装置</label>
+                                    <div id="Zz_Select" class="col-sm-10">
+                                        @if (ViewBag.zz_id == 0)
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="zzId" onchange="Zz_selected()">
+                                                <option value="">请选择</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="zzId" disabled="disabled">
+                                                <option value="@ViewBag.zz_id">@ViewBag.zz_name</option>
+                                            </select>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备工艺编号</label>
+                                    <div id="Equip_Select" class="col-sm-10">
+                                        @if (ViewBag.sb_gycode == "")
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="Equip_GyCode" onchange="Equip_selected()">
+                                                <option value="">请选择</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="Equip_GyCode" disabled="disabled">
+                                                <option value="@ViewBag.equip_id">@ViewBag.sb_gycode</option>
+                                            </select>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备编号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="E_Code" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备型号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="E_Type" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">机组状态</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input name="group_state" id="group_state_touyong" type="radio" value="投用" onchange="group_state_touyong_Click()">
+                                            投用
+                                        </label>
+                                        <label>
+                                            <input name="group_state" id="group_state_beiyong" type="radio" value="备用" onchange="group_state_beiyong_Click()">
+                                            备用
+                                        </label>
+                                        <label>
+                                            <input name="group_state" id="group_state_tingyong" type="radio" value="停用" onchange="group_state_tingyong_Click()">
+                                            停用
+                                        </label>
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                        <label class="col-sm-2 control-label">特护记录</label>
+                                        <div id="Thjl_Select" class="col-sm-10">
+                                            <select class="form-control select2" style="width: 100%;" id="thjl_id" onchange="Thjl_init()">
+                                                <option value="0">请选择</option>
+                                                <option value="1">气压机特护记录</option>
+                                            </select>
+                                        </div>
+                                    </div>*@
+
+                                <div class="form-group" id="thjl">
+                                    <label class="col-sm-2 control-label">特护记录信息 </label>
+
+                                    <div id="Thjl_list" class="col-sm-10">
+                                        <!-- <button class="btn btn-info col-sm-offset-11" type="button" onclick="graphic_show()">趋势图</button>-->
+                                        @*<table id="thjl_datatable" width="100%" cellspacing="1">
+                                                <thead>
+                                                    <tr>
+                                                        <th>项目</th>
+                                                        <th>设计值</th>
+                                                        <th>实测值</th>
+                                                        <th>趋势图</th>
+                                                    </tr>
+                                                </thead>
+
+
+                                            </table>*@
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group" id="thjy_workpoint">
+                                    <label class="col-sm-2 control-label">特护纪要：工作要点记载</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="workdetail"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="thjy_prolog">
+                                    <label class="col-sm-2 control-label">特护纪要：设备问题记载</label>
+                                    <div class="col-sm-10">
+                                        <button class="btn btn-info col-sm-offset-11" type="button" onclick="add_row()">增加</button>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group" id="thjy_prodetail">
+                                    <label class="col-sm-2 control-label"></label>
+
+                                    <div class="col-sm-10" id="example_div">
+                                        <table id="example" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>问题分类</th>
+                                                    <th>问题描述</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+
+
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                                @*                                <div class="form-group">
+                                        <button class="btn btn-primary col-sm-offset-4" type="button" onclick="submit_click()">确定提交</button>
+                                        <button class="btn btn-primary col-sm-offset-2" type="button" onclick="cancel_click()">取消提交</button>
+                                    </div>*@
+                            </form>
+
+
+                            <form role="form">
+                                <div class="box-footer">
+                                    <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click(0)">确定提交</button>
+                                    <button class="btn btn-primary col-sm-offset-1" type="button" onclick="cancel_click()">取消提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+<div class="modal fade" id="qst" tabindex="-1" role="dialog"
+     aria-labelledby="qst_title" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;height:800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="qst_title">
+                    趋势图
+                </h4>
+            </div>
+            <div class="modal-body" id="qst_graphic" style="width:700px;height:50%">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    添加设备问题记录
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="checkbox-inline">
+                        <input type="radio" name="optionsRadiosinline" id="optionsRadios1"
+                               value="动" checked>动
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="optionsRadiosinline" id="optionsRadios2"
+                               value="静">静
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="optionsRadiosinline" id="optionsRadios3"
+                               value="电">电
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="optionsRadiosinline" id="optionsRadios4"
+                               value="仪">仪
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">问题描述</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="2" id="new_problem_desc"></textarea>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal" onclick="cancel_problem_record()">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick="add_problem_record()">
+                    确定
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/json2.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.css" />
+
+    <script>
+        function group_state_touyong_Click() {
+            $("#thjl").show();
+            $("#thjy_workpoint").show();
+            $("#thjy_prolog").show();
+            
+            
+        }
+        function group_state_beiyong_Click() {
+            $("#thjl").hide();
+            $("#thjy_workpoint").hide();
+            $("#thjy_prolog").hide();
+            $("#thjy_prodetail").hide();
+        }
+        function group_state_tingyong_Click() {
+            $("#thjl").hide();
+            $("#thjy_workpoint").hide();
+            $("#thjy_prolog").hide();
+            $("#thjy_prodetail").hide();
+        }
+        $(function () {
+            //问题类型及描述
+            $('#example').DataTable({
+                "oLanguage": {
+                    "sUrl": "/Plugins/AdminLTE/plugins/datatables/datatable_chinese.json"
+                },
+                paging: false,
+                "searching": false,
+                "info": false,
+                "ordering": false,
+                "columns": [
+                    { "data": "problem_catalogy" },
+                    { "data": "problem_detail" },
+                    {
+                        "data": "del_action",
+                        "render": function (data, type, full, meta) {
+                            // alert(meta.row);
+                            return '<button type="button" class="btn btn-danger" onclick="del_row(' + meta.row + ')">删除</button>';
+                        }
+                    }
+                ]
+            });
+
+            $('#thjl').hide();
+            $('#example_div').hide();
+
+            var table = $('#example').DataTable();
+
+            $('#example tbody').on('click', 'button', function () {
+
+
+
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+
+            });
+
+        });
+
+        function add_row() {
+            $('#new_problem_desc').val('');
+            //  $('#optionsRadios1').attr('checked', 'true');
+            $('#myModal').modal('hide');
+            $('#myModal').modal('show');
+        }
+
+        function cancel_problem_record() {
+            $('#myModal').modal('hide');
+        }
+
+        function add_problem_record() {
+            $('#example_div').show();
+            var new_problem_desc = $('#new_problem_desc').val();
+            var new_problem_category;
+            $('input:radio').each(function () {
+                if ($(this).is(":checked")) {
+                    new_problem_category = $(this).val();
+                }
+            });
+            cancel_problem_record();
+            var t = $('#example').DataTable();
+            var obj = { problem_catalogy: new_problem_category, problem_detail: new_problem_desc, del_action: "" };
+            t.row.add(obj).draw(false);
+        }
+
+        function del_row(row_index) {
+            var t = $('#example').DataTable();
+            //  t.row('.selected').remove().draw(false);
+            t.row(row_index).remove().draw(false);
+        }
+
+        var submit_done = 1;
+        function submit_click(k) {
+            if ($("input:radio[name='group_state']:checked").val() != '投用' && $("input:radio[name='group_state']:checked").val() != '备用' && $("input:radio[name='group_state']:checked").val() != '停用') {
+                alert("尚未确认机组状态！");
+                return false;
+            }
+            submit_done = k;
+            if (!myValidation())
+                return false;
+            if (!confirm('确定要提交吗？'))
+                return false;
+            var E_Code = $("#E_Code").val();
+            // Get thjl datatable
+            var thjl_datatable_input = $('#thjl_datatable' + E_Code).DataTable().$('input');
+            var thjl_data = $('#thjl_datatable' + E_Code).DataTable().rows().data();
+            var thjl_json = "";
+
+            for (var i = 0; i < thjl_data.length; i++) {
+                var tmp = thjl_data[i];
+                //  alert(JSON.stringify(tmp));
+                tmp.exact_value = thjl_datatable_input[i].value;
+
+                thjl_json = thjl_json + JSON.stringify(tmp) + ",";
+            }
+            thjl_json = "[" + thjl_json.substring(0, thjl_json.length - 1) + "]";
+            console.log(thjl_json);
+            // Get data
+            var problem_data = $('#example').DataTable().rows().data();
+
+            var problem_data_json = "";
+            for (var i = 0; i < problem_data.length; i++) {
+                var tmp_obj = new Object();
+                tmp_obj.problem_catalogy = problem_data[i].problem_catalogy;
+                tmp_obj.problem_detail = problem_data[i].problem_detail;
+                problem_data_json = problem_data_json + JSON.stringify(tmp_obj) + ",";
+            }
+            problem_data_json = "[" + problem_data_json.substring(0, problem_data_json.length - 1) + "]";
+            // alert(problem_data_json);
+            var workdetail = $('#workdetail').val();
+
+            var flow_name = $("#wef_id").val();
+            $.ajax({
+                type: 'POST',
+                url: '/A7dot1dot1/ZzSubmit_submitsignal',
+                data: {
+                    json1: '{"Thjl_data": ' + thjl_json
+                         + ', "Problem_data": ' + problem_data_json
+                         + ',"workdetail":"' + workdetail
+                         + '","Flow_Name":"' + flow_name
+                         + '","Cj_Name":"' + $('#cjname').find("option:selected").text()
+                         + '","Zz_Name":"' + $('#zzId').find("option:selected").text()
+                         + '","Equip_GyCode":"' + $('#Equip_GyCode').find("option:selected").text()
+                         + '","Equip_Code":"' + $('#E_Code').val()
+                         + '","Equip_Type":"' + $('#E_Type').val()
+                         + '","Group_State":"' + $("input:radio[name='group_state']:checked").val()
+                         + '"}'
+
+                    //json1: '{Flow_Name: "' + flow_name
+                    //     + '", Cj_Name: "' + $('#cjname').find("option:selected").text()
+                    //     + '", Zz_Name: "' + $('#zzId').find("option:selected").text()
+                    //     + '", Equip_GyCode: "' + $('#Equip_GyCode').find("option:selected").text()
+                    //     + '", Equip_Code: "' + $('#E_Code').val()
+                    //     + '", Equip_Type: "' + $('#E_Type').val()
+                    //     + '", Thjl_data: "' + thjl_json
+                    //     + '", Problem_data": ' + problem_data_json
+                    //     + '",workdetail":"' + workdetail
+                    //     + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+        }
+        function judge(Thjl_Equip_Code) {//判断有没有对应的excel
+            var Thjl_E_Code = Thjl_Equip_Code;
+            if (Thjl_E_Code != null) {
+
+
+                $.ajax({
+                    url: "/A7dot1dot1/judge?thjl_id=" + Thjl_E_Code + "", //变量传递',
+                    type: 'post',
+                    success: function (backdata) {
+                        if (backdata == "true") {
+                            var item = "<table   id=\"thjl_datatable" + Thjl_E_Code + "\" width=\"100%\" cellspacing=\"1\">" +
+                                                        "<thead>" +
+                                                               " <th>" + "项目" + "</th>" +
+                                                                "<th>" + "设计值" + "</th>" +
+                                                                "<th>" + "实测值" + "</th>" +
+                                                             //   "<th>" + "趋势图" + "</th>" +
+                                                            "</tr>" +
+                                                        "</thead>" +
+                                                    "</table>";
+                            $("#Thjl_list").append(item);
+                            Thjl_init(Thjl_E_Code);
+
+                        } else {
+
+
+                            alert("没有与之对应的特护记录信息");
+                        }
+
+
+
+
+                    }
+
+
+
+                })
+            } else {
+                alert("没有与之对应的特护记录信息");
+
+            }
+
+
+
+        };
+        function Thjl_init(Thjl_Equip_Code) {
+
+            var Thjl_E_Code = Thjl_Equip_Code;
+
+
+            $('#thjl').show();
+
+            //特护记录-项目，设计值，实测值
+            $('#thjl_datatable' + Thjl_E_Code).DataTable({
+                "scrollX": false,
+                "scrollY": "30vh",
+                "scrollCollapse": true,
+                "paging": false,
+                "searching": false,
+                "info": false,
+                "ordering": false,
+                "ajax": {
+                    "url": "/A7dot1dot1/Thjl_excel?thjl_id=" + Thjl_E_Code + "", //变量传递
+                    "dataSrc": ""
+
+
+                },
+                "columns": [
+                    { "data": "name" },
+                    { "data": "standard_value" },
+                    {
+                        "data": "exact_value",
+                        "render": function (data, type, full, meta) {
+                            console.log(full.name, full.standard_value, full.exact_value);
+                            return '<input type="text" class="form-control" placeholder="输入实测值 ..." onchange="validate_value(this.value,' + meta.row + ',' + meta.col + ')">';
+                        }
+                    },
+                   //{
+                   //    "data": "show_action",
+                   //    "render": function (data, type, full, meta) {
+                   //        console.log('<button type="button" class="btn btn-primary" onclick="graphic_show(\'' + full.name + '\')">趋势图</button>');
+                   //        return '<button type="button" class="btn btn-primary" onclick="graphic_show(\'' + full.name + '\')">趋势图</button>';
+                   //    }
+                   //}
+
+                ]
+            });
+
+            var table = $('#thjl_datatable' + Thjl_E_Code).DataTable();
+
+            $('#thjl_datatable' + Thjl_E_Code + ' tbody').on('click', 'tr', function () {
+
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+
+        }
+
+        function validate_value(actual_value, row_index, column_index) {
+            var E_Code = $("#E_Code").val();
+
+            console.log(actual_value, row_index, column_index);
+            console.log("standard value is: " + $('#thjl_datatable' + E_Code).DataTable().cell(row_index, column_index - 1).data());
+            var td_index = $('#thjl_datatable' + E_Code).DataTable().cell(row_index, column_index).node();
+            var td_input = $(td_index).find("input");
+            // console.log(td_input);
+            var standard_value = $('#thjl_datatable' + E_Code).DataTable().cell(row_index, column_index - 1).data();
+
+            var reg_less = /[<]|[＜]/;
+            var reg_more = /[>]|[＞]/;
+            var reg_more_1 = /[≥]|[≥]/;
+            var reg_less_1 = /[≤]|[≤]/;
+            // var reg_less_more = /[±]|[±]/;
+            var reg_other = /-/;
+            console.log("start ");
+            if ((standard_value.search(reg_less)) != -1) {
+                var tmp;
+                if ((standard_value.search(/</)) != -1) {
+                    console.log("the value contain <. and the index is " + standard_value.search(/</));
+                    tmp = standard_value.substring(standard_value.search(/</) + 1, standard_value.length);
+                    //alert(tmp);
+                    if ((tmp.search(/±/)) != -1) {
+                        tt = tmp.substring(tmp.search(/±/) + 1, tmp.length);
+                        //   alert(tt);
+                        var min_value = -tt;
+                        var max_value = tt;
+                        // alert(min_value);
+                        if ((parseFloat(actual_value) >= parseFloat(min_value)) && (parseFloat(actual_value) <= parseFloat(max_value))) {
+                            $(td_input).css('color', 'black');
+                        } else {
+                            $(td_input).css('color', 'red');
+                        }
+
+                        return;
+
+                    } else {
+                        console.log("the less value is " + tmp);
+                        // parseFloat(actual_value) <= parseFloat(tmp) ? $(td_index).css('background-color', 'white') : $(td_index).css('background-color', 'red');
+                        parseFloat(actual_value) <= parseFloat(tmp) ? $(td_input).css('color', 'black') : $(td_input).css('color', 'red');
+                        return;
+                    }
+                }
+                if ((standard_value.search(/＜/)) != -1) {
+
+                    console.log("the value contain <. and the index is " + standard_value.search(/＜/));
+                    tmp = standard_value.substring(standard_value.search(/＜/) + 1, standard_value.length);
+                    //alert(tmp);
+                    if ((tmp.search(/±/)) != -1) {
+                        tt = tmp.substring(tmp.search(/±/) + 1, tmp.length);
+                        //   alert(tt);
+                        var min_value = -tt;
+                        var max_value = tt;
+                        //  alert(min_value);
+                        if ((parseFloat(actual_value) > parseFloat(min_value)) && (parseFloat(actual_value) < parseFloat(max_value))) {
+                            $(td_input).css('color', 'black');
+                        } else {
+                            $(td_input).css('color', 'red');
+                        }
+
+                        return;
+
+                    } else {
+                        console.log("the less value is " + tmp);
+                        // parseFloat(actual_value) <= parseFloat(tmp) ? $(td_index).css('background-color', 'white') : $(td_index).css('background-color', 'red');
+                        parseFloat(actual_value) <= parseFloat(tmp) ? $(td_input).css('color', 'black') : $(td_input).css('color', 'red');
+                        return;
+                    }
+                }
+
+            }
+
+            if ((standard_value.search(reg_more)) != -1) {
+                var tmp;
+                if ((standard_value.search(/>/)) != -1) {
+                    console.log("the value contain >. and the index is " + standard_value.search(/>/));
+                    tmp = standard_value.substring(standard_value.search(/>/) + 1, standard_value.length);
+                }
+                if ((standard_value.search(/＞/)) != -1) {
+                    console.log("the value contain ＞. and the index is " + standard_value.search(/＞/));
+                    tmp = standard_value.substring(standard_value.search(/＞/) + 1, standard_value.length);
+                }
+                console.log("the more value is " + tmp);
+                parseFloat(actual_value) >= parseFloat(tmp) ? $(td_input).css('color', 'black') : $(td_input).css('color', 'red');;
+                return;
+            }
+
+            if ((standard_value.search(reg_more_1)) != -1) {
+                var tmp;
+                if ((standard_value.search(/≥/)) != -1) {
+                    console.log("the value contain >. and the index is " + standard_value.search(/≥/));
+                    tmp = standard_value.substring(standard_value.search(/≥/) + 1, standard_value.length);
+                }
+                if ((standard_value.search(/≥/)) != -1) {
+                    console.log("the value contain ＞. and the index is " + standard_value.search(/≥/));
+                    tmp = standard_value.substring(standard_value.search(/≥/) + 1, standard_value.length);
+                }
+                console.log("the more value is " + tmp);
+                parseFloat(actual_value) >= parseFloat(tmp) ? $(td_input).css('color', 'black') : $(td_input).css('color', 'red');;
+                return;
+            }
+
+            if ((standard_value.search(reg_less_1)) != -1) {
+                var tmp;
+                if ((standard_value.search(/≤/)) != -1) {
+                    console.log("the value contain >. and the index is " + standard_value.search(/≤/));
+                    tmp = standard_value.substring(standard_value.search(/≤/) + 1, standard_value.length);
+                }
+                if ((standard_value.search(/≤/)) != -1) {
+                    console.log("the value contain ＞. and the index is " + standard_value.search(/≤/));
+                    tmp = standard_value.substring(standard_value.search(/≤/) + 1, standard_value.length);
+                }
+                console.log("the more value is " + tmp);
+                parseFloat(actual_value) <= parseFloat(tmp) ? $(td_input).css('color', 'black') : $(td_input).css('color', 'red');;
+                return;
+            }
+
+
+            if ((standard_value.search(reg_other)) != -1) {
+                console.log('the string contain -');
+                // var tmp_arry = standard_value.split(/\D/);
+                var min_value = standard_value.substring(0, standard_value.search(reg_other));
+                var max_value = standard_value.substring(standard_value.search(reg_other) + 1, standard_value.length);
+                console.log("the min_value is: " + min_value);
+                console.log("the max_value is: " + max_value);
+                if (min_value == "") {
+
+                    if ((max_value.search(reg_other)) != -1) {
+
+                        var min = -(max_value.substring(0, max_value.search(reg_other)));
+                        var max = max_value.substring(max_value.search(reg_other) + 1, max_value.length);
+                        //alert(min);
+                        //alert(max);
+                        if ((parseFloat(actual_value) >= parseFloat(min)) && (parseFloat(actual_value) <= parseFloat(max))) {
+                            $(td_input).css('color', 'black');
+                        } else {
+                            $(td_input).css('color', 'red');
+                        }
+
+                        return;
+
+                    }
+
+
+
+                } else {
+
+
+                    if ((parseFloat(actual_value) >= parseFloat(min_value)) && (parseFloat(actual_value) <= parseFloat(max_value))) {
+                        $(td_input).css('color', 'black');
+                    } else {
+                        $(td_input).css('color', 'red');
+                    }
+
+                    return;
+                }
+
+            }
+
+        }
+        function graphic_show(grahpic_name) {
+            console.log("the grahpic is shown!");
+            console.log(grahpic_name);
+            $('#qst').modal('show');
+
+            var g_data = [];
+            var g_cat = [];
+            $.ajax({
+                type: 'POST',
+                url: '/A7dot1dot1/GetGraphicData',
+                data: { "graphicName": grahpic_name },
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    for (i = 0; i < data.val.length; i++) {
+                        g_data.push(data.val[i]);
+                        g_cat.push(data.valtime[i]);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest);
+                    alert(textStatus);
+                    alert(errorThrown);
+                }
+            });
+
+            $('#qst_graphic').highcharts({
+                title: {
+                    text: grahpic_name + '历史曲线',
+                    x: -20 //center
+                },
+
+                xAxis: {
+                    categories: g_cat
+                },
+                yAxis: {
+                    title: {
+                        text: '数值'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name: grahpic_name,
+                    data: g_data
+                }]
+            });
+
+
+        }
+
+
+    </script>
+
+
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+        });
+
+        function list_Zz() {
+            if ($('#cjname').val() != "") {
+                $.ajax({
+                    url: '/Common/Cj_Zzs',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "cj_id": $('#cjname').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            for (var i = 0; i < backdata.length; i++) {
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Zz_Id + "\">" + backdata[i].Zz_Name + "</option>";
+                            }
+                            $('#zzId').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+            }
+        };
+
+        function Zz_selected() {
+            if ($('#zzId').val() != "") {
+                $.ajax({
+                    url: '/A7dot1dot1/A7Zz_Equips',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "Zz_id": $('#zzId').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            for (var i = 0; i < backdata.length; i++) {
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Equip_Id + "\">" + backdata[i].Equip_GyCode + "</option>";
+                            }
+                            $('#Equip_GyCode').html(itemHtml);
+
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+            }
+        };
+
+
+
+        function Equip_selected() {
+
+            if (typeof ($('#Equip_GyCode').val()) != null) {
+                $.ajax({
+                    url: '/Common/ListEquip_Info',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "Equip_Id": $('#Equip_GyCode').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            $("#E_Code").val(backdata[0].Equip_Code);
+                            $("#E_Type").val(backdata[0].Equip_Type);
+
+                            $("#Thjl_list").empty();
+
+                            judge(backdata[0].Equip_Code);
+
+
+
+
+                            $("input:radio[name='zyoptionsRadiosinline']").each(function () {
+                                $(this).val() == backdata[0].Equip_Specialty ? $(this).attr("checked", "checked") : null;
+                            })
+
+                            $("input:radio[name='subzyoptionsRadiosinline']").each(function () {
+                                $(this).val() == backdata[0].Equip_PhaseB ? $(this).attr("checked", "checked") : null;
+                            })
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                }
+                )
+            }
+
+        };
+
+        function cancel_click() {
+            location.href = "/A7dot1/Index";
+        };
+
+        window.onbeforeunload = function () {//离开当前页面触发//火狐可用
+
+            if (submit_done == 1) {
+                //   alert("1");
+                qx();
+            }
+        }
+
+
+        window.onunload = function () {//谷歌可用
+
+            if (submit_done == 1) {
+                //  alert("2");
+                qx();
+            }
+
+        }
+        //function qx() {
+
+
+        //    var wef_id = $("#wef_id").val();
+        //    var return_url = "/A7dot1/Index";
+        //    $.ajax({
+        //        type: 'POST',
+        //        url: '/Common/CancelSubmit',
+        //        async: false,
+        //        data: {
+        //            json1: '{wef_id: "' + wef_id
+        //                 + '", return_url: "' + return_url
+        //                 + '"}'
+        //        },
+        //        success: function (data) {
+
+
+        //            location.href = data;
+
+        //        },
+        //        error: function () {
+        //            alert('error');
+        //        }
+        //    });
+
+
+
+
+        //}
+        $(document).ready(function () {
+
+            function Equip_selectedDS() {
+
+                if (typeof ($('#Equip_GyCode').val()) != null) {
+                    $.ajax({
+                        url: '/Common/ListEquip_Info',
+                        dataType: 'json',
+                        type: 'post',
+                        data: { "Equip_Id": $('#Equip_GyCode').val() },
+                        success: function (backdata) {
+                            if (backdata) {
+                                $("#E_Code").val(backdata[0].Equip_Code);
+                                $("#E_Type").val(backdata[0].Equip_Type);
+
+                                $("#Thjl_list").empty();
+
+                                judge(backdata[0].Equip_Code);
+
+
+
+
+                                $("input:radio[name='zyoptionsRadiosinline']").each(function () {
+                                    $(this).val() == backdata[0].Equip_Specialty ? $(this).attr("checked", "checked") : null;
+                                })
+
+                                $("input:radio[name='subzyoptionsRadiosinline']").each(function () {
+                                    $(this).val() == backdata[0].Equip_PhaseB ? $(this).attr("checked", "checked") : null;
+                                })
+                            }
+                            else {
+                                alert("error!!!");
+                            }
+                        }
+                    }
+                    )
+                }
+
+            };
+            if ($('#Equipid').val() != "") {
+                Equip_selectedDS();
+ 
+            }
+            var options = {
+
+                target: '#outputdiv',
+                success: showResponse,
+                error: function (data) {
+                    $("#outputdiv").html = data;
+                }
+            };
+        });
+    </script>
+}
+
+
+
+
+

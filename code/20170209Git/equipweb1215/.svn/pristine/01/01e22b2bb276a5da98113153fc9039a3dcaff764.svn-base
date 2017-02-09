@@ -1,0 +1,156 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+
+namespace FlowDesigner.Management
+{
+    
+    /// <summary>
+    /// 工作流工程
+    /// </summary>
+    public class WorkFlowsProj
+    {
+        #region private property
+        /// <summary>
+        /// 包含的工作流管理
+        /// </summary>
+        private List<WorkFlowMan> wfs_man = new List<WorkFlowMan>();
+
+       
+
+        #endregion
+
+        #region public property
+        /// <summary>
+        /// 工程名称
+        /// </summary>
+        public string Name { set; get; }
+
+        /// <summary>
+        /// 工程描述
+        /// </summary>
+        public string Description { set; get; }
+
+        /// <summary>
+        /// 保存的路径
+        /// </summary>
+        public string Path { set; get; }
+
+        public string DB_Config { get; set; }
+        
+        public WorkFlowMan CurrentWF { get; set; }
+        public MainWindow win_main { get; set; }
+        #endregion
+
+        #region method
+        /// <summary>
+        /// 添加一个新工作流管理
+        /// </summary>
+        /// <param name="wfName">工作流名称</param>
+        /// <param name="wfDesc">工作流描述</param>
+        /// <returns>添加成功则返回新建的WorkFlowMan</returns>
+        public WorkFlowMan NewWrokFlowMan(string wfName, string wfDesc, bool init = true)
+        {
+            foreach(WorkFlowMan i in wfs_man)
+            {
+                if (i.Name == wfName)
+                    return null;
+            }
+
+            WorkFlowMan wfm = new WorkFlowMan(wfName, wfDesc);
+            wfm.Proj = this;
+            if (init == true)
+                wfm.InitStartAndEnd();
+            wfs_man.Add(wfm);
+            return wfm;
+        }
+
+        public WorkFlowMan DeleteWorkFlowMan(string wfName)
+        {
+            WorkFlowMan deleted = null;
+            foreach (WorkFlowMan i in wfs_man)
+            {
+                if (i.Name == wfName)
+                {
+                    wfs_man.Remove(i);
+                    deleted = i;
+                    break;
+                }
+            }
+            foreach (WorkFlowMan j in wfs_man)
+            {
+                j.UnlinkOtherWFM(deleted);
+            }
+
+
+            return deleted;
+        }
+
+        public void SaveWorkFlowProj()
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlElement projNode = doc.CreateElement("work_wlow_project");
+            projNode.SetAttribute("name", Name) ;
+            projNode.SetAttribute("db", DB_Config);
+
+            foreach (WorkFlowMan wfm in wfs_man)
+                projNode.AppendChild(wfm.SaveWorkFlow(doc));
+
+            doc.AppendChild(projNode);
+
+            doc.Save(Path.TrimEnd('\\') + "\\" + Name + ".wfproj");
+        }
+
+        public bool LoadWorkFlowProj(XmlElement source)
+        {
+            XmlElement projNode = source;
+            if (projNode.Name != "work_wlow_project")
+                return false;
+
+            Name = projNode.GetAttribute("name");
+            DB_Config = projNode.GetAttribute("db");
+            XmlNodeList wfs = projNode.SelectNodes("work_flow");
+            foreach (XmlNode xn in wfs)
+            {
+                XmlElement xe = (XmlElement)xn;
+                WorkFlowMan wfm = NewWrokFlowMan(xe.GetAttribute("name"), xe.GetAttribute("desc"), false);
+                if (!wfm.LoadWorkFlow(xe))
+                    return false;
+            }
+            return true;
+        }
+
+        public List<WorkFlowMan> GetWorkFlows()
+        {
+            return wfs_man;
+        }
+
+        public WorkFlowMan GetWorkFlow(string wf_name)
+        {
+            foreach(WorkFlowMan wfm in wfs_man)
+            {
+                if (wfm.Name == wf_name)
+                    return wfm;
+            }
+            return null;
+        }
+
+        public bool Complie()
+        {
+            foreach (WorkFlowMan wfm in wfs_man)
+            {
+                string wfPath = Path.TrimEnd('\\') + "\\workflows\\" + wfm.Name + ".wfd";
+
+                if (!wfm.Complie(wfPath))
+                    return false;
+
+            }
+
+            return true;
+        }
+        #endregion
+    }
+}

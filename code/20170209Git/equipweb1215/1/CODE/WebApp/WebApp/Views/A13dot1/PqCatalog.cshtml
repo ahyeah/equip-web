@@ -1,0 +1,341 @@
+﻿@model WebApp.Controllers.CommonController.WFDetail_Model
+
+@{
+    ViewBag.Title = "PqCatalog";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-8">
+                <!-- The time line -->
+                <ul class="timeline">  
+                     <!-- 工作流当前任务-Star -->
+                    <!-- timeline item -->
+                     <li class="time-label">
+                        <span class="bg-green">
+                           业务流水号：<button class="btn btn-default"  onclick="DispalsySide('@ViewBag.WF_Ser')">@ViewBag.WF_Ser</button>
+                        </span>
+                    </li>
+                    <li class="time-label">
+                        <span class="bg-green">
+                           当前任务：缺陷分类
+                        </span>
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                            <h3 class="timeline-header"><span class="lead" style="color:red">缺陷分类</span></h3>
+                            <div class="timeline-body">
+                                <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                                <div class="form-group">
+                                    <p class="text-green">选择缺陷类别</p>
+                                    <select id="qqq" onchange="FaultLvel_Click()" class="form-control">
+                                        <option value="完好类">完好类</option>
+                                        <option value="隐患">隐患</option>
+                                        <option value="故障">故障</option>
+                                        <option value="不需处理" selected="">不需处理</option>
+                                    </select>
+                                </div>
+                                <div id="FaultLevel" class="form-group">
+                                    <p class="text-green">选择缺陷级别</p>
+                                    <div class="radio">
+                                        <label>
+                                            <input name="defect_level_sel" id="FaultLevel_rad1" type="radio" value="一级缺陷">
+                                            一级缺陷
+                                        </label>
+                                        <label>
+                                            <input name="defect_level_sel" id="FaultLevel_rad2" type="radio" value="二级缺陷">
+                                            二级缺陷
+                                        </label>
+
+                                        <label>
+                                            <input name="defect_level_sel" id="FaultLevel_rad3" type="radio" value="三级缺陷">
+                                            三级缺陷
+                                        </label>
+                                    </div>
+                                    <p></p>
+                                     <p class="text-blue text-bold">【缺陷分级说明】</p>
+                                     <div >
+                                        <p><span style="color:rgb(255, 0, 0)"><b>一级缺陷</b></span>(危急缺陷)：直接威胁设备和人身的安全，随时都有发生事故的可能，需要立即处理的缺陷.</p>
+                                        <p><span style="color:rgb(255, 0, 0)"><b>二级缺陷</b></span>(严重缺陷)：对设备和人身安全有一定的威胁设备可以带病运行，或采取防止事故发生的临时措施，但必须列入近期停机消缺计划.</p>
+                                        <p><span style="color:rgb(255, 0, 0)"><b>三级缺陷</b></span>(一般缺陷)：对设备和人身安全威胁不大，可列入正常检修或机会停车检修计划来处理的缺陷. </p>
+                                    </div>
+                                </div>
+                                <div id="Incomplete" class="form-group">
+                                    <label class="col-sm-2 control-label">不完好内容</label>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="zyoptionsRadiosinline" id="optionsRadios1"
+                                               value="1、润滑、冷却系统不通畅；油杯、看窗差红线；水泡转轮不转。">1、润滑、冷却系统不通畅；油杯、看窗差红线；水泡转轮不转。
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="zyoptionsRadiosinline" id="optionsRadios2"
+                                               value="2、轴承箱油封、润滑油管路漏油；介质密封泄漏。"> 2、轴承箱油封、润滑油管路漏油；介质密封泄漏。
+                                    </label>
+
+                                    <label class="checkbox-inline">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="checkbox" name="zyoptionsRadiosinline" id="optionsRadios3"
+                                               value="3、机泵主体附件不齐全。护罩不完好，护罩螺栓、泵地脚螺栓缺损松动。"> 3、机泵主体附件不齐全。护罩不完好，护罩螺栓、泵地脚螺栓缺损松动。
+                                    </label>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">补充说明</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="Supplement_content">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="FaultIntensity" class="form-group">
+                                    <p class="text-green">选择故障强度级别</p>
+                                    <select class="form-control" id="fault_Intensity_level">
+                                        <option value="1级">1级</option>
+                                        <option value="2级">2级</option>
+                                        <option value="3级">3级</option>
+                                        <option value="4级">4级</option>
+                                        <option value="5级">5级</option>
+                                        <option value="6级">6级</option>
+                                    </select>
+                                    <p></p>
+                                     <p class="text-blue text-bold">【故障强度分级说明】</p>
+                                     <div >
+                                        <p><span style="color:rgb(255, 0, 0)"><b>1级</b></span>设备故障：故障造成全厂生产波动，全厂生产降量或多个生产装置非计划停工.</p>
+                                        <p><span style="color:rgb(255, 0, 0)"><b>2级</b></span>设备故障：故障造成单个装置非计划停工、多套装置生产波动.</p>
+                                        <p><span style="color:rgb(255, 0, 0)"><b>3级</b></span>设备故障：故障造成单个生产装置降量或局部切除，大机组急停. </p>
+                                        <p><span style="color:rgb(255, 0, 0)"><b>4级</b></span>设备故障：故障造成单个生产装置局部波动.</p>
+                                        <p><span style="color:rgb(255, 0, 0)"><b>5级</b></span>设备故障：故障造成单台设备停运.</p>
+                                        <p><span style="color:rgb(255, 0, 0)"><b>6级</b></span>设备故障：一般故障，处理时不影响装置生产或影响很小. </p>                                  
+                                      </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="button" onclick="submit_click()">确定</button>
+                                   @* <button class="btn btn-primary col-sm-offset-1" type="button" onclick="cancel_click()">取消</button>*@
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </li>
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+                 <!-- 工作流当前任务-End -->
+                  
+                 <!-- 工作流历史操作-通用部分Star -->
+                   <li class="time-label">
+                            <span class="bg-green">
+                               当前工作流历史操作
+                            </span>
+                        </li>
+                     <!-- timeline time label -->  
+                    @for (int i = @Model.ALLHistoryMiss.Count()-1; i >=1 ; i--)
+                    {     <li class="time-label">
+                              <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@i" aria-expanded=true aria-controls="@i">
+                                  @Model.MissTime[i] - @Model.ALLHistoryMiss[i].WE_Event_Desc
+                              </a>
+                           </li>
+                    
+                          <li class="collapse" id="@i">
+                            <i class="fa fa-camera bg-purple"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fa fa-clock-o">@Model.MissTime[i]</i>操作用户： @Model.MissUser[i]</span>
+                                <h3 class="timeline-header lead"><span class="lead" style="color:red">@Model.ALLHistoryMiss[i].WE_Event_Desc</span></h3>
+                                <div class="timeline-body">
+                                    <table class="table  table-hover table-bordered">
+                                        <tbody>
+                                             @foreach (var pp in @Model.ALLHistoryMiss[i].Miss_ParamsAppRes)
+                                            {
+                                                if(pp.Value.ToString()!="App_hidden")
+                                                {
+                                                    <tr class="info">
+                                                        <th>@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key]</th>
+                                                       @if ((@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key].ToString()).IndexOf("附件") > -1 && @Model.ALLHistoryMiss[i].Miss_Params[pp.Key]!="")
+                                                       {
+                                                           string[] savedFileName = (@Model.ALLHistoryMiss[i].Miss_Params[pp.Key].ToString()).Split(new char[] { '$' });
+                                                           string saveExistFilename = Path.Combine("/Upload", savedFileName[1]);
+                                                           <td><a href=@saveExistFilename target=_blank> @savedFileName[0]</a></td> }
+                                                       else
+                                                        {<td>@Model.ALLHistoryMiss[i].Miss_Params[pp.Key]</td>}
+                                                    </tr>
+                                                 }
+                                            }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+                }
+                     
+                <!-- END timeline item -->
+
+                  <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li> 
+            <!-- 工作流历史操作-通用部分End -->
+
+           </ul>
+        </div>
+        <!-- /.col -->
+         <div class="col-md-4" id="sidebar"> </div>
+    </div>
+    <!-- /.row -->
+
+</section>
+
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处--> 
+    <!--设备信息显示模态框开始处-->
+    <div class="modal fade" id="EquipInfoModal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">设备相关信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body" id="EquipInfoDiv">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div><!--设备信息显示模态框结束处--> 
+@section js{
+       <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+        <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+        function PageLoad() {
+            // $("#FaultLevel").hide();
+            /*  $("#optionsRadios1").attr("check", "false");
+              $("#optionsRadios1").attr("disabled", "true");
+              $("#optionsRadios2").attr("checked", "false");
+              $("#optionsRadios2").attr("disabled", "true");
+              $("#optionsRadios3").attr("checked", "true");
+              $("#optionsRadios3").attr("disabled", "true");
+              $("#FaultIntensity").hide();*/
+            $("#FaultLevel").hide();
+            $("#FaultIntensity").hide();
+            $("#Incomplete").hide();
+
+        };
+        $(document).ready(
+            PageLoad());
+
+        function FaultLvel_Click() {
+            //$("#FaultLevel").show();
+            //$("#FaultIntensity").show();
+            var str = $("#qqq").val();
+            // var str =$("FaultLevel_sel option[selected=selected]");
+            // alert(str);
+            if (str == "完好类") {
+                $("input:radio[name='defect_level_sel']").eq(1).attr("disabled", false);
+                $("input:radio[name='defect_level_sel']").eq(0).attr("disabled", false);
+                $("input:radio[name='defect_level_sel']").eq(2).attr("disabled", false);
+                $("input:radio[name='defect_level_sel']").eq(2).prop("checked", true);
+                $("input:radio[name='defect_level_sel']").eq(2).attr("disabled", true);
+                $("input:radio[name='defect_level_sel']").eq(1).attr("disabled", true);
+                $("input:radio[name='defect_level_sel']").eq(0).attr("disabled", true);
+
+                $("#FaultLevel").show(); 
+                $("#Incomplete").show();
+                $("#FaultIntensity").hide();
+
+            }
+            else if (str == "隐患") {
+
+                $("input:radio[name='defect_level_sel']").eq(1).prop("disabled", false);
+                $("input:radio[name='defect_level_sel']").eq(0).prop("disabled", false);
+                $("input:radio[name='defect_level_sel']").eq(2).attr("disabled", false);
+                $("input:radio[name='defect_level_sel']").eq(1).prop("checked", true);
+                $("input:radio[name='defect_level_sel']").eq(0).attr("disabled", true);
+
+                $("input:radio[name='defect_level_sel']").eq(2).attr("disabled", false);
+                $("#FaultLevel").show();
+                $("#Incomplete").hide();
+                $("#FaultIntensity").hide();
+
+
+            } else if (str == "故障") {
+                $("input:radio[name='defect_level_sel']").eq(1).attr("disabled", false);
+                $("input:radio[name='defect_level_sel']").eq(0).attr("disabled", false);
+                $("input:radio[name='defect_level_sel']").eq(2).attr("disabled", false);
+                $("input:radio[name='defect_level_sel']").eq(0).prop("checked", true);
+                $("input:radio[name='defect_level_sel']").eq(2).attr("disabled", true);
+                $("input:radio[name='defect_level_sel']").eq(1).attr("disabled", true);
+                $("input:radio[name='defect_level_sel']").eq(0).attr("disabled", true);
+                $("#FaultLevel").show();
+                $("#Incomplete").hide();
+                $("#FaultIntensity").show();
+
+            } else {
+                $("#FaultLevel").hide();
+                $("#FaultIntensity").hide();
+                $("#Incomplete").hide();
+            }
+
+        }
+
+        function submit_click() {
+            var flow_name = $("#wef_id").val();
+            var obj = document.getElementsByName('zyoptionsRadiosinline'); //选择所有name="'zyoptionsRadiosinline'"的对象，返回数组 
+            //取到对象数组后，我们来循环检测它是不是被选中 
+            var s = '';
+            for (var i = 0; i < obj.length; i++) {
+                if (obj[i].checked) s += obj[i].value + ','; //如果选中，将value添加到变量s中 
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/A13dot1/PqCatalog_submitsignal',
+                data: {
+                    json1: '{Flow_Name: "' + flow_name
+                         + '", catlog_type: "' + $('#qqq').val()
+                         + '", fault_intensity: "' + $('#fault_Intensity_level').val()
+                         + '", defect_level: "' + $("input:radio[name='defect_level_sel']:checked").val()
+                         + '", Incomplete_content: "' + s
+                         + '", Supplement_content: "' + $('#Supplement_content').val()
+                         + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                    //alert(data);
+                },
+                error: function (data) {
+                    alert(data);
+                }
+            });
+
+        }
+
+
+    </script>
+}

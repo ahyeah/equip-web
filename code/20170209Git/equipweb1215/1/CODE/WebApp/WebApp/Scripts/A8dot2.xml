@@ -1,0 +1,264 @@
+﻿<?xml version="1.0"?>
+<workflow name="A8dot2" desc="【A8.2】检修计划实施管理" current_event="">
+  <paramtable>
+    <param name="submit_user" desc="提报人" type="string">
+      <linkevents>
+        <linkevent>DrbpmSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">
+      <linkevents>
+        <linkevent>DrbpmSubmit</linkevent>
+        <linkevent>ToERPCreateJob</linkevent>
+        <linkevent>JxdwCreatePlan</linkevent>
+        <linkevent>ZytdConfirm</linkevent>
+        <linkevent>ToRiskAssess</linkevent>
+        <linkevent>JxdwImplementPlan</linkevent>
+        <linkevent>PqQualityControl</linkevent>
+        <linkevent>JobFinishClose</linkevent>
+        <linkevent>A3dot3</linkevent>
+        <linkevent>A11dot3</linkevent>
+      </linkevents>
+    </param>
+    <param name="Abstract" desc="简要说明" type="string">
+      <linkevents>
+        <linkevent>DrbpmSubmit</linkevent>
+        <linkevent>ToERPCreateJob</linkevent>
+        <linkevent>JxdwCreatePlan</linkevent>
+        <linkevent>ZytdConfirm</linkevent>
+        <linkevent>ToRiskAssess</linkevent>
+        <linkevent>JxdwImplementPlan</linkevent>
+        <linkevent>PqQualityControl</linkevent>
+        <linkevent>JobFinishClose</linkevent>
+        <linkevent>A3dot3</linkevent>
+        <linkevent>A11dot3</linkevent>
+      </linkevents>
+    </param>
+     <param name="Job_Order" desc="工单号" type="string">
+      <linkevents>        
+        <linkevent>ToERPCreateJob</linkevent>
+        <linkevent>JxdwCreatePlan</linkevent>
+        <linkevent>ZytdConfirm</linkevent>
+        <linkevent>ToRiskAssess</linkevent>
+        <linkevent>JxdwImplementPlan</linkevent>
+        <linkevent>PqQualityControl</linkevent>
+        <linkevent>JobFinishClose</linkevent>
+        <linkevent>A3dot3</linkevent>
+        <linkevent>A11dot3</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_Desc" desc="检修方案描述" type="string">
+      <linkevents>
+        <linkevent>JxdwCreatePlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_DescFilePath" desc="检修方案描述文档（附件）" type="string">
+      <linkevents>
+        <linkevent>JxdwCreatePlan</linkevent>        
+      </linkevents>
+    </param>
+   
+    <param name="DrbpmSubmit_done" desc="DRBPM提交，完成" type="bool">
+      <linkevents>
+        <linkevent>DrbpmSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="ToERPCreateJob_done" desc="推送ERP生成工单，完成" type="bool">
+      <linkevents>
+        <linkevent>ToERPCreateJob</linkevent>
+      </linkevents>
+    </param>
+    <param name="JxdwCreatePlan_done" desc="检修单位完善工单制定检修方案，完成" type="bool">
+      <linkevents>
+        <linkevent>JxdwCreatePlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdConfirm_done" desc="机动处（专业团队）审核下达，完成" type="bool">
+      <linkevents>
+        <linkevent>ZytdConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="FaultyIntensity" desc="故障强度等级" type="int">
+      <linkevents>
+        <linkevent>ZytdConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="RiskAssess_result" desc="风险评估结果" type="bool">
+      <linkevents>
+        <linkevent>ToRiskAssess</linkevent>
+      </linkevents>
+    </param>
+    <param name="JxdwImplementPlan_done" desc="维修单位建立通知单，实施检修计划，完成" type="bool">
+      <linkevents>
+        <linkevent>JxdwImplementPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="PqQualityControl_done" desc="片区进行检修过程质量检查控制，完成" type="bool">
+      <linkevents>
+        <linkevent>PqQualityControl</linkevent>
+      </linkevents>
+    </param>
+    <param name="JobFinishClose_done" desc="检修计划实施完成，封闭通知单，完成" type="bool">
+      <linkevents>
+        <linkevent>JobFinishClose</linkevent>
+      </linkevents>
+    </param>
+   
+    <param name="JumpToA3dot3_done" desc="" type="bool">
+      <linkevents>
+        <linkevent>A3dot3</linkevent>
+      </linkevents>
+    </param>
+    <param name="JumpToA11dot3_done" desc="" type="bool">
+      <linkevents>
+        <linkevent>A11dot3</linkevent>
+      </linkevents>
+    </param>
+
+  </paramtable>
+  <events>
+    <event name="DrbpmSubmit" desc="DRBPM发出检修" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/DrbpmSubmit]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="ToERPCreateJob" desc="推送到ERP生成工单" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/ToERPCreateJob]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="JxdwCreatePlan" desc="检维修单位完善工单，制定检修方案" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/JxdwCreatePlan]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="ZytdConfirm" desc="机动处（专业团队）审核下达" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/ZytdConfirm]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="ToRiskAssess" desc="风险评估" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/ToRiskAssess]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="JxdwImplementPlan" desc="维修单位建立通知单，实施检修计划" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/JxdwImplementPlan]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="PqQualityControl" desc="片区进行检修过程质量检查控制" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/PqQualityControl]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="JobFinishClose" desc="检修计划实施完成，封闭通知单" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/JobFinishClose]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+
+    <event name="A3dot3" desc="跳转到【A3.3】文件管理模块" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/JumpToA3dot3]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="A11dot3" desc="跳转到【A11.3】风险管控模块" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[/A8dot2/JumpToA11dot3]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>   
+    <event name="SE" desc="Start" type="startevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="EE" desc="End" type="endevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>    
+  </events>
+  <flows>
+    <flow source="SE" destination="DrbpmSubmit">
+      <condition><![CDATA[1 == 1]]></condition>
+    </flow>
+    <flow source="DrbpmSubmit" destination="ToERPCreateJob">
+      <condition><![CDATA[DrbpmSubmit_done == true]]></condition>
+    </flow>
+    <flow source="ToERPCreateJob" destination="JxdwCreatePlan">
+      <condition><![CDATA[ToERPCreateJob_done == true]]></condition>
+    </flow>
+    <flow source="JxdwCreatePlan" destination="ZytdConfirm">
+      <condition><![CDATA[JxdwCreatePlan_done == true]]></condition>
+    </flow>
+    <flow source="ZytdConfirm" destination="ToRiskAssess">
+      <condition><![CDATA[ZytdConfirm_done == true AND FaultyIntensity>=4 ]]></condition>
+    </flow>
+    <flow source="ZytdConfirm" destination="JxdwImplementPlan">
+      <condition><![CDATA[ZytdConfirm_done == true AND FaultyIntensity<4 ]]></condition>
+    </flow>
+    
+    <flow source="ToRiskAssess" destination="JxdwImplementPlan">
+      <condition><![CDATA[RiskAssess_result == true]]></condition>
+    </flow>
+    <flow source="ToRiskAssess" destination="A11dot3">
+      <condition><![CDATA[RiskAssess_result == false]]></condition>
+    </flow>
+    <flow source="A11dot3" destination="EE">
+      <condition><![CDATA[JumpToA11dot3_done == true]]></condition>
+    </flow>
+    <flow source="JxdwImplementPlan" destination="PqQualityControl">
+      <condition><![CDATA[JxdwImplementPlan_done == true]]></condition>
+    </flow>
+    <flow source="PqQualityControl" destination="JobFinishClose">
+      <condition><![CDATA[PqQualityControl_done == true]]></condition>
+    </flow>
+    <flow source="JobFinishClose" destination="A3dot3">
+      <condition><![CDATA[JobFinishClose_done == true]]></condition>
+    </flow>
+    <flow source="A3dot3" destination="EE">
+      <condition><![CDATA[JumpToA3dot3_done == true]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

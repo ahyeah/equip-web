@@ -1,0 +1,390 @@
+﻿@model WebApp.Controllers.A6dot2dot2Controller.A6dot2dot2InfoModal
+@{
+    ViewBag.Title = "Submit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/css/editor.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/css/rowReorder.bootstrap.min.css">
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><%=@Model.tempjob_name%></h3>
+                    <input type="text" id="wfe_id" hidden="hidden" value="@ViewBag.wfe_id">  
+                </div>
+                <div class="box-body">
+                    <table id="jobs_table" class="table table-hover table-bordered display">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>序号</th>
+                                <th>装置</th>
+                                <th>加油点设备描述</th>
+                                <th>加油点设备编号</th>
+                                <th>上次换油时间</th>
+                                <th>换油周期</th>
+                                <th>下次换油时间</th>
+                                <th>存在的问题</th>
+                                <th>整改情况</th>
+                                <th>工作流ID</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn btn-default" type="button" onclick="submit_click()">提交</button>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn btn-default" type="button" onclick="submit_click()">退出</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+  
+
+
+        <!--对话框-->
+        <!--换油装置设备选择对话框-->
+        <div id="Zz_Sb_Select" class="modal" style="display:none">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="关闭">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">换油装置设备选择</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="corn_value" style="display:none"></p>
+                        <div class="row">
+                            <label class="col-sm-2 control-label">申请装置</label>
+                            <div id="Zz_Select" class="col-sm-10">
+                                <select class="form-control select2" style="width: 100%;" id="zzId" onchange="Zz_selected()">
+                                    <option value="">请选择</option>
+
+                                    @foreach (var f in Model.All_Zz)
+                                    {
+                                        <option value="@f.EA_Id">@f.EA_Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group col-sm-10 col-sm-offset-1">
+                                <label class="col-sm-2 control-label">设备工艺编号</label>
+                                <div id="Equip_div" class="col-sm-10">
+                                    <select class="form-control select2" style="width: 100%;" id="Equip_Sel">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal"  onclick="exit_click()">放弃</button>
+                        <button type="button" class="btn btn-primary" onclick=" PostEquipChange()">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--关联工作流设置对话框-->
+
+</section>
+
+@section js {
+    <!-- Page script -->
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/dataTables.editor.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/editor.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+    <script type="text/javascript">
+        var editor;
+        var editor1;
+        var itemForEdit;
+        var table;
+        var table1;
+        var modifier;
+
+
+        function PostEquipChange() {
+           
+            var Zz = {
+                id: $('#Zz_Select').find("option:selected").val(),
+                name: $('#Zz_Select').find("option:selected").text(),
+                desc: ""
+            };
+            var Equip = {
+              
+                name: $('#Equip_Sel').find("option:selected").text(),
+            
+            };
+            alert("bbb");
+            var values = editor.edit( table.row({ selected: true }).index(), false) .val();
+           
+            //console.debug(itemForEdit.indexes);
+            //modifer=table.rows({ selected: true }).index();
+            //var values = editor.edit(modifier, false).val();
+            values.Zz_Name = $('#Zz_Select').find("option:selected").text();
+            values.Equip_Gybh = $('#Equip_Sel').find("option:selected").text();
+            editor.edit(table.row({ selected: true }).index(),false).set(values).submit();
+           
+           // //values.set()
+           // alert("aaa");
+           // alert(values("Zz_Name").val());
+           // values("Zz_Name").val( JSON.stringify(Zz));
+           // values("Equip_Gybh").val(JSON.stringify(Equip));
+           // values.submit();
+            
+            //editor.bubble(itemForEdit, false).set('Zz_Name', JSON.stringify(Zz)).submit();
+            //editor.bubble(itemForEdit, false).submit();
+           // editor.bubble(itemForEdit, false).set('Equip_Gybh', JSON.stringify(Equip));
+            //editor.bubble(itemForEdit, false).submit();
+            $('#Zz_Sb_Select').modal('hide');
+        }
+
+        $(document).ready(
+          PageLoad()
+          );
+        $('#jobs_table').on('click', 'tbody td i.For_Timer', function (e) {
+            itemForEdit = $(this).parent();
+            modifier = editor.modifier();
+          
+            $('#Zz_Sb_Select').modal('show');
+        });
+       
+        function PageLoad() {
+
+          
+                  table= $('#jobs_table').DataTable({
+                       "oLanguage": {
+                           "sLengthMenu": "每页显示 _MENU_ 条记录",
+                           "sZeroRecords": "抱歉， 没有找到",
+                           "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                           "sInfoEmpty": "没有数据",
+                           "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                           "sZeroRecords": "没有检索到数据",
+                           "sSearch": "模糊查询:  ",
+                           "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                           "oPaginate": {
+                               "sFirst": "首页",
+                               "sPrevious": "前一页",
+                               "sNext": "后一页",
+                               "sLast": "尾页"
+                           }
+                       },
+                       "iDisplayLength": 30,
+                       "paging": true,
+                       "lengthChange": false,
+                       "searching": true,
+                       "info": true,
+                       "ajax": {
+                           "url": "/A6dot2dot2/getA6dot2dot2Tab?wfe_id="+$('#wfe_id').val(),
+                           "type": "POST"
+                       },
+                       "order": [[1, 'desc']],
+                       "columnDefs": [
+                           { "targets": 1, "visible":true },
+                           { "targets": [0,1, 2, 3, 4, 5, 6, 7, 8], "orderable": false }
+                       ],
+                       
+                       "columns": [
+                            {
+                                data: null,
+                                defaultContent: '',
+                                className: 'select-checkbox',
+                                orderable: false
+                            },
+                           
+                           { "data": "ID" },
+                           {
+                               "data": "Zz_Name",
+                               "className": 'ForEdit',
+                               "render": function (val, type, row) {
+                                   if (val == "" || val == null)
+                                       return "空" + "<i class=\"fa fa-fw fa-gears pull-right For_Timer\" data-toggle=\"tooltip\" title=\"修改\"/>";
+                                   else {
+                                      
+                                       return val + "<i class=\"fa fa-fw fa-gears pull-right For_Timer\" data-toggle=\"tooltip\" title=\"修改\"/>";
+                                   }
+                               }
+                           },
+                           { "data": "Equip_Gybh" },
+                           { "data": 'Equip_Code', },
+                            { "data": 'Last_HY' },
+                           { "data": 'HY_ZQ', },
+                            { "data": 'Next_HY', },
+                              { "data": 'Problem_Cur', },
+                           {
+                               "data": 'ZG_status',
+                               "className": 'ForEdit',
+                               "render": function (val, type, row) {
+                                   return val == 0 ? "已经整改" : "未整改";      
+                               }
+                           },
+                             { "data": 'Wfe_id', }
+
+
+                       ],
+                       "select": {
+                           style: 'os',
+                           selector: 'td:first-child'
+                       },
+                       "buttons": [
+                    {
+                        extend: "create",
+                        text: "新建",
+                        action: function (e, dt, node, config) {
+                            editor.create(false)
+                            .submit();
+                        }
+                    },
+                    {
+                        extend: "remove",
+                        text: "删除",
+
+                        action: function (e, dt, node, config) {
+                            var rows = dt.rows({ selected: true }).data().pluck('job_name');
+                            editor
+                                .title('删除')
+                                .buttons('确认删除')
+                                .message('确定删除<ul><li>' + rows.join('</li><li>') + '</li></ul>')
+                                .remove(dt.rows({ selected: true }).indexes());
+
+                        }
+                    }
+                       ],
+                       "dom": 'Bfrtip',
+                   })
+                  ;
+                   editor = new $.fn.dataTable.Editor({
+                       ajax: "/A6dot2dot2/PostChanges?wfe_id="+$('#wfe_id').val(),
+                       table: "#jobs_table",
+                       idSrc: "ID",
+                       fields: [
+                         
+                           {
+                               label: "Zz_Name",
+                               name: "Zz_Name",
+
+                           },
+                           {
+                               label: "Equip_Gybh",
+                               name: "Equip_Gybh"
+                           },
+                           {
+                               label: "Equip_Code",
+                               name: "Equip_Code"
+                           },
+                             {
+                                 label: "Last_HY",
+                                 name: "Last_HY"
+                             },
+                               {
+                                   label: "HY_ZQ",
+                                   name: "HY_ZQ"
+                               },
+                                {
+                                    label: "Next_HY",
+                                    name: "Next_HY"
+                                },
+                                 {
+                                     label: "Problem_Cur",
+                                     name: "Problem_Cur"
+                                 },
+
+                           {
+                               label: "ZG_status",
+                               name: "ZG_status",
+                               type: "select",
+                               options: [
+                                   { label: "激活", value: 0 },
+                                   { label: "停止", value: 1 }
+                               ]
+                           }
+                          ,
+                       {
+                       label: "Wfe_id",
+                        name: "Wfe_id"
+                       }
+                       ]
+                   });
+               }
+
+
+        $('#jobs_table').on('click', 'tbody td.ForEdit, tbody td:contains("空任务")', function (e) {
+            if ((table.column(this).index() == 5)
+                && (table.row(this).data(),Problem_cur == '' || table.row(this).data().Zz_Name == '')) {
+                alert('该任务重要属性未设置完整，不允许设置为激活！')
+                return;
+            }
+
+            editor.inline(this, { onBlur: 'submit' });
+        });
+
+               function Zz_selected()
+                   {
+
+                   $.ajax({
+                       type: 'POST',
+                       url: '/A6dot2dot2/List_Equips',
+                       data: { Zz_Id: $('#zzId').val() },
+                       dataType: 'json',
+                       success: function (defaultData) {
+                           if (defaultData) {
+                               var itemHtml = " <select class=\"form-control\"  id=\"Equip_Sel\" >";
+
+
+                               for (var i = 0; i < defaultData.length; i++) {
+                                   itemHtml = itemHtml + "<option value=\"" + defaultData[i].Equip_Id + "\"";
+                                 
+                                   itemHtml = itemHtml + " \">" + defaultData[i].Equip_GyCode + "</option>";
+
+
+
+                               }
+                               itemHtml = itemHtml + "</select>";
+
+                               $('#Equip_div').html(itemHtml);
+                           }
+                       },
+                       error: function () {
+                           alert('error');
+                       }
+                   });
+
+               }
+
+
+
+               function submit_click()
+               {
+                   $.ajax({
+                       type: 'POST',
+                       url: '/A6dot2dot2/LsTaskSubmit?wfe_id='+$('#wfe_id').val(),
+                      
+                       success: function (data) {
+                           location.href = data;
+                       },
+                       error: function () {
+                           alert('error');
+                       }
+                   });
+               }
+
+               function exit_click()
+               {
+                   location.href = "/TempJob/Index";
+               }
+    </script>
+}

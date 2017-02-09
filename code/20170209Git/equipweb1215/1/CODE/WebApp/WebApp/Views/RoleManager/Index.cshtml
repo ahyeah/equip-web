@@ -1,0 +1,773 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@section css{
+    <style type="text/css">
+        tr.MM_hidden {
+            display: none;
+        }
+
+        tr.MM_shown {
+        }
+
+        tr.selected {
+            background-color: #acbad4;
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="~/Plugins/iconpicker.css" />
+}
+
+
+<section>
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">添加角色</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <a id="Add" class="btn btn-block btn-social btn-info" onclick="" data-toggle="modal" data-target="#AddRoleModal">
+                                <i class="fa fa-pencil-square-o"></i>添加角色
+                            </a>
+                           
+                        </div>                    
+                    </div>
+                </div>
+
+                <!-- /.box-body -->
+            </div>
+
+            
+
+            <!-- /.box -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">查询结果</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                    <table width="100%" class="demo  display dataTable" id="example" role="grid" aria-describedby="example_info">
+                        <thead>
+
+                            <tr role="row">
+
+                                <th>序号</th>
+                                <td>角色ID</td>
+                                <th>角色名称</th>
+                                <th>角色描述</th>
+                                <th>角色信息</th>
+                                <th>修改信息</th>
+                                <th>删除信息</th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="col-md-4" id="sidebar"></div>
+    </div>
+
+
+    <div class="daterangepicker dropdown-menu opensleft" style="left: auto; top: 640.05px; right: 344px; display: none;">
+        <div class="calendar first left"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available"><i class="fa fa-arrow-left icon icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th class="month" colspan="5">Jan 2016</th><th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="available off" data-title="r0c0">27</td><td class="available off" data-title="r0c1">28</td><td class="available off" data-title="r0c2">29</td><td class="available off" data-title="r0c3">30</td><td class="available off" data-title="r0c4">31</td><td class="available" data-title="r0c5">1</td><td class="available" data-title="r0c6">2</td></tr><tr><td class="available" data-title="r1c0">3</td><td class="available" data-title="r1c1">4</td><td class="available" data-title="r1c2">5</td><td class="available" data-title="r1c3">6</td><td class="available" data-title="r1c4">7</td><td class="available" data-title="r1c5">8</td><td class="available" data-title="r1c6">9</td></tr><tr><td class="available" data-title="r2c0">10</td><td class="available" data-title="r2c1">11</td><td class="available" data-title="r2c2">12</td><td class="available" data-title="r2c3">13</td><td class="available" data-title="r2c4">14</td><td class="available" data-title="r2c5">15</td><td class="available" data-title="r2c6">16</td></tr><tr><td class="available" data-title="r3c0">17</td><td class="available" data-title="r3c1">18</td><td class="available active start-date" data-title="r3c2">19</td><td class="available in-range" data-title="r3c3">20</td><td class="available in-range" data-title="r3c4">21</td><td class="available in-range" data-title="r3c5">22</td><td class="available in-range" data-title="r3c6">23</td></tr><tr><td class="available in-range" data-title="r4c0">24</td><td class="available in-range" data-title="r4c1">25</td><td class="available in-range" data-title="r4c2">26</td><td class="available in-range" data-title="r4c3">27</td><td class="available in-range" data-title="r4c4">28</td><td class="available in-range" data-title="r4c5">29</td><td class="available in-range" data-title="r4c6">30</td></tr><tr><td class="available in-range" data-title="r5c0">31</td><td class="available off in-range" data-title="r5c1">1</td><td class="available off in-range" data-title="r5c2">2</td><td class="available off in-range" data-title="r5c3">3</td><td class="available off in-range" data-title="r5c4">4</td><td class="available off in-range" data-title="r5c5">5</td><td class="available off in-range" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="calendar second right"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available"><i class="fa fa-arrow-left icon icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th class="month" colspan="5">Feb 2016</th><th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="available off in-range" data-title="r0c0">31</td><td class="available in-range" data-title="r0c1">1</td><td class="available in-range" data-title="r0c2">2</td><td class="available in-range" data-title="r0c3">3</td><td class="available in-range" data-title="r0c4">4</td><td class="available in-range" data-title="r0c5">5</td><td class="available in-range" data-title="r0c6">6</td></tr><tr><td class="available in-range" data-title="r1c0">7</td><td class="available in-range" data-title="r1c1">8</td><td class="available in-range" data-title="r1c2">9</td><td class="available in-range" data-title="r1c3">10</td><td class="available in-range" data-title="r1c4">11</td><td class="available in-range" data-title="r1c5">12</td><td class="available in-range" data-title="r1c6">13</td></tr><tr><td class="available in-range" data-title="r2c0">14</td><td class="available in-range" data-title="r2c1">15</td><td class="available in-range" data-title="r2c2">16</td><td class="available active end-date" data-title="r2c3">17</td><td class="available" data-title="r2c4">18</td><td class="available" data-title="r2c5">19</td><td class="available" data-title="r2c6">20</td></tr><tr><td class="available" data-title="r3c0">21</td><td class="available" data-title="r3c1">22</td><td class="available" data-title="r3c2">23</td><td class="available" data-title="r3c3">24</td><td class="available" data-title="r3c4">25</td><td class="available" data-title="r3c5">26</td><td class="available" data-title="r3c6">27</td></tr><tr><td class="available" data-title="r4c0">28</td><td class="available" data-title="r4c1">29</td><td class="available off" data-title="r4c2">1</td><td class="available off" data-title="r4c3">2</td><td class="available off" data-title="r4c4">3</td><td class="available off" data-title="r4c5">4</td><td class="available off" data-title="r4c6">5</td></tr><tr><td class="available off" data-title="r5c0">6</td><td class="available off" data-title="r5c1">7</td><td class="available off" data-title="r5c2">8</td><td class="available off" data-title="r5c3">9</td><td class="available off" data-title="r5c4">10</td><td class="available off" data-title="r5c5">11</td><td class="available off" data-title="r5c6">12</td></tr></tbody></table></div></div><div class="ranges"><ul><li>Today</li><li>Yesterday</li><li>Last 7 Days</li><li class="active">Last 30 Days</li><li>This Month</li><li>Last Month</li><li>Custom Range</li></ul><div class="range_inputs"><div class="daterangepicker_start_input"><label for="daterangepicker_start">From</label><input name="daterangepicker_start" class="input-mini" type="text" value=""></div><div class="daterangepicker_end_input"><label for="daterangepicker_end">To</label><input name="daterangepicker_end" class="input-mini" type="text" value=""></div><button class="applyBtn btn btn-small btn-sm btn-success">Apply</button>&nbsp;<button class="cancelBtn btn btn-small btn-sm btn-default">Cancel</button></div></div>
+    </div>
+
+
+    <!--添加角色模块框开始处-->
+    <div class="modal fade" id="AddRoleModal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">添加角色信息</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="modal-body" id="Role_div">
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色名称</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="RoleName">
+                                    </div>
+                                    <!-- /.input group -->
+                                </div>
+                            </div>
+
+
+
+
+
+                            <!-- 用户邮箱 角色描述-->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色描述</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="RoleDesc">
+                                    </div>
+                                    <!-- /.input group -->
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色权限</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input type="text" id="UserMenu_Id" hidden="hidden" />
+
+                                        <div class="modal-body" id="UserMenu_div">
+
+
+                                            <button type="button" data-toggle="modal" data-target="#RoleMenu_modal" class="form-control" onclick="Add_Menus()" onfocus=this.blur()> 添加权限 </button>
+
+                                        </div>
+
+                                    </div>
+                                    <!-- /.input group -->
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button class="btn btn-default" type="button" onclick="submit_click()">提交</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+
+
+                </div>
+               
+            </div>
+
+        </div>
+
+    </div><!--添加角色模块框框结束处-->
+
+
+    <!--系统菜单模态框开始处-->
+    <div class="modal fade" id="RoleMenu_modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统权限选择</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div id="treeview3"></div>
+
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="Comfirm_ModifySYSM()">确认</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div><!--系统菜单模态框结束处-->
+
+   
+
+
+
+    <!--修改角色模块框开始处-->
+    <div class="modal fade" id="ModifyModal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">修改角色信息</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control hidden" id="R_Id" hidden="hidden">
+                    <div class="modal-body" id="Role_div">
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色名称</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="R_Name" >
+                                    </div>
+                                    <!-- /.input group -->
+                                </div>
+                            </div>
+
+
+                            <!-- 用户邮箱 角色描述-->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色描述</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="R_Desc" >
+                                    </div>
+                                    <!-- /.input group -->
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色权限</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input type="text" id="R_Menu" hidden="hidden" multiple="" />
+                                        <div class="modal-body" id="Role_Menu_div">
+                                         
+                                            <textarea  id="RoleMenus"  style="width:100%"  disabled></textarea>
+                                          
+                                            <button type="button" data-toggle="modal" data-target="#ModifyRoleMenu_modal" class="form-control" onclick="Modify_Menus()" onfocus=this.blur()> 修改权限 </button>
+
+                                        </div>
+
+                                    </div>
+                                    <!-- /.input group -->
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button class="btn btn-default" type="button" onclick="submit_M_click()">提交</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div><!--修改角色模块框框结束处-->
+   
+
+
+    <!--Modify时系统菜单模态框开始处-->
+    <div class="modal fade" id="ModifyRoleMenu_modal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统权限选择</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div id="treeview4"></div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="ModifySYSM()">确认</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div><!--系统菜单模态框结束处-->
+
+    
+
+    <div class="modal fade" id="Detail" style="top:100px" >
+
+        <div class="modal-dialog " style="width:430px">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">角色信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">角色名称</label>
+                            <div class="col-sm-10">
+                                <div class="modal-content" style="text-align:center;  width:250px">
+
+                                    <textarea id="DetailName" style="  width:80%"  disabled></textarea>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                    <form class="form-horizontal" role="form">
+
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">角色描述</label>
+                            <div class="col-sm-10">
+                                <div class="modal-content" style="text-align:center;  width:250px">
+
+                                    <textarea id="DetailDesc"style="  width:80%" rows="2" disabled></textarea>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                
+                        <form class="form-horizontal" role="form">
+
+
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">角色权限</label>
+                                <div class="col-sm-10">
+                                    <div class="modal-content" style="text-align:center;  width:250px">
+
+                                        <textarea id="DetailRole" style="  width:80%" rows="6" disabled></textarea>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+
+              
+
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div><!--系统菜单模态框结束处-->
+
+
+    <!--参数显示模态框开始处-->
+    <div class="modal fade" id="ParamModal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
+                    <h4 class="modal-title">相关参数显示</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="modal-body" id="ParamDiv">
+
+
+
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div><!--参数显示模态框结束处-->
+ 
+  
+</section>
+@section js{
+          <!-- DataTables -->
+<link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+<script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+<script src="~/Plugins/iconpicker.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.min.js"></script>
+<script src="~/Scripts/myWorkFlowInfo.js"></script>
+    
+    <script>
+        
+        
+        $(document).ready(function () {
+            //   $("#reservationtime").daterangepicker();
+       
+             
+         var table=   $('#example').DataTable({
+
+            //                    "aoColumnDefs": [
+            ///    { "bSearchable": false, "bVisible": false, "aTargets": [ 2 ] },
+            //    { "bVisible": false, "aTargets": [ 3 ] }
+                "columns": [
+
+                
+                 //  { "bSearchable": false, "bVisible": false, "aTargets": [ 2 ] },
+                //    { "bVisible": false, "aTargets": [ 3 ] },
+
+                     { "data": "index" },
+                      { "data": "Role_Id", "bVisible": false },
+                    { "data": "Role_Name" },
+                    { "data": "Role_Desc" },
+
+                    {
+                        "data": "Role_Menus",  //  角色权限
+                        "render": function (datal, type, full, meta) {
+                            return '<button type="button" class="btn btn-link "  class="form-control" data-toggle="modal"  data-target="#Detail" style="background:transparent"  onclick="Detail_Role('  + meta.row + ')">详细信息</button>';
+                        //    return '<button type="button"  onclick="JavaScript: location.href=' + '/RoleManager/Role_Right/?Role_Menus=' + datal + '>角色权限</button>';
+                        }
+                    },
+                   {
+                       "data": "mod_Role",    //  修改信息
+                       "render": function (datal, type, full, meta) {
+                        //   return '<a data-toggle="modal"  data-target="#ModifyModal"  style="background:transparent"  class="form-control"onclick="Modify_Role(' + datal + "," + meta.row + ')">修改</a>'
+                          return '<button type="button" class="btn btn-link "  class="form-control" data-toggle="modal"  data-target="#ModifyModal" style="background:transparent"  onclick="Modify_Role(' + datal + "," + meta.row + ')">修改</button>';
+                       //    return '<button type="button" class="btn btn-danger"  data-toggle="modal"  data-target="#ModifyModal" class="form-control"  id="Modify" )">修改</button>';
+                       }
+
+                   },
+                   {
+                       "data": "Role_Id_del",     //   删除信息
+                       "render": function (datal, type, full, meta) {
+
+                           return '<button type="button" class="btn btn-link "class="form-control" style="background:transparent" onclick="del_Role(' + datal + "," + meta.row + ')">删除</button>';
+
+                          // return '<button type="button" class="btn btn-danger" onclick="del_Role(Role_Id)">删除</button>';
+                       }
+                   }
+
+                ],
+     
+
+
+                "ajax": {
+                    "url": "/RoleManager/Role_History",
+
+                    "type": "POST"
+
+                }
+
+            }
+
+                  )
+  
+        })  //  此处.ready函数结束
+    
+    
+        ////  增加角色权限
+        function Add_Menus() {
+
+            $.ajax({
+                type: 'POST',
+                url: '/RoleManager/List_MenuTree',
+                //  data: { "Role_Ids": $("#UserRole").val() },
+                dataType: 'json',
+                success: function (defaultData) {
+
+                    $('#treeview3').treeview({
+                        data: defaultData,
+
+                        multiSelect: true,
+                    });
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+        }
+
+
+        ////  增加时确认权限
+        function Comfirm_ModifySYSM() {
+            var test = $('#treeview3').treeview('getSelected', 1);
+            $('#UserMenu_div').html("");
+
+
+
+            var itemHtml = " <select class=\"form-control\" multiple=\"\" id=\"UserMenus\" disabled=true>";
+
+            var member2 = ""
+            for (var i = 0; i < test.length; i++) {
+                itemHtml = itemHtml + "<option value=\"" + test[i].id + "\">" + test[i].text + "</option>";
+                if (i < test.length - 1) { member2 += test[i].id + ','; }
+                else member2 += test[i].id;
+
+
+            }
+            itemHtml = itemHtml + "</select>";
+            itemHtml = itemHtml + "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#RoleMenu_modal\"  class=\"form-control\" onclick=\"Modify_Menus()\"  onfocus=this.blur()> 修改权限 </button>"
+            alert(member2);
+            $('#UserMenu_Id').val(member2);  //  菜单的id
+            $('#UserMenu_div').html(itemHtml);
+        }
+
+        ////  修改角色权限
+        function Modify_Menus() {
+            //    var t = $('#example').DataTable();
+            //    var  Role_Id =val(t.row(row_index).data().Role_Id);
+            $.ajax({
+                type: 'POST',
+                url: '/RoleManager/List_R_MenuTree',
+                data: { "Role_Ids": $("#R_Id").val() },
+                dataType: 'json',
+                success: function (defaultData) {
+                    $('#treeview4').treeview({
+                        data: defaultData,
+                        multiSelect: true,
+                    });
+
+
+
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+        }
+
+
+        ////   修改角色时确认权限
+        function ModifySYSM() {
+            var test = $('#treeview4').treeview('getSelected', 1);
+            $('#Role_Menu_div').html("");
+
+
+
+            var itemHtml = " <select class=\"form-control\" multiple=\"\" id=\"RoleMenus\" disabled=true>";
+
+            var member2 = ""
+            for (var i = 0; i < test.length; i++) {
+                itemHtml = itemHtml + "<option value=\"" + test[i].id + "\">" + test[i].text + "</option>";
+                if (i < test.length - 1) { member2 += test[i].id + ','; }
+                else member2 += test[i].id;
+
+
+            }
+            itemHtml = itemHtml + "</select>";
+            itemHtml = itemHtml + "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#RoleMenu_modal\"  class=\"form-control\" onclick=\"Modify_Menus()\"  onfocus=this.blur()> 修改权限 </button>"
+            alert(member2);
+            $('#R_Menu').val(member2);
+            $('#Role_Menu_div').html(itemHtml);
+        }
+
+        //   新增角色提交
+        function submit_click() {
+
+            $.ajax({
+                type: 'POST',
+                url: '/RoleManager/submitNewRole',
+                data: {
+                    json1: '{Role_Name: "' + $('#RoleName').val()
+                         + '", Role_Desc: "' + $('#RoleDesc').val()
+                         + '", RoleMenus: "' + $('#UserMenu_Id').val()
+                         + '"}'
+                },
+                success: function (data) {
+                    alert(data);
+                    location.href = '/RoleManager/Index';
+                    
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+
+        }
+
+
+
+        //   修改角色后提交
+        function submit_M_click() {
+
+            $.ajax({
+                type: 'POST',
+                url: '/RoleManager/submitUpdateRole',
+                data: {
+                    json1: '{Role_Id: "' + $('#R_Id').val()
+                         + '", Role_Name: "' + $('#R_Name').val()
+                          + '", Role_Desc: "' + $('#R_Desc').val()
+                         + '", RoleMenus: "' + $('#R_Menu').val()
+                         + '"}'
+                },
+                success: function (data) {
+                    alert(data);
+                    location.href = '/RoleManager/Index';
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+
+        }
+
+
+      
+
+
+        ////  修改角色时显示在模块中的信息
+        function Modify_Role(datal, row_index) {
+            var t = $('#example').DataTable();
+            $('#R_Id').val(t.row(row_index).data().Role_Id);
+            $('#R_Name').val(t.row(row_index).data().Role_Name);
+            $('#R_Desc').val(t.row(row_index).data().Role_Desc);
+            $('#RoleMenus').val(t.row(row_index).data().Role_Menus);
+        }
+
+        ////  详细信息查看
+        function Detail_Role(row_index) {
+            var t = $('#example').DataTable();
+            
+            $('#DetailName').val(t.row(row_index).data().Role_Name);
+            $('#DetailDesc').val(t.row(row_index).data().Role_Desc);
+            $('#DetailRole').val(t.row(row_index).data().Role_Menus);
+        }
+
+
+        ///  角色权限
+        function Role_Right(Role_Id) {
+            $.ajax({
+                type: 'POST',
+                url: '/RoleManager/List_Right_MenuTree',
+                data: { "Role_Ids": Role_Id },
+                dataType: 'json',
+                success: function (defaultData) {
+                    $('#treeview3').treeview({
+                        data: defaultData,
+                        //  multiSelect: true,
+                    });
+
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+        }
+
+
+    
+        ////确认删除角色
+        function del_Role(datal, row_index) {
+            //alert(datal);
+            // $(this).children().eq(3);
+            //var id = datal;
+            //    Role_id = datal.Role_id;
+
+            if (!confirm('确定要删除吗？'))
+                return false;
+            var t = $('#example').DataTable();
+            t.row(row_index).remove().draw(false);  //实际上此处在页面上删除一行，下面才是 对后台开始操作
+            $.ajax({
+                url: '/RoleManager/delete_Role',
+                dataType: 'json',
+                type: 'post',
+                data: {
+                    json1: '{"Role_Id":"' + datal
+                    + '"}'
+                },
+             //   data: { "Role_Id": Role_id },
+                success: function (datastring) {
+                    alert("该角色信息成功删除！");
+                    alert(datastring);
+
+                },
+                error: function () {
+                    //alert('error');
+                }
+            });
+
+        }
+
+
+
+
+
+       
+
+
+
+    
+    </script>
+
+ 
+ 
+    }

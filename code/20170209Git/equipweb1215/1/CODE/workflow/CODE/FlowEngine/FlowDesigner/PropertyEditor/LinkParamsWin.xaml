@@ -1,0 +1,36 @@
+﻿<Window x:Class="FlowDesigner.PropertyEditor.LinkParamsWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="LinkParamsWin" Height="347" Width="454" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <ListView Name="Source" HorizontalAlignment="Left" Height="249" Margin="10,10,0,0" VerticalAlignment="Top" Width="186">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Path=Name}" Width="50"/>
+                    <GridViewColumn Header="类型" DisplayMemberBinding="{Binding Path=Type}"/>
+                    <GridViewColumn Header="描述" DisplayMemberBinding="{Binding Path=Desc}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView Name="Dest" HorizontalAlignment="Left" Height="249" Margin="256,10,0,0" VerticalAlignment="Top" Width="177">
+            <ListView.Resources>
+                <DataTemplate x:Key="ComBox_App">
+                    <ComboBox SelectedItem="{Binding Path=app_res}" Loaded="ComboBox_Loaded">
+                    </ComboBox>
+                </DataTemplate>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Path=p_name}" Width="50"/>
+                    <GridViewColumn Header="App_Res" CellTemplate="{StaticResource ComBox_App}"  Width="110"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content=">" Name="Add" HorizontalAlignment="Left" Margin="205,103,0,0" VerticalAlignment="Top" Width="37" Height="26" Click="Add_Click"/>
+        <Button Content="&lt;" Name="Remove" HorizontalAlignment="Left" Margin="205,144,0,0" VerticalAlignment="Top" Width="37" Height="26" Click="Remove_Click"/>
+        <Button Content="确定" Name="OK" HorizontalAlignment="Left" Margin="153,268,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="OK_Click"/>
+        <Button Content="取消" Name="Cancel" HorizontalAlignment="Left" Margin="233,268,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="Cancel_Click"/>
+
+
+    </Grid>
+</Window>

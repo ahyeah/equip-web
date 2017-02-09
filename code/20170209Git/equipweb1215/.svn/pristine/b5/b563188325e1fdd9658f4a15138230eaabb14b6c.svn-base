@@ -1,0 +1,267 @@
+﻿@model WebApp.Controllers.CommonController.MissInfoModel
+
+@{
+    ViewBag.Title = "PqCatalog";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+           
+            
+                <!-- The time line -->
+                <ul class="timeline">
+                    <!-- timeline time label -->
+                    <li class="time-label">
+                       
+                            <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                                @Model.miModel.WE_Event_Desc
+                           </a>
+                        
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                   
+
+
+                    <li class="collapse" id="collapseExample">
+                           
+                            <i class="fa fa-envelope bg-blue"></i>
+                            <div class="timeline-item">
+                                <span><i class="fa fa-clock-o"></i> @Model.MissTime[1]</span>
+                                <h3 class="timeline-header">装置缺陷提报详情</h3>
+                                <div class="timeline-body">
+
+                                    <table class="table">
+
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:10%">申请时间</td>
+                                                <td style="width:50%">@(Model.miModel.Miss_Params["submit_time"].ToString())</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">申请车间</td>
+                                                <td style="width:50%">@(Model.miModel.Miss_Params["Cj_Name"].ToString())</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">申请装置</td>
+                                                <td style="width:50%">@(Model.miModel.Miss_Params["Zz_Name"].ToString())</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">申请人</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["submit_user"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">设备工艺编号</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Equip_GyCode"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">设备编号</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Equip_Code"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">设备型号</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Equip_Type"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">问题专业分类</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Zy_Type"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">设备问题描述</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Problem_Desc"].ToString()</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:10%">问题描述附件</td>
+                                                <td style="width:50%">@Model.miModel.Miss_Params["Problem_DescFilePath"].ToString() </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+
+
+                                </div>
+                                <div class="timeline-footer">
+                                    <a class="btn btn-primary btn-xs">Read more</a>
+                                    <a class="btn btn-danger btn-xs">Delete</a>
+                                </div>
+                            </div>
+                    </li>
+           
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+
+                    <li class="time-label">
+                        <span class="bg-green">
+                            @ViewBag.curtime
+                        </span>
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i>@ViewBag.curuser</span>
+                            <h3 class="timeline-header"><p class="lead">缺陷分类</p></h3>
+                            <div class="timeline-body">
+
+                                <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                                <div class="form-group">
+                                    <p class="text-green">选择缺陷类别</p>
+                                    <select id="qqq" onchange="FaultLvel_Click()" class="form-control">
+                                        <option value="完好类">完好类</option>
+                                        <option value="隐患">隐患</option>
+                                        <option value="故障">故障</option>
+                                        <option value="不需处理" selected="">不需处理</option>
+                                    </select>
+                                </div>
+                                <div id="FaultLevel" class="form-group">
+                                    <p class="text-green">选择缺陷级别</p>
+
+                                    <div class="radio">
+                                        <label>
+                                            <input name="defect_level_sel" id="FaultLevel_rad1" type="radio" value="1级">
+                                            一级缺陷
+                                        </label>
+                                        <label>
+                                            <input name="defect_level_sel" id="FaultLevel_rad2" type="radio" value="2级">
+                                            二级缺陷
+                                        </label>
+
+                                        <label>
+                                            <input name="defect_level_sel" id="FaultLevel_rad3" type="radio" value="3级">
+                                            三级缺陷
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="FaultIntensity" class="form-group">
+                                    <p class="text-green">选择故障强度级别</p>
+                                    <select class="form-control" id="fault_Intensity_level">
+                                        <option value="1级">1级</option>
+                                        <option value="2级">2级</option>
+                                        <option value="3级">3级</option>
+                                        <option value="4级">4级</option>
+                                        <option value="5级">5级</option>
+                                        <option value="6级">6级</option>
+                                    </select>
+                                </div>
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="button" onclick="submit_click()">确定</button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </li>
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li>
+</ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+
+
+@section js{
+    <script>
+        function PageLoad() {
+            // $("#FaultLevel").hide();
+            /*  $("#optionsRadios1").attr("check", "false");
+              $("#optionsRadios1").attr("disabled", "true");
+              $("#optionsRadios2").attr("checked", "false");
+              $("#optionsRadios2").attr("disabled", "true");
+              $("#optionsRadios3").attr("checked", "true");
+              $("#optionsRadios3").attr("disabled", "true");
+              $("#FaultIntensity").hide();*/
+            $("#FaultLevel").hide();
+            $("#FaultIntensity").hide();
+
+        };
+        $(document).ready(
+            PageLoad());
+
+        function FaultLvel_Click() {
+            //$("#FaultLevel").show();
+            //$("#FaultIntensity").show();
+            var str = $("#qqq").val();
+            // var str =$("FaultLevel_sel option[selected=selected]");
+            // alert(str);
+            if (str == "完好类") {
+                $("input:radio").eq(1).attr("disabled", false);
+                $("input:radio").eq(0).attr("disabled", false);
+                $("input:radio").eq(2).attr("disabled", false);
+                $("input:radio").eq(2).prop("checked", true);
+                $("input:radio").eq(2).attr("disabled", true);
+                $("input:radio").eq(1).attr("disabled", true);
+                $("input:radio").eq(0).attr("disabled", true);
+
+                $("#FaultLevel").show();
+                $("#FaultIntensity").hide();
+
+            }
+            else if (str == "隐患") {
+
+                $("input:radio").eq(1).prop("disabled", false);
+                $("input:radio").eq(0).prop("disabled", false);
+                $("input:radio").eq(2).attr("disabled", false);
+                $("input:radio").eq(1).prop("checked", true);
+                $("input:radio").eq(0).attr("disabled", true);
+
+                $("input:radio").eq(2).attr("disabled", false);
+                $("#FaultLevel").show();
+                $("#FaultIntensity").hide();
+
+
+            } else if (str == "故障") {
+                $("input:radio").eq(1).attr("disabled", false);
+                $("input:radio").eq(0).attr("disabled", false);
+                $("input:radio").eq(2).attr("disabled", false);
+                $("input:radio").eq(0).prop("checked", true);
+                $("input:radio").eq(2).attr("disabled", true);
+                $("input:radio").eq(1).attr("disabled", true);
+                $("input:radio").eq(0).attr("disabled", true);
+                $("#FaultLevel").show();
+                $("#FaultIntensity").show();
+
+            } else {
+                $("#FaultLevel").hide();
+                $("#FaultIntensity").hide();
+            }
+
+        }
+
+        function submit_click() {
+            var flow_name = $("#wef_id").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/A13dot1/submitCatalog_signal',
+                data: {
+                    json1: '{Flow_Name: "' + flow_name
+                         + '", catlog_type: "' + $('#qqq').val()
+                         + '", fault_intensity: "' + $('#fault_Intensity_level').val()
+                         + '", defect_level: "' + $("input:radio:checked").val()
+                         + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                    //alert(data);
+                },
+                error: function (data) {
+                    alert(data);
+                }
+            });
+
+        }
+
+
+    </script>
+}

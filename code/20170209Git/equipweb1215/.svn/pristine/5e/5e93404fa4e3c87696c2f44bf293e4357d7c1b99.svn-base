@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+    <section class="content" style="background-color: #ecf0f5;">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text"><b>用户管理</b></span>
+                        <span class="info-box-text">添加、修改及删除用户信息</span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div><!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="fa fa-key"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text"><b>权限管理</b></span>
+                        <span class="info-box-text">用户权限的分配、修改</span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div><!-- /.col -->
+            <!-- fix for small devices only -->
+            <div class="clearfix visible-sm-block"></div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="ion ion-ios-list-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text"><b>菜单管理</b></span>
+                        <span class="info-box-text">系统菜单功能的增加、修改及删除</span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div><!-- /.col -->            
+        </div>
+    </section>

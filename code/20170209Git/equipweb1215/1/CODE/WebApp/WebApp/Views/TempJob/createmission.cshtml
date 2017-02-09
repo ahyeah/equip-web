@@ -1,0 +1,383 @@
+﻿@model WebApp.Controllers.CommonController.ZzSubmitModel
+@{
+    ViewBag.Title = "TimerJobs";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/css/editor.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/css/rowReorder.bootstrap.min.css">
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div class="box">             
+                <h3 class="box-title"><span  style="color: red; text-align: center;">发起临时性事务</span></h3>
+                <div class="box-body">
+                    <form class="form-horizontal" role="form">
+                        <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">临时性事务名称：</label>
+                            <div class="col-sm-10">
+                                <input class="form-control"  id="TempMissionName" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">事务类别：</label>
+                            <div class="col-sm-10">
+                                <select class="form-control select2" style="width: 100%;" id="MissionCategory" onchange="Sw_Slect()">
+                                    <option value="">请选择</option>
+                                    <option value="A5dot1">A5.1设备完好</option>
+                                    <option value="A5dot2dot1">A5.2竖向管理</option>
+                                    <option value="A6dot2dot2">A6.2润滑-机泵类</option>
+
+                                    <option value="A6dot2">A6.2润滑-机组类</option>
+
+                                    @*<option value="A6dot3">A6.3备用设备管理</option>*@
+                                    <option value="A11dot2dot1">A11.2隐患排查类</option>
+                                    @*<option value="A3dot2">A3.2设备培训</option>*@
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">申请车间：</label>
+                            <div class="col-sm-10">                              
+                                <select class="form-control select2 " multiple="multiple" style="width: 100%;" id="cjname" >
+                                    <option value="2,3,4,5,6,7,8,9,10,11,12,13,14,15,16">全车间</option>
+                                    @if (Model.UserHasEquips != null)
+                                    {
+                                        foreach (var item in Model.UserHasEquips)
+                                        {
+                                            <option value="@item.EA_Id">@item.EA_Name</option>
+                                        }
+                                    }
+                                </select>                                                               
+                            </div>
+
+                        </div> 
+                        <div class="form-group" id="Zz_Seclet">
+                            <label class="col-sm-2 control-label">申请装置：</label>
+                            <div id="Zz_Select" class="col-sm-10">
+                                <select class="form-control select2" multiple="multiple" style="width: 100%;" id="zzId" name="zzname" >
+                                    @*<option value="">请选择</option>*@
+                                </select>
+                            </div>
+                        </div>                      
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">人工提报起止时间：</label>
+                            <div class="col-sm-10">  
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control pull-right active" id="reservationtime" type="text">
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="form-group" id="qrzg">
+                            <label class="col-sm-2 control-label">整改确认截止时间：</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input type="text" class="form-control" id="Zhenggai_Time" name="EquipMaintain_Time">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">专项事务主体单位：</label>
+                            <div class="col-sm-10">
+                                <select multiple="multiple" class="form-control select2" style="width: 100%;" id="dept">
+                                    @*<option value="">请选择</option>*@
+                                    <option value="可靠性工程师">可靠性工程师</option>
+                                    <option value="现场工程师">现场工程师</option>
+                                    <option value="检维修单位">检维修单位</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">详细工作说明：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" rows="3" id="workdesc"></textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form role="form">
+                        <div class="box-footer">
+                            <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click()">确定提交</button>
+                            <button class="btn btn-primary col-sm-offset-1" type="button" onclick="cancel_click()">取消提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+
+           
+
+
+        </div>
+    </div>
+
+ 
+</section>
+
+@section js {
+    <!-- Page script -->
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/dataTables.editor.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/editor.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript">
+        var AllZz = "";//选择车间后存其中的所有装置
+
+        function list_Zz() {
+            if ($('#cjname').val() != "") {
+                //alert("here");
+                //alert($('#cjname').val());
+                aa = $('#cjname').val().toString();
+                $.ajax({
+                    url: '/Common/Cj_ZzsForA16',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "cj_id": aa },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"qwdasd\">" + "全装置" + "</option>";
+                            var AllZzTemp = "";
+                            for (var i = 0; i < backdata.length; i++) {
+
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Zz_Id + "\">" + backdata[i].Zz_Name + "</option>";
+
+                                AllZzTemp += backdata[i].Zz_Id + ",";
+
+                            }
+                            AllZz = AllZzTemp;
+                            $('#zzId').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+
+            }
+        };
+        function Zz_selected() {
+            if ($('#zzId').val() != "") {
+                $.ajax({
+                    url: '/Common/Zz_Equips',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "Zz_id": $('#zzId').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            for (var i = 0; i < backdata.length; i++) {
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Equip_Id + "\">" + backdata[i].Equip_GyCode + "</option>";
+                            }
+                            $('#Equip_GyCode').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+            }
+        };
+
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+
+
+
+        $(document).ready(function () {
+            var myDate = new Date();
+            var nowyear = myDate.getFullYear();
+            var nowmonth = myDate.getMonth() + 1;
+            var nowday = myDate.getDate();
+            $("#reservationtime").daterangepicker({
+                showDropdowns: true,
+                locale: {
+                    applyLabel: '确定',
+                    cancelLabel: '取消',
+                    fromLabel: '起始时间',
+                    toLabel: '结束时间',
+                    customRangeLabel: '自定义',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1,
+                    startDate: new Date(nowyear, nowmonth - 1, nowday),
+                    endDate: Infinity
+
+
+                },
+                format: 'YYYY/M/D', //控件中from和to 显示的日期格式
+
+
+
+                arrows: true
+            });
+
+            if ($("input:radio[name='Minute_Select']:checked").val() == 0)
+                $("#Speciry_Minute").attr('disabled', true);
+
+
+
+
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+
+            });
+
+
+            $(function () {
+                var myDate = new Date();
+                var nowyear = myDate.getFullYear();
+                var nowmonth = myDate.getMonth() + 1;
+                var nowday = myDate.getDate();
+
+
+                //Date picker
+                $('input[name="EquipMaintain_Time"]').datepicker(
+                   {
+                       autoclose: true,
+                       beforeShowDay: $.noop,
+                       calendarWeeks: false,
+                       clearBtn: false,
+                       daysOfWeekDisabled: [],
+                       endDate: Infinity,
+                       forceParse: true,
+                       format: 'yyyy/m/d',
+                       keyboardNavigation: true,
+                       language: 'zh-CN',
+                       minViewMode: 0,
+                       orientation: "auto",
+                       rtl: false,
+                       startDate: new Date(nowyear, nowmonth - 1, nowday),
+                       startView: 0,
+                       todayBtn: false,
+                       todayHighlight: true,
+                       weekStart: 0
+                   });
+
+            });
+
+            $('.select2').select2();
+            //车间下拉框的选择值发生变化时，响应
+            $("#cjname").select2().on('change', function (e) {
+                //alert("point1");
+                //alert($('#cjname').val());
+                list_Zz();
+            });
+
+        });
+        function submit_click() {
+            if ($("#TempMissionName").val() == "") {
+                alert("请填写临时性事物名称");
+
+                return false;
+            }
+            if ($("#MissionCategory").val() == "") {
+                alert("请选择事物类别");
+                return false;
+            }
+            if ($("#cjname").val() == null) {
+                alert("请选择车间");
+                return false;
+            }
+            if ($("#reservationtime").val() == "") {
+                alert("请选择起止时间");
+                return false;
+            }
+            if ($("#Zhenggai_Time").val() == "" && ($("#MissionCategory").val() == "A5dot1" || $("#MissionCategory").val() == "A5dot2dot1")) {
+                alert("请选择整改截止时间");
+                return false;
+            }
+            if ($("#dept").val() == null) {
+                alert("请选择事物主体单位");
+                return false;
+            }
+
+
+
+            var Zz_id;
+            if ($('#MissionCategory').val() == "A6dot2") {
+                Zz_id = ""
+
+            } else {
+                Zz_id = $('#zzId').val();
+            }
+
+            if ($('#zzId').val().indexOf("qwdasd") != -1)
+                Zz_id = AllZz;
+
+            if (!confirm('确定要提交吗？'))
+                return false;
+            var zgtime;
+            //11.12改
+            if ($('#MissionCategory').val() == "A5dot1" || $('#MissionCategory').val() == "A5dot2dot1")
+                zgtime = $('#Zhenggai_Time').val();
+            else
+                zgtime = "";
+            //   alert($("#cjname").val());
+            $.ajax({
+                type: 'POST',
+                url: '/TempJob/LSJob_Submit',
+                data: {
+                    json1: '{Job_Name: "' + $("#TempMissionName").val()
+                         + '", Work_Name: "' + $('#MissionCategory').val()
+                         + '", Cj_Name: "' + $('#cjname').val()
+                         + '", Zz_Name: "' + Zz_id
+                         + '", ReservationTime: "' + $('#reservationtime').val()//起止时间
+                         + '", ZhengGaiTime: "' + zgtime
+                         + '", Dept: "' + $('#dept').val()
+                         + '", WorkDesc: "' + $('#workdesc').val()
+                         + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+            //location.href = "/TempJob/Index";
+        };
+        function cancel_click() {
+            submit_done = 0;
+            if (!confirm('确定要取消吗？'))
+                return false;
+
+            location.href = "/TempJob/Index";
+        };
+        //选择事物类别后，根据事物类别的结果是否显示装置项
+        function Sw_Slect() {
+            if ($('#MissionCategory').val() == "A6dot2" || $('#MissionCategory').val() == "A6dot2dot2") {
+                $('#Zz_Seclet').hide();
+                $('#qrzg').hide();
+            }
+            else if ($('#MissionCategory').val() == "A5dot2dot1" || $('#MissionCategory').val() == "A5dot1") {
+                $('#qrzg').show();
+                $('#Zz_Seclet').show();
+            }
+            else {
+                $('#Zz_Seclet').show();
+                $('#qrzg').hide();
+            }
+        }
+    </script>
+}

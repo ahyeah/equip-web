@@ -1,0 +1,473 @@
+<workflow name="A11dot1" desc="设备风险评估" current_event="">
+  <paramtable>
+    <param name="Cj_Name" desc="车间名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">A11dot3</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zz_Name" desc="装置名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">A11dot3</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">End</linkevent>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">CreateAssessGroup</linkevent>
+        <linkevent app_reserve="">RiskRecognition</linkevent>
+        <linkevent app_reserve="">PgxzMngCtlPlan</linkevent>
+        <linkevent app_reserve="">JdcSupervise</linkevent>
+        <linkevent app_reserve="">CjMngCtlPlan</linkevent>
+        <linkevent app_reserve="">PqConfirm</linkevent>
+        <linkevent app_reserve="">CjSupervise</linkevent>
+        <linkevent app_reserve="">RiskAcceptRecord</linkevent>
+        <linkevent app_reserve="">A11dot3</linkevent>
+        <linkevent app_reserve="">RiskCleanRecord</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">End</linkevent>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">CreateAssessGroup</linkevent>
+        <linkevent app_reserve="">RiskRecognition</linkevent>
+        <linkevent app_reserve="">PgxzMngCtlPlan</linkevent>
+        <linkevent app_reserve="">JdcSupervise</linkevent>
+        <linkevent app_reserve="">CjMngCtlPlan</linkevent>
+        <linkevent app_reserve="">PqConfirm</linkevent>
+        <linkevent app_reserve="">CjSupervise</linkevent>
+        <linkevent app_reserve="">RiskAcceptRecord</linkevent>
+        <linkevent app_reserve="">A11dot3</linkevent>
+        <linkevent app_reserve="">RiskCleanRecord</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Type" desc="设备型号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">A11dot3</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zy_Type" desc="专业分类" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">A11dot3</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zy_SubType" desc="专业分类子类" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+        <linkevent app_reserve="">A11dot3</linkevent>
+      </linkevents>
+    </param>
+    <param name="Problem_DataSrc" desc="数据来源" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_Desc" desc="管控措施描述" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PgxzMngCtlPlan</linkevent>
+        <linkevent app_reserve="">CjMngCtlPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_DescFilePath" desc="管控措施描述文档（附件）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PgxzMngCtlPlan</linkevent>
+        <linkevent app_reserve="">CjMngCtlPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="Risk_IsAcceptable" desc="风险是否可接受" type="string">
+      <linkevents>
+        <linkevent app_reserve="">End</linkevent>
+        <linkevent app_reserve="">RiskAcceptRecord</linkevent>
+        <linkevent app_reserve="">A11dot3</linkevent>
+        <linkevent app_reserve="">RiskCleanRecord</linkevent>
+      </linkevents>
+    </param>
+    <param name="Submit_done" desc="提交是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="CreatePlan_done" desc="确立管控措施是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">PgxzMngCtlPlan</linkevent>
+        <linkevent app_reserve="">CjMngCtlPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="ImplementPlan_done" desc="组织实施是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">JdcSupervise</linkevent>
+        <linkevent app_reserve="">CjSupervise</linkevent>
+      </linkevents>
+    </param>
+    <param name="Risk_Type" desc="危害识别结果" type="string">
+      <linkevents>
+        <linkevent app_reserve="">RiskRecognition</linkevent>
+      </linkevents>
+    </param>
+    <param name="PqConfirm_Result" desc="片区审核结果（是否同意）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PqConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="PqConfirm_done" desc="片区审核是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">PqConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="CreateAssessGroup_done" desc="成立风险评估小组是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">CreateAssessGroup</linkevent>
+      </linkevents>
+    </param>
+    <param name="RiskAcceptRecord_done" desc="风险登记是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">RiskAcceptRecord</linkevent>
+        <linkevent app_reserve="">RiskCleanRecord</linkevent>
+      </linkevents>
+    </param>
+    <param name="Group_Member" desc="评估小组成员" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CreateAssessGroup</linkevent>
+      </linkevents>
+    </param>
+    <param name="Group_Header" desc="评估小组组长" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CreateAssessGroup</linkevent>
+      </linkevents>
+    </param>
+    <param name="RiskRecognition_done" desc="危害识别是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">RiskRecognition</linkevent>
+      </linkevents>
+    </param>
+    <param name="Severity" desc="后果严重性" type="string">
+      <linkevents>
+        <linkevent app_reserve="">RiskRecognition</linkevent>
+      </linkevents>
+    </param>
+    <param name="Probability" desc="事件发生可能性" type="string">
+      <linkevents>
+        <linkevent app_reserve="">RiskRecognition</linkevent>
+      </linkevents>
+    </param>
+    <param name="PqConfirm_Reason" desc="可靠性工程师审核原因" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PqConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="flag_NandD" desc="风险类别" type="string">
+      <linkevents>
+        <linkevent app_reserve="App_hidden">JdcSupervise</linkevent>
+        <linkevent app_reserve="App_hidden">CjSupervise</linkevent>
+        <linkevent app_reserve="">A11dot3</linkevent>
+      </linkevents>
+    </param>
+    <param name="SubmitProblemDesc" desc="提报问题描述" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="currentuser" desc="当前用户" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="start_done" desc="开始条件" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">ZzSubmit</linkevent>
+      </linkevents>
+    </param>
+  </paramtable>
+  <events>
+    <event name="Start" desc="开始" type="startevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="End" desc="结束" type="endevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZzSubmit" desc="风险提报" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/ZzSubmit]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '现场工程师' or  d.Role_Name = '可靠性工程师') and @OP_currentuser=@IP_currentuser]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="CreateAssessGroup" desc="成立风险评估小组" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/CreateAssessGroup]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队负责人') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') and exists(select c from u.Person_Equips as c where c.Equip_GyCode = @IP_Equip_GyCode)]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="RiskRecognition" desc="危害识别" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/RiskRecognition]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队负责人') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') and exists(select c from u.Person_Equips as c where c.Equip_GyCode = @IP_Equip_GyCode)]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="PgxzMngCtlPlan" desc="评估小组确立管控措施" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/PgxzMngCtlPlan]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队负责人') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') and exists(select c from u.Person_Equips as c where c.Equip_GyCode = @IP_Equip_GyCode)]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="JdcSupervise" desc="机动处组织监督实施" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/JdcSupervise]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name like '%机动处%' and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') and exists(select c from u.Person_Equips as c where c.Equip_GyCode = @IP_Equip_GyCode)]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="CjMngCtlPlan" desc="车间确立管控措施" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/CjMngCtlPlan]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '现场工程师') and exists(select c from u.Person_Equips as c where c.Equip_GyCode = @IP_Equip_GyCode)]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="PqConfirm" desc="可靠性工程师审核" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/PqConfirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '可靠性工程师') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') and exists(select c from u.Person_Equips as c where c.Equip_GyCode = @IP_Equip_GyCode)]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="CjSupervise" desc="车间组织监督实施" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/CjSupervise]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '现场工程师') and exists(select c from u.Person_Equips as c where c.Equip_GyCode = @IP_Equip_GyCode)]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="RiskAcceptRecord" desc="管控措施实施后确认风险是否可接受，并进行风险登记" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/RiskAcceptRecord]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队负责人') and exists(select c from u.Person_Equips as c where c.Equip_GyCode = @IP_Equip_GyCode)]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="A11dot3" desc="跳转到【A11.3】风险管控模块" type="subprocess">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where 1<>1]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+      <linkworkflow name="A11dot3" workingmodel="parallel">
+        <paramtransfer>
+          <item parent="Equip_GyCode" child="Equip_GyCode" direction="to" />
+          <item parent="Equip_Code" child="Equip_Code" direction="to" />
+          <item parent="Cj_Name" child="Cj_Name" direction="to" />
+          <item parent="Zz_Name" child="Zz_Name" direction="to" />
+          <item parent="Equip_Type" child="Equip_Type" direction="to" />
+          <item parent="Zy_Type" child="Zy_Type" direction="to" />
+          <item parent="Zy_SubType" child="Zy_SubType" direction="to" />
+          <item parent="Risk_IsAcceptable" child="Risk_IsAcceptable" direction="to" />
+          <item parent="flag_NandD" child="flag_NandD" direction="to" />
+        </paramtransfer>
+      </linkworkflow>
+    </event>
+    <event name="RiskCleanRecord" desc="管控措施实施后确认风险是否消除，并进行风险登记" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A11dot1/RiskCleanRecord]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '可靠性工程师') and exists(select c from u.Person_Equips as c where c.Equip_GyCode = @IP_Equip_GyCode)]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+  </events>
+  <flows>
+    <flow source="Start" destination="ZzSubmit">
+      <condition><![CDATA[start_done==true]]></condition>
+    </flow>
+    <flow source="ZzSubmit" destination="CreateAssessGroup">
+      <condition><![CDATA[Submit_done == true]]></condition>
+    </flow>
+    <flow source="CreateAssessGroup" destination="RiskRecognition">
+      <condition><![CDATA[CreateAssessGroup_done==true]]></condition>
+    </flow>
+    <flow source="RiskRecognition" destination="CjMngCtlPlan">
+      <condition><![CDATA[RiskRecognition_done==true AND Risk_Type=="一般风险"]]></condition>
+    </flow>
+    <flow source="CjMngCtlPlan" destination="PqConfirm">
+      <condition><![CDATA[CreatePlan_done==true]]></condition>
+    </flow>
+    <flow source="PqConfirm" destination="CjSupervise">
+      <condition><![CDATA[PqConfirm_done==true  AND PqConfirm_Result=="是"]]></condition>
+    </flow>
+    <flow source="RiskRecognition" destination="PgxzMngCtlPlan">
+      <condition><![CDATA[RiskRecognition_done==true AND Risk_Type=="重大风险"]]></condition>
+    </flow>
+    <flow source="PgxzMngCtlPlan" destination="JdcSupervise">
+      <condition><![CDATA[CreatePlan_done==true]]></condition>
+    </flow>
+    <flow source="RiskAcceptRecord" destination="A11dot3">
+      <condition><![CDATA[RiskAcceptRecord_done==true]]></condition>
+    </flow>
+    <flow source="A11dot3" destination="End">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="PqConfirm" destination="CjMngCtlPlan">
+      <condition><![CDATA[PqConfirm_done==true  AND PqConfirm_Result=="否"]]></condition>
+    </flow>
+    <flow source="JdcSupervise" destination="RiskAcceptRecord">
+      <condition><![CDATA[ImplementPlan_done==true]]></condition>
+    </flow>
+    <flow source="CjSupervise" destination="RiskCleanRecord">
+      <condition><![CDATA[ImplementPlan_done==true]]></condition>
+    </flow>
+    <flow source="RiskCleanRecord" destination="A11dot3">
+      <condition><![CDATA[RiskAcceptRecord_done==true]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

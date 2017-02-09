@@ -1,0 +1,565 @@
+﻿@model WebApp.Controllers.CommonController.WFDetail_Model
+@{
+    ViewBag.Title = "UploadBidFile";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    string[] s;
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-8">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        业务流水号：<button class="btn btn-default" onclick="DispalsySide('@ViewBag.WF_Ser')">@ViewBag.WF_Ser</button>
+                    </span>
+                </li>
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：制定招标技术文件
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                        <h3 class="timeline-header"><span class="lead" style="color:red">制定招标技术文件</span></h3>
+                        <div class="timeline-body">
+                            <p>技术要求制定组长：@ViewBag.currentMiss.Miss_Params["TechDemandMake_Header"].ToString()</p>
+                           
+                            
+                            
+                            
+                            
+                            
+                            @*测试开始*@
+
+@*@if (@ViewBag.currentMiss.Miss_Params["Supplier_List"].ToString() != "")
+{
+
+    s = (@ViewBag.currentMiss.Miss_Params["Supplier_List"].ToString()).Split(new char[] { ',' });
+
+    int i;
+    for (i = 0; i < s.Length - 1; i++)
+    {
+        <form class="form-horizontal filePost" role="form" id="filePost_@i" method="post" action="/Common/Upload" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">@s[i]</label>
+                <div class="col-sm-10 table-bordered">
+                    <div class="col-sm-5">
+                        <input type="file" id="inputfile_@i" name="file" value="@s[i]">
+                    </div>
+                    <div class="col-sm-2">
+                        <input id="ButtonUpload" type="submit" onclick="aa(@i)" value="上传文件" />
+                    </div>
+                    <iframe id="outputdiv_@i" style="display:none">  </iframe>
+                    <input type="text" id="fileUpLoad_name_@i" name="fileUpLoad_name" style="display:none" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div id="msg_@i" class="col-sm-10"></div>
+            </div>
+        </form>
+
+    }
+
+}*@
+        @*测试结束*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                             <form class="form-horizontal" role="form" id="filePost" method="post" action="/Common/Upload" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">上传招标技术文件</label>
+                                 
+                                    <div class="col-sm-10 table-bordered">
+                                        <div class="col-sm-5">
+                                            <input type="file" id="inputfile" name="file">
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <input id="ButtonUpload" type="submit" value="上传文件" />
+                                        </div>
+                                        <iframe id="outputdiv" style="display:none">  </iframe>
+                                        <input type="text" id="fileUpLoad_name" style="display:none" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div id="msg" class="col-sm-10"></div>
+                                </div>
+                            </form>
+
+                            <form role="form">
+                                <div class="box-footer">
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click()">提交</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+                <!-- 工作流历史操作-通用部分Star -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前工作流历史操作
+                    </span>
+                </li>
+                <!-- timeline time label -->
+                @for (int i = @Model.ALLHistoryMiss.Count() - 1; i >= 1; i--)
+                {
+                    <li class="time-label">
+                        <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@i" aria-expanded=true aria-controls="@i">
+                            @Model.MissTime[i] - @Model.ALLHistoryMiss[i].WE_Event_Desc
+                        </a>
+                    </li>
+
+                    <li class="collapse" id="@i">
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o">@Model.MissTime[i]</i>操作用户： @Model.MissUser[i]</span>
+                            <h3 class="timeline-header lead"><span class="lead" style="color:red">@Model.ALLHistoryMiss[i].WE_Event_Desc</span></h3>
+                            <div class="timeline-body">
+                                <table class="table  table-hover table-bordered">
+                                    <tbody>
+                                        @foreach (var pp in @Model.ALLHistoryMiss[i].Miss_ParamsAppRes)
+                                        {
+                                            if (pp.Value.ToString() != "App_hidden")
+                                            {
+                                                <tr class="info">
+                                                    <th>@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key]</th>
+                                                    @if ((@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key].ToString()).IndexOf("附件") > -1 && @Model.ALLHistoryMiss[i].Miss_Params[pp.Key] != "")
+                                                    {
+                                                        string[] savedFileName = (@Model.ALLHistoryMiss[i].Miss_Params[pp.Key].ToString()).Split(new char[] { '$' });
+                                                        string saveExistFilename = Path.Combine("/Upload", savedFileName[1]);
+                                                        <td><a href=@saveExistFilename target=_blank> @savedFileName[0]</a></td> }
+                                                    else
+                                                    {
+                                                        <td>@Model.ALLHistoryMiss[i].Miss_Params[pp.Key]</td>}
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+                }
+
+                <!-- END timeline item -->
+
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+                <!-- 工作流历史操作-通用部分End -->
+
+            </ul>
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4" id="sidebar"> </div>
+    </div>
+    <!-- /.row -->
+
+</section>
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处-->
+<div class="modal fade" id="EquipInfoModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备相关信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="EquipInfoDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+    </div>
+
+</div><!--设备信息显示模态框结束处-->
+@section js{
+    <!-- Page script -->
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+
+
+
+
+
+
+
+
+
+
+    //function submit_click() {
+
+    //    var uploadDetail = "";
+    //    $("input[name='fileUpLoad_name']").each(function () {
+    //        uploadDetail += $(this).val() + "$";
+
+    //    });
+    //    //alert(uploadDetail);
+
+
+    //    if (!myValidation())
+    //        return false;
+    //    if (!confirm('确定要提交吗？'))
+    //        return false;
+
+    //    var flow_name = $("#wef_id").val();
+    //    //alert(flow_name);
+    //    //alert($('#inputfile').val());
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: '/A4dot2/UploadBidFile_submitsignal',
+    //        // data: { flowname: flow_name },
+    //        data: {
+    //            json1: '{Flow_Name: "' + flow_name
+
+    //                 + '", Bid_File: "' + uploadDetail
+    //                 + '"}'
+    //        },
+
+    //        success: function (data) {
+    //            location.href = data;
+    //        },
+    //        error: function () {
+    //            alert('error');
+    //        }
+    //    });
+
+    //};
+
+
+
+    //$(document).ready(function () {
+
+    //});
+
+
+    //function btnDelAttach_click(tt) {
+    //    var filename = $("#fileUpLoad_name_" + tt).val()
+    //    //alert($("#fileUpLoad_name").val());
+    //    $.ajax({
+    //        url: '/Common/DelAttachment',
+    //        type: 'post',
+    //        dataType: 'json',
+    //        data: { "file": filename },
+    //        // contentType: 'application/json; charset=utf-8',
+    //        success: function (data) {
+    //            if (data.status == "success") {
+    //                $("#msg_" + tt).empty(); $("#fileUpLoad_name_" + tt) = "";
+    //            } else {
+    //                alert(data.message);
+    //            }
+
+    //        }
+    //      ,
+    //        error: function (err) {
+    //            alert(err.toString());
+    //        }
+    //    });
+    //};
+
+    //function aa(ss) {
+
+    //    var tt = ss;
+
+    //    $(document).ready(function () {
+
+    //        var options = {
+    //            target: '#outputdiv_' + tt,
+    //            success: showResponse,
+    //            error: function (data) {
+    //                $("#outputdiv_" + tt).html = data;
+    //            }
+    //        };
+    //    });
+
+
+
+    //    $('#filePost_' + tt).submit(function () {
+    //        var options = {
+    //            target: '#outputdiv_' + tt,
+    //            dataType: 'json',
+    //            success: function (data) {
+    //                $("#msg_" + tt).empty().append("<table  ><td  class=\"col-sm-5\">已上传附件：" + data.fileName + "(" + data.fileSize + ")</td><td class=\"col-sm-2\"><input type='button' onclick=\"btnDelAttach_click(" + tt + ")\" value='删除文件' class='fh_btn' id='btnDelAttach' filename='" + data.fileName + "' filesize='" + data.fileSize + "'></td>");
+    //                $("#fileUpLoad_name_" + tt).val(data.allFileNames);
+    //            },
+
+    //            error: function (data) {
+    //                // $("#outputdiv").val() = "上传失败！";
+    //                alert(data);
+    //            }
+    //        };
+
+
+    //        $(this).ajaxSubmit(options);
+
+    //        return false;
+    //    });
+
+
+
+    //    function showRequest(formData, jqForm, options) {
+    //        alert('发送前');
+    //        return true;
+    //    }
+
+    //    function showResponse(responseText, statusText) {
+
+    //    };
+
+    //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function submit_click() {
+            if (!myValidation())
+                return false;
+            var infile = $("#inputfile").val();
+            var uploadfilename = $("#fileUpLoad_name").val();
+            if (uploadfilename == "" && infile != "") {
+                alert("选择的文件没有上传，不能提交！");
+                return false;
+            }
+
+            if (!confirm('确定要提交吗？'))
+                return false;
+
+            var flow_name = $("#wef_id").val();
+            //alert(flow_name);
+            
+                $.ajax({
+                    type: 'POST',
+                    url: '/A4dot2/UploadBidFile_submitsignal',
+                    // data: { flowname: flow_name },
+                    data: {
+                        json1: '{Flow_Name: "' + flow_name
+
+                             + '", Bid_File: "' + $("#fileUpLoad_name").val()
+                             + '"}'
+                    },
+                    success: function (data) {
+                        location.href = data;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+            
+           
+
+        }
+
+        $(document).ready(function () {
+
+            var options = {
+                target: '#outputdiv',
+                success: showResponse,
+                error: function (data) {
+                    $("#outputdiv").html = data;
+                }
+            };
+        });
+        function btnDelAttach_click() {
+            var filename = $("#fileUpLoad_name").val()
+            //alert($("#fileUpLoad_name").val());
+            $.ajax({
+                url: '/Common/DelAttachment',
+                type: 'post',
+                dataType: 'json',
+                data: { "file": filename },
+                // contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.status == "success") {
+                        $("#msg").empty(); $("#fileUpLoad_name").val("");
+                        $('#inputfile').val("");
+                    } else {
+                        alert(data.message);
+                    }
+
+                }
+              ,
+                error: function (err) {
+                    alert(err.toString());
+                }
+            });
+        };
+
+
+        $('#filePost').submit(function () {
+            var infile = $('#inputfile').val();
+            var options = {
+                target: '#outputdiv',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.message == "上传成功") {
+                    $("#msg").empty().append("<table  ><td  class=\"col-sm-5\">已上传附件：" + data.fileName + "(" + data.fileSize + ")</td><td class=\"col-sm-2\"><input type='button' onclick=\"btnDelAttach_click()\" value='删除文件' class='fh_btn' id='btnDelAttach' filename='" + data.fileName + "' filesize='" + data.fileSize + "'></td>");
+                    $("#fileUpLoad_name").val(data.allFileNames);
+                    }
+                    else { $("#inputfile").val(""); alert(data.message); }
+
+                },
+
+                error: function (data) {
+                    // $("#outputdiv").val() = "上传失败！";
+                    alert(data);
+                }
+            };
+            //alert($('#inputfile').val());
+            /* alert($('#file').val());
+             $.ajax({
+                 type: 'POST',
+                 url: '/Common/Upload',
+                 data: { "file": $('#file').val() },
+                 success: function (data) {
+                     $("#outputdiv").html = data;
+                 },
+
+                 error: function (data) {
+                     $("#outputdiv").html = data;
+                 }*/
+            if (infile != "") {
+                //alert(infile);
+                $(this).ajaxSubmit(options);
+                return false;
+            }
+            else {
+                alert("没有选择上传文件！");
+                return false;
+            }
+
+        });
+
+        function showRequest(formData, jqForm, options) {
+            alert('发送前');
+            return true;
+        }
+
+        function showResponse(responseText, statusText) {
+
+        };
+
+    </script>
+}
+
+
+
+
+
+
+

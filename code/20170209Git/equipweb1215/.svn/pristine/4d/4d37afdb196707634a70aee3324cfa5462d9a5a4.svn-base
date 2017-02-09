@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FlowDesigner.Management
+{
+    /// <summary>
+    /// 工作流工程
+    /// </summary>
+    public class WorkFlowsProj
+    {
+        #region private property
+        /// <summary>
+        /// 包含的工作流管理
+        /// </summary>
+        private List<WorkFlowMan> wfs_man = new List<WorkFlowMan>();
+
+
+        #endregion
+
+        #region public property
+        /// <summary>
+        /// 工程名称
+        /// </summary>
+        public string Name { set; get; }
+
+        /// <summary>
+        /// 工程描述
+        /// </summary>
+        public string Description { set; get; }
+        #endregion
+
+        #region method
+        /// <summary>
+        /// 添加一个新工作流管理
+        /// </summary>
+        /// <param name="wfName">工作流名称</param>
+        /// <param name="wfDesc">工作流描述</param>
+        /// <returns>添加成功则返回新建的WorkFlowMan</returns>
+        public WorkFlowMan NewWrokFlowMan(string wfName, string wfDesc)
+        {
+            foreach(WorkFlowMan i in wfs_man)
+            {
+                if (i.Name == wfName)
+                    return null;
+            }
+
+            WorkFlowMan wfm = new WorkFlowMan(wfName, wfDesc);
+            wfs_man.Add(wfm);
+            return wfm;
+        }
+        #endregion
+    }
+}

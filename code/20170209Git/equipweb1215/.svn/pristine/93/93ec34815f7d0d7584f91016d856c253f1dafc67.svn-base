@@ -1,0 +1,15 @@
+﻿<Window x:Class="FlowDesigner.PropertyEditor.LinkParamsWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="LinkParamsWin" Height="347" Width="340">
+    <Grid>
+        <ListBox Name="Source" HorizontalAlignment="Left" Height="249" Margin="10,10,0,0" VerticalAlignment="Top" Width="123"/>
+        <ListBox Name="Dest" HorizontalAlignment="Left" Height="249" Margin="199,10,0,0" VerticalAlignment="Top" Width="123"/>
+        <Button Content=">" Name="Add" HorizontalAlignment="Left" Margin="147,102,0,0" VerticalAlignment="Top" Width="37" Height="26"/>
+        <Button Content="&lt;" Name="Remove" HorizontalAlignment="Left" Margin="147,143,0,0" VerticalAlignment="Top" Width="37" Height="26"/>
+        <Button Content="确定" Name="OK" HorizontalAlignment="Left" Margin="87,272,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="OK_Click"/>
+        <Button Content="取消" Name="Cancel" HorizontalAlignment="Left" Margin="167,272,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="Cancel_Click"/>
+        
+
+    </Grid>
+</Window>

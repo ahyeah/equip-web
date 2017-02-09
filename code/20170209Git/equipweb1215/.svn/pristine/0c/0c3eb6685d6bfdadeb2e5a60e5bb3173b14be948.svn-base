@@ -1,0 +1,18 @@
+namespace EquipModel.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class modified2 : DbMigration
+    {
+        public override void Up()
+        {
+            DropColumn("dbo.Person_Info", "person_Id1");
+        }
+        
+        public override void Down()
+        {
+            AddColumn("dbo.Person_Info", "person_Id1", c => c.Int(nullable: false));
+        }
+    }
+}

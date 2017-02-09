@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewBag.Title = "Submit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/css/editor.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/css/rowReorder.bootstrap.min.css">
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title" >@ViewBag.tempjob_name</h3>
+                    <input type="text" id="wfe_id" hidden="hidden" value="@ViewBag.wfe_id">  
+                </div>
+                <div class="box-body">
+                    <table id="jobs_table" class="table table-hover table-bordered display">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>序号</th>
+                                <th>装置</th>
+                                <th>加油点设备描述</th>
+                                <th>加油点设备编号</th>
+                                <th>上次换油时间</th>
+                                <th>换油周期</th>
+                                <th>下次换油时间</th>
+                                <th>存在的问题</th>
+                                <th>整改情况</th>
+                                <th>工作流ID</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="form-group">
+                      
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn btn-default" type="button"  onclick="exit_click()">退出</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+   
+
+</section>
+
+@section js {
+    <!-- Page script -->
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/dataTables.editor.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/editor.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+    <script type="text/javascript">
+     
+        var table;
+      
+
+
+        
+        $(document).ready(
+          PageLoad()
+          );
+    
+
+        function PageLoad() {
+
+
+            table = $('#jobs_table').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "iDisplayLength": 30,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "info": true,
+                "ajax": {
+                    "url": "/A6dot2dot2/getA6dot2dot2Tab?wfe_id="+$('#wfe_id').val(),
+                    "type": "POST"
+                },
+                "order": [[1, 'desc']],
+                "columnDefs": [
+                    { "targets": 1, "visible": true },
+                    { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8], "orderable": false }
+                ],
+
+                "columns": [
+                     {
+                         data: null,
+                         defaultContent: '',
+                         className: 'select-checkbox',
+                         orderable: false
+                     },
+
+                    { "data": "ID" },
+                    {"data": "Zz_Name",},
+                    { "data": "Equip_Gybh" },
+                    { "data": 'Equip_Code', },
+                     { "data": 'Last_HY' },
+                    { "data": 'HY_ZQ', },
+                     { "data": 'Next_HY', },
+                       { "data": 'Problem_Cur', },
+                    {
+                        "data": 'ZG_status',
+                    
+                    },
+                      { "data": 'Wfe_id', }
+
+
+                ],
+                "select": {
+                    style: 'os',
+                    selector: 'td:first-child'
+                }
+              
+            })
+            ;
+           
+        }
+        function exit_click() {
+            location.href = "/TempJob/Index";
+        }
+
+       
+    </script>
+}

@@ -1,0 +1,87 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>VerCheck</title>
+
+
+    <script type="text/javascript">
+        var userAgent = navigator.userAgent,
+        rMsie = /(msie\s|trident.*rv:)([\w.]+)/,
+        rFirefox = /(firefox)\/([\w.]+)/,
+        rOpera = /(opera).+version\/([\w.]+)/,
+        rChrome = /(chrome)\/([\w.]+)/,
+        rSafari = /version\/([\w.]+).*(safari)/;
+        var browser;
+        var version;
+        var ua = userAgent.toLowerCase();
+        function uaMatch(ua) {
+            var match = rMsie.exec(ua);
+            var ver;
+
+            if (match != null) {
+                return { browser: "IE", version: match[2] || "0" };
+            } else {
+                location.href = "/Login/index";
+
+            }
+
+
+
+            //var match = rFirefox.exec(ua);
+            //if (match != null) {
+            //    return { browser: match[1] || "", version: match[2] || "0" };
+            //}
+            //var match = rOpera.exec(ua);
+            //if (match != null) {
+            //    return { browser: match[1] || "", version: match[2] || "0" };
+            //}
+            //var match = rChrome.exec(ua);
+            //if (match != null) {
+            //    return { browser: match[1] || "", version: match[2] || "0" };
+            //}
+            //var match = rSafari.exec(ua);
+            //if (match != null) {
+            //    return { browser: match[2] || "", version: match[1] || "0" };
+            //}
+            //if (match != null) {
+            //    return { browser: "", version: "0" };
+            //}
+        }
+        var browserMatch = uaMatch(userAgent.toLowerCase());
+        if (browserMatch.browser) {
+            browser = browserMatch.browser;
+            version = browserMatch.version;
+        }
+        //document.write("您的当前浏览器版本是" + browser + version);
+        var wqe = version.split(".");
+
+        // ver = version.substr(0,2);
+        // document.write(browser + ver);
+
+        if (wqe[0] < 11) {
+            //alert("sss");
+            //alert(ua);
+        }
+        else {
+
+
+            location.href = "/Login/index";
+        }
+    </script>
+</head>
+<body>
+    <div id="upload_firefox">
+        <p><h1>您的浏览器版本过低，请下载新的浏览器</h1></p>
+        <a style="color:red ;text-align:center" href="~/Upload/火狐安装.rar">火狐浏览器下载</a>
+
+    </div>
+</body>
+</html>
+
+

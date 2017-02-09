@@ -1,0 +1,727 @@
+﻿
+@{
+    ViewBag.Title = "EquipQuery";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@section css{
+    <style type="text/css">
+    tr.MM_hidden {
+        display: none;
+    }
+
+    tr.MM_shown {
+    }
+
+    tr.selected {
+        background-color: #acbad4;
+    }
+  
+</style>
+    
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker-bs3.css">
+<link rel="stylesheet" href="~/Plugins/iconpicker.css" />
+}
+<section>
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">添加新设备</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <a id="Add" class="btn btn-block btn-social btn-info" onclick="JavaScript: location.href = '/EquipQuery/AddEquip'">
+                                <i class="fa fa-pencil-square-o"></i>添加设备
+                            </a>
+                        </div>
+                        @*<div class="col-xs-2">
+                            <a id="Modify" class="btn btn-block btn-social btn-info">
+                                <i class="fa fa-pencil"></i>   修改设备
+                            </a>
+                        </div>*@
+                        @*<div class="col-xs-2">
+                            <a id="Delete" class="btn btn-block btn-social btn-danger">
+                                <i class="fa fa-times"></i>    删除设备
+                            </a>
+                        </div>*@
+                    </div>
+                </div>
+             </div>
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">查询设备</h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="form-group">
+                            <table>
+                                <tr>
+                                    <td class="col-sm-2 control-label">
+                                        <label>设备工艺编号:</label>
+                                    </td>
+                                    <td class="col-sm-9">
+                                        <div class="input-group col-sm-9">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                            <input type="text" class="form-control" id="E_Code">
+                                            <input type="text" id="E_CodeHidden" hidden="hidden">
+                                            <span class="input-group-addon"><button class="fa fa-ambulance" onclick="" data-toggle="modal" data-target="#EquipSelectModal"></button></span>
+                                        </div>
+                                    </td>
+                                    
+
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-2 control-label">
+                                        <label>设备管辖区域:</label>
+                                    </td>
+                                    
+                                    <td class="form-group">
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </div>
+                                                <input id="Equip_Archi" data-toggle="modal" data-target="#EquipArchi" type="text" class="form-control" onclick="EqualArchi_List()" onfocus=this.blur()>
+                                                <input id="Equip_Archi_Id" value="0" type="text" hidden="hidden" />
+                                                <div class="modal-body" id="Equip_Archi_div" hidden="hidden">
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-2 control-label">
+                                        <label>设备专类分类:</label>
+                                    </td>
+                                  
+                                    <td class="form-group">
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </div>
+                                                <input id="Equip_Specialty" data-toggle="modal" data-target="#speciaty" type="text" class="form-control" onclick="Speciaty_List()" onfocus=this.blur()>
+                                                <input id="Equip_Specialty_Id" type="text" hidden="hidden" />
+                                                <div class="modal-body" id="Equip_Specialty_div" hidden="hidden">
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </td>
+
+                                    <td class="col-sm-1">
+                                        <button type="button" class="btn btn-warning" onclick="Search()">查询</button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    <!--设备工艺编号模态框开始处-->
+    <div class="modal fade" id="EquipSelectModal">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">设备选择</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="modal-body" id="Role_div">
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">申请车间</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control select2" style="width: 100%;" id="cjname" onchange="list_Zz()">
+                                        <option value="">请选择</option>
+                                        @if (Model.UserHasEquips != null)
+                                        {
+                                            foreach (var item in Model.UserHasEquips)
+                                            {
+                                                <option value="@item.EA_Id">@item.EA_Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">申请装置</label>
+                                <div id="Zz_Select" class="col-sm-10">
+                                    <select class="form-control select2" style="width: 100%;" id="zzId" onchange="Zz_selected()">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">设备工艺编号</label>
+                                <div id="Equip_Select" class="col-sm-10">
+                                    <select class="form-control select2" style="width: 100%;" id="Equip_GyCode" onchange="Equip_selected()">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="confirmEuqip()">确认</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--设备工艺编号模态框结束处-->
+
+    <!--专业模态框开始处-->
+    <div class="modal fade" id="speciaty">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">专业选择</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div id="treeview2"></div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="confirmSpeciaty()">确认</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--专业模态框结束处-->
+   
+    <!--设备结构模态框开始处-->
+    <div class="modal fade" id="EquipArchi">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">管辖设备区域</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div id="treeview4"></div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="confirmEquipArchi()">确认</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--设备结构模态框结束处-->
+    
+     <!--查询结果显示模态框开始处-->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">查询结果</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                    <table width="100%" class="demo  display dataTable" id="example" role="grid" aria-describedby="example_info">
+                        <thead>
+
+                            <tr role="row">
+
+                                <th>序号</th>
+                                <th>设备工艺编号</th>
+                                <th>设备编号</th>
+                                <th>设备分类</th>
+                                <th>设备子类</th>
+                                <th>所属公司</th>
+                                <th>修改</th>
+                                <th>删除</th>
+                            </tr>
+
+                        </thead>
+
+
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="col-md-4" id="sidebar"></div>
+    </div>
+    <!--查询结果显示模态框结束处-->
+    
+    <!--修改模态框开始处-->
+    <div class="modal fade" id="modequips">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">修改设备</h4>
+                </div>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备工艺编号</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input type="text" class="form-control" id="EquipName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备编号</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input type="text" class="form-control" id="EquipCode">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备ABC标志</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control" type="text" id="EquipABCMark">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备型号</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control" type="text" id="EquipType">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备所属公司</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control" type="text" id="EquipMan">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">专业分类</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control" type="text" id="Equip_Sp">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">专业子类</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control" type="text" id="Equip_phB">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">设备区域</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control" type="text" id="Equip_weizhi">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="confirmmodify()">确认</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--修改模态框结束处-->
+</section>
+
+@section js{
+
+    <!-- DataTables -->
+    <script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script src="~/Plugins/iconpicker.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+     <!-- Page script -->
+<link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+<script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+
+    <script>
+        $(function () {
+
+            $(".select2").select2();
+        });
+    function Speciaty_List() {
+        //alert('error');
+        $.ajax({
+            type: 'POST',
+            url: '/EquipQuery/List_Speciaties',
+            dataType: 'json',
+            success: function (defaultData) {
+                $('#treeview2').treeview({
+                    data: defaultData,
+                    multiSelect: false,
+                });
+                //初始显示时折叠父节点
+                $('#treeview2').treeview('collapseAll', {
+                    silent: true
+                });
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+
+    }
+    function EqualArchi_List() {
+        $.ajax({
+            type: 'POST',
+            url: '/EquipQuery/List_EquipArchi',
+            dataType: 'json',
+            success: function (defaultData) {
+                $('#treeview4').treeview({
+                    data: defaultData,
+                    multiSelect: false,
+
+                });
+                //初始显示时折叠父节点
+                $('#treeview4').treeview('collapseAll', {
+                    silent: true
+                });
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+
+    }
+    function confirmEquipArchi() {
+        var test = $('#treeview4').treeview('getSelected', 1);
+
+
+        var member = "", member2 = "";
+        for (var i = 0; i < test.length; i++) {
+
+            if (test[i].text && i < test.length - 1) {
+                member += test[i].text + ',';
+                member2 += test[i].id + ',';
+            }
+            else {
+                member += test[i].text
+                member2 += test[i].id;
+            }
+        }
+
+        $('#Equip_Archi').val(member);
+        $('#Equip_Archi_Id').val(member2);
+
+
+    }
+    function confirmSpeciaty() {
+        var test = $('#treeview2').treeview('getSelected', 1);
+        $('#EquipSpecialty_div').html("");
+
+
+
+        var itemHtml = " <select class=\"form-control\" multiple=\"\" id=\"UserSpecialtySel\" disabled=true>";
+
+        var member = "", member2 = "";
+        for (var i = 0; i < test.length; i++) {
+            itemHtml = itemHtml + "<option value=\"" + test[i].id + "\">" + test[i].text + "</option>";
+            if (test[i].text && i < test.length - 1) {
+                member += test[i].text + ',';
+                member2 += test[i].id + ',';
+            }
+            else {
+                member += test[i].text
+                member2 += test[i].id;
+            }
+        }
+        itemHtml = itemHtml + "</select>";
+        $('#Equip_Specialty').val(member);
+        $('#Equip_Specialty_Id').val(member2);
+        $('#EquipSpeciaty_div').html(itemHtml);
+
+    }
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "columns": [
+
+                 { "data": "index" },
+                { "data": "equip_gycode" },
+                  { "data": "equip_code" },
+                { "data": "equip_specialty" },
+                { "data": "equip_phaseB" },
+                { "data": "equip_manufacturer" },
+              {
+                  //"data": "mod_equipcode",
+                  "render": function (data, type, full, meta) {
+                      
+                      return '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modequips" onclick="mod_equip(' + full.equip_code + "," + meta.row + ')">修改</button>';
+                  }
+              },
+            {
+                //"data": "del_equipcode",
+                  "render": function (data, type, full, meta) {
+                      
+                      return '<button type="button" class="btn btn-danger"  onclick="del_equip(' + full.equip_code + "," + meta.row + ')">删除</button>';
+                  }
+            }
+            ],
+
+            "ajax": {
+                "url": "/EquipQuery/Query_Equip?equip_gycode=" + $('#E_Code').val() + "&equiparchi_id=" + $('#Equip_Archi_Id').val() + "&equip_specialty=" + $('#Equip_Specialty').val(),
+                "type": "POST"
+            }
+
+        });
+
+    })
+
+    function Search() {
+        var str = "/EquipQuery/Query_Equip?equip_gycode=" + $('#E_Code').val() + "&equiparchi_id=" + $('#Equip_Archi_Id').val() + "&equip_specialty=" + $('#Equip_Specialty').val();
+        $('#example').DataTable().ajax.url(str).load();
+
+    }
+
+    function confirmEuqip() {
+        $('#E_Code').val($('#Equip_GyCode').find("option:selected").text())
+
+    }
+
+    function list_Zz() {
+        if ($('#cjname').val() != "") {
+            $.ajax({
+                url: '/Common/Cj_Zzs',
+                dataType: 'json',
+                type: 'post',
+                data: { "cj_id": $('#cjname').val() },
+                success: function (backdata) {
+                    if (backdata) {
+                        var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                        for (var i = 0; i < backdata.length; i++) {
+                            itemHtml = itemHtml + "<option value=\"" + backdata[i].Zz_Id + "\">" + backdata[i].Zz_Name + "</option>";
+                        }
+                        $('#zzId').html(itemHtml);
+                    }
+                    else {
+                        alert("error!!!");
+                    }
+                }
+            })
+        }
+    };
+
+    function Zz_selected() {
+        if ($('#zzId').val() != "") {
+            $.ajax({
+                url: '/Common/Zz_Equips',
+                dataType: 'json',
+                type: 'post',
+                data: { "Zz_id": $('#zzId').val() },
+                success: function (backdata) {
+                    if (backdata) {
+                        var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                        for (var i = 0; i < backdata.length; i++) {
+                            itemHtml = itemHtml + "<option value=\"" + backdata[i].Equip_Id + "\">" + backdata[i].Equip_GyCode + "</option>";
+                        }
+                        $('#Equip_GyCode').html(itemHtml);
+                    }
+                    else {
+                        alert("error!!!");
+                    }
+                }
+            })
+        }
+    };
+
+    function Equip_selected() {
+        if ($('#Equip_GyCode').val() != "") {
+            $.ajax({
+                url: '/Common/ListEquip_Info',
+                dataType: 'json',
+                type: 'post',
+                data: { "Equip_Id": $('#Equip_GyCode').val() },
+                success: function (backdata) {
+                    if (backdata) {
+                        $("#E_CodeHidden").val(backdata[0].Equip_Code);
+
+                    }
+                    else {
+                        alert("error!!!");
+                    }
+                }
+            }
+            )
+        }
+    };
+
+    function mod_equip(data,row_index) {
+       // alert(data);
+       // alert(row_index);
+        $.ajax({
+            url: '/EquipQuery/List_Equipinfo',
+            dataType: 'json',
+            type: 'post',
+            data: {
+                json1: '{"equip_code":"' + data
+                + '"}'
+            },
+            success: function (mod) {
+                //alert(mod.e_man);
+                $("#EquipMan").val(mod.e_man);
+                $("#EquipName").val(mod.e_gycode);
+                $("#EquipCode").val(mod.e_code);
+                $("#EquipABCMark").val(mod.e_abc);
+                $("#EquipType").val(mod.e_type);
+                $("#Equip_Sp").val(mod.e_sp);
+                $("#Equip_phB").val(mod.e_phaseB);
+                $("#Equip_weizhi").val(mod.e_Achi);
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+    }
+
+    function del_equip(data,row_index) {
+      // alert(data);
+       // $(this).children().eq(3);
+        //var id = data1;
+        var t = $('#example').DataTable();
+        t.row(row_index).remove().draw(false);
+        $.ajax({
+            url: '/EquipQuery/delete_equip',
+            dataType: 'json',
+            type: 'post',
+            data: {
+                json1: '{"equip_id":"' + data
+                + '"}'
+            },
+            success: function (datastring) {
+                alert(datastring);
+                
+            },
+            error: function () {
+                //alert('error');
+            }
+        });
+      
+    }
+
+    function confirmmodify() {
+
+        $.ajax({
+            type: 'POST',
+            url: '/EquipQuery/modifyEquip',
+            data: {
+                json1: '{EquipName: "' + $('#EquipName').val()
+                     + '", EquipABCMark: "' + $('#EquipABCMark').val()
+                      + '", Equip_Archi: "' + $('#Equip_weizhi').val()
+                       + '", EquipSpecialty: "' + $('#Equip_Sp').val()
+                        + '", EquipPhaseB: "' + $('#Equip_phB').val()
+                     + '", EquipCode: "' + $('#EquipCode').val()
+                       + '", EquipType: "' + $('#EquipType').val()
+                  + '", EquipManufacturer: "' + $('#EquipMan').val()
+                      + '"}'
+            },
+            success: function (data) {
+              
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+
+
+    }
+</script>
+
+}
+
+
+
+
+

@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+
+namespace FlowEngine.Event
+{
+    /// <summary>
+    /// 子流程事件
+    /// </summary>
+    public class CSubProcessEvent : CEvent
+    {
+        /// <summary>
+        /// m_wfName 子流程工作流名称
+        /// </summary>
+        public string WfName { get; set; }
+
+        CSubProcessEvent(CWorkFlow parent) : base(parent)
+        {
+
+        }
+
+        /// <summary>
+        /// 解析XML元素
+        /// </summary>
+        /// <param name="xmlNode"></param>
+        public override void InstFromXmlNode(XmlNode xmlNode)
+        {
+            //1. 解析基类CEvent的成员
+            base.InstFromXmlNode(xmlNode);
+
+            //2. 解析SubProcessEvent的成员
+        }
+
+        /// <summary>
+        /// 反解析到XML元素
+        /// </summary>
+        public override XmlNode WriteToXmlNode()
+        {
+
+            //1. 反解析基类部分成员
+            XmlNode xn = base.WriteToXmlNode();
+
+            //2. 反解析SubProcessEvent的成员
+            XmlElement xe = (XmlElement)xn;
+            xe.SetAttribute("type", "subprocess");
+
+            //3. 反解析相关的工作流名称            
+            XmlElement linkwf = xn.OwnerDocument.CreateElement("linkworkflow");
+            linkwf.SetAttribute("name", WfName);
+            xe.AppendChild(linkwf);
+            
+            return xn;
+        }
+        
+    }
+}

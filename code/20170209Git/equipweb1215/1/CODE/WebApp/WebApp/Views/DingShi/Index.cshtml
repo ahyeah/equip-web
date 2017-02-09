@@ -1,0 +1,317 @@
+﻿@model WebApp.Controllers.CommonController.Index_Model
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<style type="text/css">
+    tr.MM_hidden {
+        display: none;
+    }
+
+    /*tr.MM_shown {
+        }*/
+
+    tr.selected {
+        background-color: #acbad4;
+    }
+</style>
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+<section class="content" id="table_show_8" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">定时性事务管理</h3>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+
+            </div>
+        </div>
+        @if(ViewBag.zytd==1)
+       {
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+                <a id="Add" class="btn btn-block btn-social btn-info" onclick="Create()">
+                    <i class="fa fa-pencil-square-o"></i>发起定时性事务
+                </a>
+            </div>
+        </div>
+        }
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title" style="font:bold; color:red">已定时任务列表</p>
+            @*                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+
+        <div class="box-body   ">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example1" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>定时性事务名称</th>
+                                <th>关联工作流</th>
+                                <th>自动发起时间</th>
+                                <th>涉及车间/装置</th>
+                                <th>任务状态</th>
+                                <th>删除任务</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*<tr>
+                                    <td>1</td>
+                                    <td>test1</td>
+                                    <td>A5.1设备完好</td>
+                                    <td>2016/9/1-2016/10/1</td>
+                                    <td>联合一车间，联合二车间</td>
+                                    <td>可靠性工程师，现场工程师</td>
+                                    <td><button type="button" class="btn btn-primary" onclick="JavaScript: location.href='/A4dot1/WorkFolw_Detail?wfe_id='">操作</button></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>test2</td>
+                                    <td>A6.2润滑管理</td>
+                                    <td>2016/9/1-2016/10/1</td>
+                                    <td>焦化车间，铁路车间，联合三车间</td>
+                                    <td>检维修单位，现场工程师</td>
+                                    <td><button type="button" class="btn btn-primary" onclick="JavaScript: location.href='/A4dot1/WorkFolw_Detail?wfe_id='">操作</button></td>
+                                </tr>*@
+                            @*@foreach (var item in Model.Am)
+                                    {
+                                        <tr>
+                                            <td>@item.missIndex</td>
+                                            <td>@item.wfe_serial</td>
+                                            <td>@item.missTime</td>
+                                            <td>@item.miss_desc</td>
+                                            <td>@item.userName</td>
+                                            @if(!string.IsNullOrEmpty(item.miss_url))
+                                            {
+                                             <td><button onclick="JavaScript: location.href='@item.miss_url'">处理</button></td>
+                                            }
+                                            else{
+                                             <td>无需处理，等待返回</td>
+                                            }
+
+                                        </tr>
+
+                                    }
+                                </tbody>*@
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<div class="col-md-4" id="sidebar"> </div>
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处-->
+<div class="modal fade" id="EquipInfoModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备相关信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="EquipInfoDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--设备信息显示模态框结束处-->
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/jquery.ba-resize.js"></script>
+
+    <!-- Page script -->
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <style>
+        th {
+            white-space: nowrap;
+        }
+    </style>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    // "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+
+
+                "ajax": {
+                    "url": "/DingShi/getJobList",
+                    "type": "POST"
+
+                },
+                columns: [
+
+                      { data: 'index' },
+                      {
+                          data: 'jobName',
+
+                      },
+                      { data: 'jobType' },
+                      { data: 'jobTIme' },
+                      { data: 'jobRunPara' },
+                      {
+                          data: 'jobStatus',
+                          "render": function (data, type, full, meta) {
+                              if (full.jobStatus == "0") {
+                                  return '激活';
+                              }
+
+                              else if (full.jobStatus == "1") {
+                                  return '停止';
+                              }
+                              else if (full.jobStatus == "2") {
+                                  return '完成';
+                              }
+                          }
+                      },
+                          {
+                              "render": function (data, type, full, meta) {
+                                  if (full.iszytd == 1)
+                                      return '<button type="button" class="btn btn-link "class="form-control" style="background:transparent" onclick="del_job(' + full.job_id + "," + meta.row + ')">删除</button>';
+                                  else
+                                      return '';
+                                  // return '<a  href=' + full.miss_url + '><button type="button" class="btn btn-primary" >处理</button></a>';
+                              }
+
+                          }
+
+
+                ],
+                "bProcessing": true,
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "scrollX": true,
+                "info": true,
+                "autoWidth": false,
+
+            });
+        });
+        function showSide(wfe_serial) {
+            var wfe = wfe_serial;
+
+            $("#table_show_8").attr("class", "col-md-8");
+            DispalsySide(wfe);
+        }
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+
+
+        });
+        function re_table_1() {
+            //  alert("刷新表格");
+            // $("#example1").dataTable().fnDraw();
+
+            var table = $('#example1').DataTable();
+            table.ajax.url('/TempJob/getJobList').load();
+
+        }
+
+        function Create() {
+            location.href = "/DingShi/Submit";
+        }
+        function del_job(job_id, row_index) {
+            //alert(datal);
+            // $(this).children().eq(3);
+            //var id = datal;
+            //    Role_id = datal.Role_id;
+
+            if (!confirm('确定要删除吗？'))
+                return false;
+            var t = $('#example1').DataTable();
+
+            $.ajax({
+                url: '/DingShi/delete_job',
+                dataType: 'json',
+                type: 'post',
+                data: {
+                    json: '{"job_id":"' + job_id
+                    + '"}'
+                },
+                //   data: { "Role_Id": Role_id },
+                success: function (datastring) {
+                    // alert("成功删除！");
+                    alert(datastring);
+
+                },
+                error: function () {
+                    //alert('error');
+                }
+            });
+            t.row(row_index).remove().draw(false);  //实际上此处在页面上删除一行，下面才是 对后台开始操作
+        }
+    </script>
+}

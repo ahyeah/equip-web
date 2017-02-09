@@ -1,0 +1,340 @@
+<workflow name="A6dot2" desc="润滑管理" current_event="">
+  <paramtable>
+    <param name="Sample_Confirm" desc="本月是否采样" type="string">
+      <linkevents />
+    </param>
+    <param name="Assay_File" desc="化验文件（附件）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Sj_Result</linkevent>
+        <linkevent app_reserve="">Kk_Confirm</linkevent>
+        <linkevent app_reserve="">Sj_Assay_File</linkevent>
+      </linkevents>
+    </param>
+    <param name="Assay_Result" desc="化验是否合格 " type="string">
+      <linkevents>
+        <linkevent app_reserve="">Kk_Confirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="Change_File" desc="整改方案（附件）" type="string">
+      <linkevents />
+    </param>
+    <param name="Change_detail" desc="整改说明" type="string">
+      <linkevents />
+    </param>
+    <param name="Zytd_Confirm" desc="专家团队审核方案" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Zytd_Confirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="Xc_Confirm" desc="现场工程师审核" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Xc_Confirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="Sj_Assay_File" desc="设监再上传（附件）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Kk_Confirm_Again</linkevent>
+        <linkevent app_reserve="">Sj_Assay_File</linkevent>
+      </linkevents>
+    </param>
+    <param name="sample_done" desc="采样完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">Xc_Sample</linkevent>
+      </linkevents>
+    </param>
+    <param name="Assay_detail" desc="化验不合格原因" type="string">
+      <linkevents />
+    </param>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Xc_Sample</linkevent>
+        <linkevent app_reserve="">Sj_Result</linkevent>
+        <linkevent app_reserve="">Kk_Confirm</linkevent>
+        <linkevent app_reserve="">Kk_Change_File</linkevent>
+        <linkevent app_reserve="">Kk_Confirm_Again</linkevent>
+        <linkevent app_reserve="">Zytd_Confirm</linkevent>
+        <linkevent app_reserve="">Xc_Confirm</linkevent>
+        <linkevent app_reserve="">Sj_Assay_File</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Info" desc="已选择的采样设备" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Xc_Sample</linkevent>
+        <linkevent app_reserve="">Kk_Confirm</linkevent>
+        <linkevent app_reserve="">Kk_Change_File</linkevent>
+        <linkevent app_reserve="">Kk_Confirm_Again</linkevent>
+        <linkevent app_reserve="">Zytd_Confirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="Assay_Result_Again" desc="可靠性工程师再次判断化验结果" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Kk_Confirm_Again</linkevent>
+      </linkevents>
+    </param>
+    <param name="Cj_Name" desc="所属车间" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">Xc_Sample</linkevent>
+      </linkevents>
+    </param>
+    <param name="Time_Assay" desc="初次化验时间" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Sj_Result</linkevent>
+      </linkevents>
+    </param>
+    <param name="Pq_Name" desc="片区" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Xc_Sample</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">Xc_Sample</linkevent>
+        <linkevent app_reserve="">Sj_Result</linkevent>
+        <linkevent app_reserve="">Kk_Confirm</linkevent>
+        <linkevent app_reserve="">Kk_Change_File</linkevent>
+        <linkevent app_reserve="">Kk_Confirm_Again</linkevent>
+        <linkevent app_reserve="">Zytd_Confirm</linkevent>
+        <linkevent app_reserve="">Xc_Confirm</linkevent>
+        <linkevent app_reserve="">Sj_Assay_File</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zz_Name" desc="装置名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">Xc_Sample</linkevent>
+        <linkevent app_reserve="">Sj_Result</linkevent>
+        <linkevent app_reserve="">Kk_Confirm</linkevent>
+        <linkevent app_reserve="">Kk_Change_File</linkevent>
+        <linkevent app_reserve="">Kk_Confirm_Again</linkevent>
+        <linkevent app_reserve="">Zytd_Confirm</linkevent>
+        <linkevent app_reserve="">Xc_Confirm</linkevent>
+        <linkevent app_reserve="">Sj_Assay_File</linkevent>
+      </linkevents>
+    </param>
+    <param name="currentuser" desc="当前用户" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">Xc_Sample</linkevent>
+      </linkevents>
+    </param>
+    <param name="start_done" desc="" type="bool">
+      <linkevents />
+    </param>
+  </paramtable>
+  <events>
+    <event name="Start" desc="Start" type="startevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="End" desc="End" type="endevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Xc_Sample" desc="每月20日提醒现场工程师采样" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2/Xc_Sample]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '现场工程师') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') and exists(select f from u.Person_EquipEAs as f where f.EA_Name = @IP_Cj_Name or @IP_Cj_Name = "")]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Sj_Result" desc="每月30日设监中心上传化验文件" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2/Sj_Result]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name like '%设监中心%' and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') ]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Kk_Confirm" desc="可靠性工程师判断化验结果" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2/Kk_Confirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '可靠性工程师') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') ]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Kk_Change_File" desc="可靠性工程师提出整改方案" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2/Kk_Change_File]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '可靠性工程师') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Kk_Confirm_Again" desc="可靠性工程师再次判断化验结果" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2/Kk_Confirm_Again]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '可靠性工程师') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') ]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Zytd_Confirm" desc="专家团队审核方案" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2/Zytd_Confirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动') ]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Xc_Confirm" desc="现场工程师确认" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2/Xc_Confirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '现场工程师') and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Sj_Assay_File" desc="设监中心再次上传化验结果" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A6dot2/Sj_Assay_File]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name like '%设监中心%' and exists(select e from u.Person_specialties as e where e.Specialty_Name= '动')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+  </events>
+  <flows>
+    <flow source="Start" destination="Xc_Sample">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="Xc_Sample" destination="Sj_Result">
+      <condition><![CDATA[sample_done==true]]></condition>
+    </flow>
+    <flow source="Sj_Result" destination="Kk_Confirm">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="Kk_Confirm" destination="End">
+      <condition><![CDATA[Assay_Result=="是"]]></condition>
+    </flow>
+    <flow source="Kk_Confirm" destination="Kk_Change_File">
+      <condition><![CDATA[Assay_Result=="否"]]></condition>
+    </flow>
+    <flow source="Kk_Change_File" destination="Zytd_Confirm">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="Zytd_Confirm" destination="Kk_Change_File">
+      <condition><![CDATA[Zytd_Confirm=="否"]]></condition>
+    </flow>
+    <flow source="Zytd_Confirm" destination="Xc_Confirm">
+      <condition><![CDATA[Zytd_Confirm=="是"]]></condition>
+    </flow>
+    <flow source="Xc_Confirm" destination="Sj_Assay_File">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="Sj_Assay_File" destination="Kk_Confirm_Again">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="Kk_Confirm_Again" destination="Kk_Change_File">
+      <condition><![CDATA[Assay_Result_Again=="否"]]></condition>
+    </flow>
+    <flow source="Kk_Confirm_Again" destination="End">
+      <condition><![CDATA[Assay_Result_Again=="是"]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

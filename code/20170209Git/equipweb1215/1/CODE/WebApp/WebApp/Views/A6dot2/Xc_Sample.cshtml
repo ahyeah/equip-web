@@ -1,0 +1,428 @@
+﻿@model WebApp.Controllers.CommonController.ZzSubmitModel
+@{
+    ViewBag.Title = "Xc_Sample";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：每月20日提醒现场工程师采样
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header" ><span class="lead" style="color:red">采样提报</span> </h3>
+                        <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                   
+
+
+                        <div class="timeline-body" id="day_20">
+                            <form class="form-horizontal" role="form">
+                                <button class="btn btn-info " type="button" onclick="get_equip_info()">点击开始选择采样设备</button>
+                             </form>
+
+
+                            <form class="form-horizontal" role="form"  >
+                                <table style="visibility:hidden" id="equip_table" class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr><td><h4>序号</h4></td><td><h4>设备编号</h4></td><td><h4>设备名称</h4></td><td><h4>所属车间</h4></td><td><h4>所属片区</h4></td><td><h4><input type="checkbox" id="checkAll"><span>全选(已采样设备请打钩)</span></h4></td><td >选择状态</td></tr>
+                                    </thead>
+                                    @*<tr><td><h4>序号</h4></td><td><h4>设备名称</h4></td><td><h4>是否采样</h4></td></tr>*@
+                                    <tbody id="tbody"></tbody>
+
+
+                                </table>
+
+
+                                <div class="box-footer" id="foot_btn">
+                                    <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click(0)">确定提交</button>
+                                    <button class="btn btn-primary col-sm-offset-1" type="button" onclick="cancel_click()">取消提交</button>
+                                </div>
+                            </form>
+
+
+            
+                            
+</div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <script>
+   
+        $("#checkAll").bind('click', function () {
+            if (this.checked) {
+                $("input[name='sample']").each(function () {
+                    this.checked = true;
+                });
+            } else {
+                $("input[name='sample']").each(function () {
+                    this.checked = false;
+
+                });
+            }
+        });
+
+
+
+
+        var s_submit = "true";
+    
+
+        function get_equip_info() {
+            $("#foot_btn").show();
+            if (s_submit == "true") { 
+                s_submit = "false";
+                document.getElementById("equip_table").style.visibility = "visible";//显示  
+
+                $('#equip_table').DataTable({
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sZeroRecords": "抱歉， 没有找到",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "没有数据",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "sZeroRecords": "没有检索到数据",
+                        "sSearch": "模糊查询:  ",
+                        "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        }
+                    },
+                    "bProcessing": true,//打开加载数据时提示信息
+                    "paging": false,
+                    "lengthChange": false,
+                    "searching": true,
+                    //"ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "columns": [
+
+                         { "data": null },
+                        { "data": "equip_code" },
+                          { "data": "equip_name" },
+                        {
+                            "data": "equip_cjname",
+
+                        },
+                        { "data": "equip_pqname" },
+
+                      {
+                          //"data": "mod_equipcode",
+                          "render": function (data, type, full, meta) {
+
+                              return '<input type="checkbox" class="sample" name="sample" value="false" />';
+
+                          }
+                      },
+                      {
+                          "render": function (data, type, full, meta) {
+
+                              return 'false';
+
+                          }
+                      },
+                  
+                    
+                    ],
+
+                    "columnDefs": [
+                 {
+                     "targets": [6],
+                     "visible": false
+                     
+                  
+                 }
+                    ],
+
+
+                    "ajax": {
+                        "url": "/A6dot2/get_equip_info",
+                        "type": "POST"
+                    }
+
+                });
+                var table = $('#equip_table').DataTable();
+                table.on('order.dt search.dt',
+                       function () {
+                           table.column(0, {
+                               search: 'applied',
+                               order: 'applied'
+                           }).nodes().each(function (cell, i) {
+                               cell.innerHTML = i + 1;
+                           });
+                       }).draw();
+
+         
+          
+            //    alert(data[0].equip_name);
+
+                //$.ajax({
+                //    type: 'post',
+                //    url: '/A6dot2/get_equip_info',
+
+                //    dataType: 'json',
+                //    success: function (data) {
+
+                //        for (i = 0; i < data.length; i++) {
+
+                //            var itemHtml = "<tr>" +
+                //              "<td>" + data[i].equip_name +
+
+                //              "</td>" +
+
+
+                //                    "<td>" +
+                //                      "<input type=\"checkbox\" name=\"sample\" value=\"" + data[i].equip_name + "\" > " +
+                //              "</td>" +
+                        
+                       
+
+                //                   "</tr>";
+
+                //            $('#tbody').append(itemHtml);
+
+
+
+                //        }
+
+
+
+
+                //        //alert(data[0].equip_name);
+
+
+
+                //    }
+
+                //});
+
+            } else {
+                alert("你已经点击过开始提报按钮，无需再次点击");
+
+            }
+            };
+
+
+
+
+       
+      
+       
+        function cancel_click() {
+            submit_done = 0;
+            if (!confirm('确定要取消吗？'))
+                return false;
+
+            var wef_id = $("#wef_id").val();
+            var return_url = "/A6dot2/Index";
+            $.ajax({
+                type: 'POST',
+                url: '/Common/CancelSubmit',
+                data: {
+                    json1: '{wef_id: "' + wef_id
+                         + '", return_url: "' + return_url
+                         + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        };
+
+        var submit_done = 1;
+        function submit_click(k) {
+
+            if ($(".sample").is(':checked')) {
+               
+            } else {
+                alert("你还未选择设备，请选择设备后再提交！");
+                return false;
+            }
+
+            submit_done = k;
+       
+         
+            var flow_name = $("#wef_id").val();
+            //var obj=document.getElementsByName("sample");
+            //for (i = 0; i < obj.length; i++) {
+            //    if (obj[i].checked)
+            //        obj[i].value = "true";
+
+            //}
+           
+        
+            $("#equip_table input[name='sample']:checked").each(function () { // 遍历选中的checkbox
+                $(this).val("true");
+          //      $(this).parents("tr").find("td:eq(3)").text("true");
+             //  alert($(this).val())
+            });
+            var equip_info = "";
+            $("#equip_table input[name='sample']:checked").each(function () { // 遍历checkbox
+                var tmp_obj = new Object();
+                tmp_obj.equip_name = $(this).parents("tr").find("td:eq(2)").text();
+                tmp_obj.equip_code = $(this).parents("tr").find("td:eq(1)").text();
+                tmp_obj.equip_check = $(this).val();
+                tmp_obj.equip_zj_result = "";
+                tmp_obj.equip_zj_reason = "";
+                tmp_obj.equip_detail = "";
+                tmp_obj.equip_file = "";
+                tmp_obj.equip_check_result = "";
+                tmp_obj.equip_reason = "";
+                equip_info = equip_info + JSON.stringify(tmp_obj) + ",";
+
+              
+
+            });
+            var equip_json ="["+equip_info.substr(0, equip_info.length - 1)+"]";
+         //alert("值是：" + equip_json);
+
+            var Cj_Name = $("#tbody tr:eq(0) td:eq(3)").text();
+            var Pq_Name = $("#tbody tr:eq(0) td:eq(4)").text();
+          //  alert(Cj_Name);
+         //   alert(Pq_Name);
+            if (!myValidation())
+                return false;
+            if (!confirm('确定要提交吗？'))
+                return false;
+      
+
+
+
+        
+            $.ajax({
+                type: 'POST',
+                url: '/A6dot2/submit_sample',
+
+              
+                data: {
+                    json1: '{"Flow_Name": ' + flow_name
+                     + ', "sample": ' + equip_json
+                          + ',"cjname": "' + Cj_Name
+                             + '","pqname": "' + Pq_Name
+                     + '"}'
+                   
+                },
+                success: function (data) {
+                    location.href = data;
+                }
+            });
+       
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        $(document).ready(function () {
+         
+        
+        });
+
+
+
+
+
+        function showRequest(formData, jqForm, options) {
+            alert('发送前');
+            return true;
+        }
+
+        function showResponse(responseText, statusText) {
+
+        };
+        window.onbeforeunload = function () {//离开当前页面触发//火狐可用
+
+            if (submit_done == 1) {
+                //   alert("1");
+                qx();
+            }
+        }
+
+
+        window.onunload = function () {//谷歌可用
+
+            if (submit_done == 1) {
+                //  alert("2");
+                qx();
+            }
+
+        }
+        function qx() {
+
+
+            var wef_id = $("#wef_id").val();
+            var return_url = "/A6dot2/Index";
+            $.ajax({
+                type: 'POST',
+                url: '/Common/CancelSubmit',
+                async: false,
+                data: {
+                    json1: '{wef_id: "' + wef_id
+                         + '", return_url: "' + return_url
+                         + '"}'
+                },
+                success: function (data) {
+
+
+                    location.href = data;
+
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+
+
+
+        }
+    </script>
+}
+
+
+
+
+
+
+

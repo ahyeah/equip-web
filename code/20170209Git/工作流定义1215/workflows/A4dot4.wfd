@@ -1,0 +1,416 @@
+<workflow name="A4dot4" desc="试运" current_event="">
+  <paramtable>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">SySubmit</linkevent>
+        <linkevent app_reserve="">WriteSyPlan</linkevent>
+        <linkevent app_reserve="">ZytdConfirmPlan</linkevent>
+        <linkevent app_reserve="">ZzSy</linkevent>
+        <linkevent app_reserve="">PqConfirmSy</linkevent>
+        <linkevent app_reserve="">SyReform</linkevent>
+        <linkevent app_reserve="">CMUpload</linkevent>
+        <linkevent app_reserve="">JscConfirm</linkevent>
+        <linkevent app_reserve="">CMUploadSy</linkevent>
+        <linkevent app_reserve="">ZytdConfirmSyRecord</linkevent>
+        <linkevent app_reserve="">ERP</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="App_hidden">SySubmit</linkevent>
+        <linkevent app_reserve="App_hidden">WriteSyPlan</linkevent>
+        <linkevent app_reserve="App_hidden">ZytdConfirmPlan</linkevent>
+        <linkevent app_reserve="App_hidden">ZzSy</linkevent>
+        <linkevent app_reserve="App_hidden">PqConfirmSy</linkevent>
+        <linkevent app_reserve="App_hidden">SyReform</linkevent>
+        <linkevent app_reserve="App_hidden">CMUpload</linkevent>
+        <linkevent app_reserve="App_hidden">JscConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="Data_Src" desc="数据来源" type="string">
+      <linkevents />
+    </param>
+    <param name="Plan_Order" desc="计划号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">SySubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_Name" desc="项目名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">SySubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="CM_Department" desc="工程管理单位" type="string">
+      <linkevents>
+        <linkevent app_reserve="">SySubmit</linkevent>
+        <linkevent app_reserve="">SyReform</linkevent>
+        <linkevent app_reserve="">CMUpload</linkevent>
+        <linkevent app_reserve="">CMUploadSy</linkevent>
+      </linkevents>
+    </param>
+    <param name="SySubmit_Done" desc="试运提报是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">SySubmit</linkevent>
+      </linkevents>
+    </param>
+    <param name="PqConfirmPlan_Result" desc="可靠性工程师审核结果" type="string">
+      <linkevents />
+    </param>
+    <param name="WriteSyPlan_Done" desc="试运方案是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">WriteSyPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="SyPlan_File" desc="试运方案（附件）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">WriteSyPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZzConfirmCondition_Result" desc="是否具备试运条件" type="string">
+      <linkevents />
+    </param>
+    <param name="SyCondition_Done" desc="整改后是否具备条件" type="bool">
+      <linkevents />
+    </param>
+    <param name="ZzSy_Done" desc="试运是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">ZzSy</linkevent>
+      </linkevents>
+    </param>
+    <param name="PqConfirmSy_Result" desc="设备试运是否合格" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PqConfirmSy</linkevent>
+      </linkevents>
+    </param>
+    <param name="SyReform_Done" desc="试运是否已整改" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">SyReform</linkevent>
+      </linkevents>
+    </param>
+    <param name="CMConfirmUpload_Result" desc="工程管理单位审核" type="string">
+      <linkevents />
+    </param>
+    <param name="Js_File" desc="技术资料（附件）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CMUpload</linkevent>
+      </linkevents>
+    </param>
+    <param name="JscConfirm_Result" desc="技术处确认资料" type="string">
+      <linkevents>
+        <linkevent app_reserve="">JscConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdConfirmPlan_Result" desc="专业团队组织审核方案" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirmPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="CMUpload_Done" desc="是否上传竣工资料" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">CMUpload</linkevent>
+      </linkevents>
+    </param>
+    <param name="SyRecord_File" desc="试运记录（附件）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">CMUploadSy</linkevent>
+      </linkevents>
+    </param>
+    <param name="UploadSy_Done" desc="是否上传试运记录" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">CMUploadSy</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdConfirmSyRecord_Result" desc="试运记录是否合格" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirmSyRecord</linkevent>
+      </linkevents>
+    </param>
+    <param name="SyPlan" desc="试运方案描述" type="string">
+      <linkevents>
+        <linkevent app_reserve="">WriteSyPlan</linkevent>
+      </linkevents>
+    </param>
+    <param name="JumpToA3dot3_Done" desc="是否跳转A3dot3模块" type="bool">
+      <linkevents />
+    </param>
+    <param name="start_done" desc="" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+      </linkevents>
+    </param>
+  </paramtable>
+  <events>
+    <event name="Start" desc="Start" type="startevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="End" desc="End" type="endevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="SySubmit" desc="人工提报" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/SySubmit]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="WriteSyPlan" desc="现场工程师编写设备试运方案" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/WriteSyPlan]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '现场工程师')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZytdConfirmPlan" desc="专业团队组织审核方案" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/ZytdConfirmPlan]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZzSy" desc="现场工程师组织设备试运" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/ZzSy]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '现场工程师')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="PqConfirmSy" desc="可靠性工程师确认设备试运是否合格" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/PqConfirmSy]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '可靠性工程师')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="SyReform" desc="设备试运整改确认" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/SyReform]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name = @IP_CM_Department]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="CMUpload" desc="工程管理单位上传竣工资料" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/CMUpload]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name = @IP_CM_Department]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="JscConfirm" desc="技术处确认交工资料" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/JscConfirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name ='技术处']]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="CMUploadSy" desc="工程管理单位上传试运记录" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/CMUploadSy]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name = @IP_CM_Department]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZytdConfirmSyRecord" desc="专业团队审核试运记录" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/ZytdConfirmSyRecord]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ERP" desc="进入ERP固定资产转资" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot4/ERP]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+  </events>
+  <flows>
+    <flow source="Start" destination="SySubmit">
+      <condition><![CDATA[start_done==true]]></condition>
+    </flow>
+    <flow source="SySubmit" destination="WriteSyPlan">
+      <condition><![CDATA[SySubmit_Done == true]]></condition>
+    </flow>
+    <flow source="WriteSyPlan" destination="ZytdConfirmPlan">
+      <condition><![CDATA[WriteSyPlan_Done== true]]></condition>
+    </flow>
+    <flow source="ZytdConfirmPlan" destination="WriteSyPlan">
+      <condition><![CDATA[ZytdConfirmPlan_Result !="是"]]></condition>
+    </flow>
+    <flow source="ZzSy" destination="PqConfirmSy">
+      <condition><![CDATA[ZzSy_Done==true]]></condition>
+    </flow>
+    <flow source="PqConfirmSy" destination="SyReform">
+      <condition><![CDATA[PqConfirmSy_Result !="是"]]></condition>
+    </flow>
+    <flow source="SyReform" destination="ZzSy">
+      <condition><![CDATA[SyReform_Done==true]]></condition>
+    </flow>
+    <flow source="CMUpload" destination="JscConfirm">
+      <condition><![CDATA[CMUpload_Done==true]]></condition>
+    </flow>
+    <flow source="ZytdConfirmPlan" destination="ZzSy">
+      <condition><![CDATA[ZytdConfirmPlan_Result=="是"]]></condition>
+    </flow>
+    <flow source="PqConfirmSy" destination="CMUploadSy">
+      <condition><![CDATA[PqConfirmSy_Result=="是"]]></condition>
+    </flow>
+    <flow source="CMUploadSy" destination="ZytdConfirmSyRecord">
+      <condition><![CDATA[UploadSy_Done==true]]></condition>
+    </flow>
+    <flow source="ZytdConfirmSyRecord" destination="CMUploadSy">
+      <condition><![CDATA[ZytdConfirmSyRecord_Result!="是"]]></condition>
+    </flow>
+    <flow source="ZytdConfirmSyRecord" destination="CMUpload">
+      <condition><![CDATA[ZytdConfirmSyRecord_Result=="是"]]></condition>
+    </flow>
+    <flow source="ERP" destination="End">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="JscConfirm" destination="ERP">
+      <condition><![CDATA[JscConfirm_Result=="是"]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

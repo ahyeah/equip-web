@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Approve";
+}
+<script language="JavaScript">
+    function approve(value) {
+        $.ajax({
+            type: 'POST',
+            url: '/Holiday/Submit',
+            data: { approve: value },
+            success: function (data) {
+                location.href = data;
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+    }
+</script>
+<div>
+   @using (Html.BeginForm("submitapprove", "Holiday")) { 
+    <table>
+        <tr>
+            <td>申请人：</td>
+            <td><input id="Text1" type="text" readonly="readonly" value="@ViewBag.poster"/></td>
+        </tr>
+        <tr>
+            <td>事由：</td>
+            <td><input id="Text2" type="text" readonly="readonly" value="@ViewBag.reason" /></td>
+        </tr>
+        <tr>
+            <td>
+                <input id ="result" type="text" name="appr_result" hidden />
+                <input type="text" name="WFE_Id" value="@ViewBag.wfid" hidden />
+                <input type="submit" value="同意" onclick="document.getElementById('result').value = 'true';" />
+                <input type="submit" value="不同意" onclick="document.getElementById('result').value='false';" />
+            </td>
+        </tr>
+    </table>
+    }
+</div>
+
+<h2>Approve</h2>
+

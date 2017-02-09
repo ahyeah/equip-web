@@ -1,0 +1,231 @@
+﻿using EquipDAL.Implement;
+using EquipDAL.Interface;
+using EquipModel.Context;
+using EquipModel.Entities;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EquipBLL.AdminManagment
+{
+   public  class PersonManagment
+    {  
+       public class P_viewModal
+       {
+          public  int Person_Id;
+           public string Person_Name;
+           public string Person_mail;
+          public  string Person_tel;
+          public int Department_Id;
+           public string Department_Name;
+          public  string Speciaty_Ids;
+          public  string Speciaty_Names;
+          public  string Role_Ids;
+          public  string Role_Names;
+          public string Menu_Ids;
+          public List<Menu> Menus;
+       
+           
+       }
+       public class Role_viewModal
+       {
+           public int Role_Id;
+           public string Role_Name;
+           public bool Role_selected;
+       }
+     
+        private Person_Infos  Persons= new Person_Infos();
+       //已知用户名称，查询用户对应信息
+       public Person_Info  Get_Person(string userName)
+        {
+             var P = Persons.GetPerson_info(userName);
+            return P;
+        }
+
+       public List<Role_viewModal> Get_All_Roles( string PersonRoles = "")
+       {
+           RoleManagment RM = new RoleManagment();
+           var P = RM.get_ALl_Roles();
+           List<int> RoleList = new List<int>();
+           string[] s1 = PersonRoles.Split(new char[] { ',' });
+           if (PersonRoles != "")
+           {
+               for (int i = 0; i < s1.Length; i++)
+               { RoleList.Add(Convert.ToInt32(s1[i])); }
+           }
+           List<Role_viewModal> pr = new List<Role_viewModal>();
+           Role_viewModal ii ;
+           foreach(var item in  P)
+           {
+               ii = new Role_viewModal();
+               ii.Role_Id = item.Role_Id;
+               ii.Role_Name = item.Role_Name;
+               if (RoleList.Contains(item.Role_Id))
+                   ii.Role_selected = true;
+               else
+                   ii.Role_selected = false;
+               pr.Add(ii);
+           }
+           return pr;
+       }
+       public P_viewModal Get_PersonModal(int userId)
+       {  int i;
+           var P = Persons.Get_PersonModal(userId);
+           P_viewModal p_item=new P_viewModal();
+           p_item.Person_Id=P.P_Info.Person_Id;
+           p_item.Person_Name=P.P_Info.Person_Name;
+           p_item.Person_mail=P.P_Info.Person_mail;
+           p_item.Person_tel=P.P_Info.Person_tel;
+           p_item.Department_Id=P.D_Info.Depart_Id;
+           p_item.Department_Name=P.D_Info.Depart_Name;
+           //专业信息
+           p_item.Speciaty_Ids="";
+           if (P.S_Info.Count > 0)
+           {
+               for (i = 0; i < P.S_Info.Count - 1; i++)
+               {
+                   p_item.Speciaty_Ids = p_item.Speciaty_Ids + (P.S_Info[i]).Specialty_Id + ",";
+               }
+               p_item.Speciaty_Ids = p_item.Speciaty_Ids + (P.S_Info[i]).Specialty_Id;
+           }
+            p_item.Speciaty_Names="";
+            if (P.S_Info.Count > 0)
+            {
+                for (i = 0; i < P.S_Info.Count - 1; i++)
+                {
+                    p_item.Speciaty_Names = p_item.Speciaty_Names + (P.S_Info[i]).Specialty_Name + ",";
+                }
+                p_item.Speciaty_Names = p_item.Speciaty_Names + (P.S_Info[i]).Specialty_Name;
+            }
+          //角色信息
+             p_item.Role_Ids="";
+             if (P.R_Info.Count > 0)
+           { for( i=0;i<P.R_Info.Count-1;i++)
+            { p_item.Role_Ids= p_item.Role_Ids + (P.R_Info[i]).Role_Id +",";
+            }
+            p_item.Role_Ids=p_item.Role_Ids +(P.R_Info[i]).Role_Id ;
+           }
+             p_item.Role_Names="";
+           if(P.R_Info.Count>0)
+           {
+           for( i=0;i<P.R_Info.Count-1;i++)
+           { p_item.Role_Names= p_item.Role_Names + (P.R_Info[i]).Role_Name +",";
+           }
+            p_item.Role_Names=p_item.Role_Names +(P.R_Info[i]).Role_Name ;
+           }
+           //系统权限
+            p_item.Menu_Ids = "";
+            if (P.M_Info.Count > 0)
+            {
+                for (i = 0; i < P.M_Info.Count - 1; i++)
+                {
+                    p_item.Menu_Ids = p_item.Menu_Ids + (P.M_Info[i]).Menu_Id + ",";
+                }
+                p_item.Menu_Ids = p_item.Menu_Ids + (P.M_Info[i]).Menu_Id;
+            }
+            p_item.Menus = P.M_Info;
+           return p_item ;
+       }
+       //获取所有用户的信息
+       public List<Person_Info> Get_AllPerson()
+       {
+           var p = Persons.GetAllPerson_info();
+           return p;
+
+       }
+
+        public bool Add_Person(Person_Info p,int Depart_id,List<int> role_id,List<int> Speciaty_IDs,List<int> Menu_IDs)
+        {
+            try
+            {
+                int NewpP_id=Persons.AddPerson_info(p);
+                Persons.Person_LinkDepart(NewpP_id, Depart_id);
+                Persons.Person_LinkSpeciaties(NewpP_id, Speciaty_IDs);
+                Persons.Person_LinkEquip(NewpP_id, Depart_id, Speciaty_IDs);
+                Persons.Person_LinkRole(NewpP_id, role_id);
+                Persons.Person_LinkMenus(NewpP_id, Menu_IDs);
+                return true;
+            }
+            catch { return false; }
+        }
+        public bool Update_Person(Person_Info p,int Depart_id,List<int> role_id,List<int> Speciaty_IDs,List<int> Menu_IDs)
+        {
+            try
+            {
+                Persons.ModifyPerson_info(p);
+
+                Persons.Person_LinkDepart(p.Person_Id, Depart_id);
+                Persons.Person_LinkSpeciaties(p.Person_Id, Speciaty_IDs);
+                Persons.Person_LinkEquip(p.Person_Id, Depart_id, Speciaty_IDs);
+                Persons.Person_LinkRole(p.Person_Id, role_id);
+                Persons.Person_LinkMenus(p.Person_Id, Menu_IDs);
+                return true;
+            }
+            catch { return false; }
+        }
+     
+       
+        public bool Delete_Person(int id)
+        {
+            return Persons.DeletePerson_info(id);
+        }
+        public List<Role_Info> Get_Person_Roles(int id)
+        {
+            List<Role_Info> r = new List<Role_Info>();
+            r=Persons.GetPerson_Roles(id);
+            return r;
+        }
+
+       //获取某操作员管理的装置列表
+        public List<Equip_Archi> Get_Person_Cj(int id)
+        {
+            List<Equip_Archi> r = Persons.getEA_of_Person(id);
+            return r;
+        }
+
+       //获取某操作员管理的设备列表
+        
+        public List<Equip_Info> Get_Person_Equips(int id)
+        {
+            List<Equip_Info> r = new List<Equip_Info>();
+            r = Persons.GetPerson_Equips(id);
+            return r;
+        }
+       //获取某操作员所在部分
+        public Depart_Archi Get_Person_Depart(int id)
+        {
+            Depart_Archi r = new Depart_Archi();
+            r = Persons.GetPerson_Depart(id);
+            return r;
+        }
+       //获取某装置操作员用户所属车间
+        public Depart_Archi Get_Person_DepartOfParent(int id)
+        {
+            Depart_Archi r = new Depart_Archi();
+            r = Persons.GetPerson_Depart(id);
+            Depart_Archis DA = new Depart_Archis();
+            r = DA.getDepart_Parent(r.Depart_Id);
+
+            
+            return r;
+        }
+       //给用户添加一组角色
+      
+       public bool Add_Equips(int Person_Id,List<int> EquipIdSet)
+       {
+           try { 
+                   foreach(var i in EquipIdSet)
+                   {
+                       Persons.AddEquip(Person_Id, i);
+                   }
+                   return true;
+                }
+            catch { return false; }
+        }
+      
+
+    }
+}

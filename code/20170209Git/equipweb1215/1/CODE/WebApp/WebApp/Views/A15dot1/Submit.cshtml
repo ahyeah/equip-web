@@ -1,0 +1,758 @@
+﻿@model WebApp.Controllers.A15dot1Controller.submitmodel
+@{
+    ViewBag.Title = "PqConfirm";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：绩效评估
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">绩效评估</span></h3>
+                        
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">提交单位</label>
+                                    <div id="Equip_Select" class="col-sm-10">
+                                        <select style="width: 100%;" id="submitDepartment">
+                                            <option value="联合一片区">联合一片区</option>
+                                            <option value="联合二片区">联合二片区</option>
+                                            <option value="联合三片区">联合三片区</option>
+                                            <option value="联合四片区">联合四片区</option>
+                                            <option value="化工片区">化工片区</option>
+                                            <option value="综合片区">综合片区</option>
+                                            <option value="其他">其他</option>
+                                            <option value="检修单位">检修单位</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">报告类型</label>
+                                    <div id="Equip_Select" class="col-sm-10">
+                                        <select style="width: 100%;" id="reportType" disabled="disabled">
+                                            <option value="月报">月报</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                            
+
+
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        
+                        <h3 class="timeline-header"><span class="lead" style="color:red">一、KPI指标</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <div id="Jxpg" class="form-group">
+                                    <table id="example1" class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>指标类型</th>
+                                                <th>KPI指标</th>
+                                                <th>指标说明</th>
+                                                <th>炼油目标值</th>
+                                                <th>单位</th>
+                                                <th>实际值</th>
+                                                <th>参与统计的数量</th>
+                                                <th>趋势图</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td>可靠性指标</td>
+                                                <td>非计划停工次数</td>
+                                                <td>由设备机械原因导致生产装置非计划停工</td>
+                                                <td>0</td>
+                                                <td>次</td>
+                                                <td><input type="text" name="KPI" id="timesNonPlanStop" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'timesNonPlanStop')"></td>
+                                                <td><input type="text" name="KPI" id="Count_timesNonPlanStop" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_timesNonPlanStop')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('timesNonPlanStop')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>四类以上故障强度扣分</td>
+                                                <td>由设备机械原因导致发生四类以上强度故障扣分</td>
+                                                <td>≤60</td>
+                                                <td>分/年</td>
+                                                <td><input type="text" name="KPI" id="scoreDeductFaultIntensity" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'scoreDeductFaultIntensity')"></td>
+                                                <td><input type="text" name="KPI" id="Count_scoreDeductFaultIntensity" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_scoreDeductFaultIntensity')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('scoreDeductFaultIntensity')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>大机组故障率K</td>
+                                                <td>K=∑(所有考核大机组故障时间)/∑(所有考核大机组计划投用时间)</td>
+                                                <td> ＜1 </td>
+                                                <td> ‰ </td>
+                                                <td><input type="text" name="KPI" id="rateBigUnitFault" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'rateBigUnitFault')"></td>
+                                                <td><input type="text" name="KPI" id="Count_rateBigUnitFault" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_rateBigUnitFault')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('rateBigUnitFault')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>故障维修率F</td>
+                                                <td>F=故障维修次数/维修总次数</td>
+                                                <td> ＜7.5</td>
+                                                <td> %</td>
+                                                <td><input type="text" name="KPI" id="rateFaultMaintenance" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'rateFaultMaintenance')"></td>
+                                                <td><input type="text" name="KPI" id="Count_rateFaultMaintenance" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_rateFaultMaintenance')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('rateFaultMaintenance')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>一般机泵设备平均无故障间隔期MTBF</td>
+                                                <td>MTBF=考核期内机泵设备总数×12/设备故障维修总数</td>
+                                                <td> ＞68</td>
+                                                <td> 月</td>
+                                                <td><input type="text" name="KPI" id="MTBF" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'MTBF')"></td>
+                                                <td><input type="text" name="KPI" id="Count_MTBF" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_MTBF')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('MTBF')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>设备投用率R（反映MTTR）</td>
+                                                <td>R=1-（∑(所有设备维修时间)/∑(所有设备计划投用时间)</td>
+                                                <td> ＞99.5</td>
+                                                <td> %</td>
+                                                <td><input type="text" name="KPI" id="rateEquipUse" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'rateEquipUse')"></td>
+                                                <td><input type="text" name="KPI" id="Count_rateEquipUse" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_rateEquipUse')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('rateEquipUse')">趋势图</button></td>
+                                            </tr>
+                                            @if(Model.kkxgcs==0)
+                                            { 
+                                            <tr>
+                                                <td>成本能效指标</td>
+                                                <td>紧急抢修工时率C</td>
+                                                <td>C=紧急抢修工时/维修总工时</td>
+                                                <td> ＜1</td>
+                                                <td> %</td>
+                                                <td><input type="text"  id="rateUrgentRepairWorkHour" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'rateUrgentRepairWorkHour')"></td>
+                                                <td></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('rateUrgentRepairWorkHour')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>维修工单有效完成时间T</td>
+                                                <td>T=∑维修工单实际作业时间/工单总数</td>
+                                                <td> ＜16</td>
+                                                <td> 小时</td>
+                                                <td><input type="text"  id="hourWorkOrderFinish" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'hourWorkOrderFinish')"></td>
+                                                <td></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('hourWorkOrderFinish')">趋势图</button></td>
+                                            </tr>
+                                            }
+                                            <tr>
+                                                <td>专业指标</td>
+                                                <td>密封平均寿命S</td>
+                                                <td>S=∑各密封点寿命/动密封总数</td>
+                                                <td> ≥20000</td>
+                                                <td> 小时</td>
+                                                <td><input type="text" name="KPI" id="avgLifeSpanSeal" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'avgLifeSpanSeal')"></td>
+                                                <td><input type="text" name="KPI" id="Count_avgLifeSpanSeal" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_avgLifeSpanSeal')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('avgLifeSpanSeal')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>轴承平均寿命B</td>
+                                                <td>B=∑各轴承寿命/轴承总数</td>
+                                                <td> ≥280000</td>
+                                                <td> 小时</td>
+                                                <td><input type="text" name="KPI" id="avgLifeSpanAxle" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'avgLifeSpanAxle')"></td>
+                                                <td><input type="text" name="KPI" id="Count_avgLifeSpanAxle" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_avgLifeSpanAxle')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('avgLifeSpanAxle')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>设备完好率W</td>
+                                                <td>W=∑完好设备台数/总设备台数</td>
+                                                <td> ≥98</td>
+                                                <td> %</td>
+                                                <td><input type="text" name="KPI" id="percentEquipAvailability" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'percentEquipAvailability')"></td>
+                                                <td><input type="text" name="KPI" id="Count_percentEquipAvailability" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_percentEquipAvailability')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('percentEquipAvailability')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>检修一次合格率</td>
+                                                <td>∑检修一次合格台数/检修设备总台数</td>
+                                                <td> ≥98</td>
+                                                <td> %</td>
+                                                <td><input type="text" name="KPI" id="percentPassOnetimeRepair" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'percentPassOnetimeRepair')"></td>
+                                                <td><input type="text" name="KPI" id="Count_percentPassOnetimeRepair" class="form-control" placeholder="输入统计台数 ..." onchange="vail(this.value, 'Count_percentPassOnetimeRepair')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('percentPassOnetimeRepair')">趋势图</button></td>
+                                            </tr>
+                                            @if(Model.kkxgcs==0)
+                                            {
+                                            <tr>
+                                                <td>统计指标</td>
+                                                <td>机泵平均效率n1</td>
+                                                <td>N1=∑考核机泵平均输出轴功率/∑考核机泵平均输入功率 </td>
+                                                <td></td>
+                                                <td> </td>
+                                                <td><input type="text"  id="avgEfficiencyPump" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'avgEfficiencyPump')"></td>
+                                                <td></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('avgEfficiencyPump')">趋势图</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>机泵平均效率n2</td>
+                                                <td>N2=∑考核机泵平均输出轴功率/∑考核机泵平均输入功率 </td>
+                                                <td></td>
+                                                <td> </td>
+                                                <td><input type="text"  id="avgEfficiencyUnit" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'avgEfficiencyUnit')"></td>
+                                                <td></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('avgEfficiencyUnit')">趋势图</button></td>
+
+                                            </tr>
+                                              }
+                                          @if (Model.kkxgcs == 1)
+                                            {
+                                                <tr hidden ="">
+                                                        <td>
+                                                                <input type="text"  hidden="" id="avgEfficiencyPump" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'avgEfficiencyPump')">
+                                                                <input type="text" hidden="" id="avgEfficiencyUnit" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'avgEfficiencyPump')">
+                                                                <input type="text" hidden="" id="rateUrgentRepairWorkHour" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'avgEfficiencyPump')">
+                                                                <input type="text" hidden="" id="hourWorkOrderFinish" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'avgEfficiencyPump')">
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header"><span class="lead" style="color:red">二、隐患排查情况</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">隐患排查情况</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="hiddenDangerInvestigation"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header"><span class="lead" style="color:red">三、装置生产运行概况</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">负荷率</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="rateLoad"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">工艺变更</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="gyChange"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备变更</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="equipChange"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">其他说明</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="otherDescription"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header"><span class="lead" style="color:red">四、装置设备运行情况基本评估</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">装置设备运行情况基本评估</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="evaluateEquipRunStaeDesc"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                            <form class="form-horizontal" role="form" id="filePost" method="post" action="/Common/Upload" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">装置设备运行情况基本评估附图（上传jpg或png格式文件）</label>
+                                    <div class="col-sm-10 table-bordered">
+                                        <div class="col-sm-5">
+                                            <input type="file" id="inputfile" name="file">
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <input id="ButtonUpload" type="submit" value="上传文件" />
+                                        </div>
+                                        <iframe id="outputdiv" style="display:none">  </iframe>
+                                        <input type="text" id="fileUpLoad_name" style="display:none" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div id="msg" class="col-sm-10"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header"><span class="lead" style="color:red">五、可靠性结论</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">可靠性结论</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" id="reliabilityConclusion"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="box-footer">
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button class="btn btn-primary col-sm-offset-4" type="button" onclick="submit_click()">保存</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
+                
+
+             
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+<div class="modal fade" id="qst" tabindex="-1" role="dialog"
+     aria-labelledby="qst_title" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;height:800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="qst_title">
+                    趋势图
+                </h4>
+            </div>
+            <div class="modal-body" id="qst_graphic" style="width:700px;height:50%">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+@section js{
+<script src="~/Scripts/highcharts.js"></script>
+<script src="~/Scripts/jquery.form.js"></script>
+    <script>
+        function PageLoad() {
+            
+        };
+        $(document).ready(
+            PageLoad());
+
+        $(function () {
+           
+            //Date picker
+            $('#submitTime').datepicker(
+               {
+                   autoclose: true,
+                   beforeShowDay: $.noop,
+                   calendarWeeks: false,
+                   clearBtn: false,
+                   daysOfWeekDisabled: [],
+                   endDate: Infinity,
+                   forceParse: true,
+                   format: 'yyyy-mm-dd',
+                   keyboardNavigation: true,
+                   language: 'zh-CN',
+                   minViewMode: 0,
+                   orientation: "auto",
+                   rtl: false,
+                   startDate: -Infinity,
+                   startView: 0,
+                   todayBtn: false,
+                   todayHighlight: true,
+                   weekStart: 0
+               });
+
+            $('#jdcOperateTime').datepicker(
+               {
+                   autoclose: true,
+                   beforeShowDay: $.noop,
+                   calendarWeeks: false,
+                   clearBtn: false,
+                   daysOfWeekDisabled: [],
+                   endDate: Infinity,
+                   forceParse: true,
+                   format: 'yyyy-mm-dd',
+                   keyboardNavigation: true,
+                   language: 'zh-CN',
+                   minViewMode: 0,
+                   orientation: "auto",
+                   rtl: false,
+                   startDate: -Infinity,
+                   startView: 0,
+                   todayBtn: false,
+                   todayHighlight: true,
+                   weekStart: 0
+               });
+
+        });
+
+        function vail(value,id) {
+           
+            if (value.match(/^(\d*\.)?\d+$/) == null)
+            {
+                alert('只需且必须输入数值');
+                document.getElementById(id).value = "";//getElementById(id)括号内不需要引号也能用
+            }          
+        }
+        function graphic_show(grahpic_name) {
+            //var signal = $(this).parents("button").parents("td").parents("tr").find("td:eq(1)").text();
+            //alert($("#example1 tr:eq(1) td:nth-child(2)").text());
+            //alert(signal);
+            SD = $('#submitDepartment').find("option:selected").text();
+            $.ajax({
+                url: '/A15dot1/qst',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    "grahpic_name": grahpic_name,
+                    "pianqu": SD
+                },
+
+                success: function (data) {
+
+                    //highchart中xAxis的categories与yAxis中series的data所需的格式均为Array，yAxis中的Array必须为数值，xAxis则任意格式
+                    var dataforqst = new Array();
+                    zz = data.toString().split(",$$,");
+
+                    dataforqst = zz[0].split(",");
+                    //将dataforqst中的值由字符串变为数值
+                    for (i = 0; i < dataforqst.length; i++) {
+                        dataforqst[i] = parseFloat(dataforqst[i]);
+                    }
+                    var xArray = new Array();
+                    xArray = zz[1].split(",");
+                    for (j = 0; j < xArray.length; j++) {
+                        xArray[j] = xArray[j].toString().substr(2, 5);
+
+                    }
+                    $('#qst').modal('show');
+
+                    $('#qst_graphic').highcharts({
+                        title: {
+                            text: grahpic_name + '历史曲线',
+                            x: -20 //center
+                        },
+                        xAxis: {
+                            categories: xArray
+                        },
+                        yAxis: {
+                            title: {
+                                text: '数值'
+                            },
+                            plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }]
+                        },
+                        tooltip: {
+                            valueSuffix: ''
+                        },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                            borderWidth: 0
+                        },
+                        series: [{
+                            name: grahpic_name,
+                            data: dataforqst
+                        }]
+                    });
+
+                }
+             ,
+                error: function (err) {
+                    alert(err.toString());
+                }
+            });
+
+
+        }
+        //function graphic_show(grahpic_name) {
+        //    pianqu = $("#submitDepartment").val();
+        //    console.log("the grahpic is shown!");
+        //    console.log(grahpic_name);
+        //    $.ajax({
+        //        url: '/A15dot1/qst',
+        //        type: 'post',
+        //        dataType: 'json',
+        //        data: {
+        //            "grahpic_name": grahpic_name,
+        //            "pianqu": pianqu
+        //        },
+
+        //        success: function (data) {
+        //            var dataforqst = new Array();
+
+        //            $('#qst').modal('show');
+
+        //            $('#qst_graphic').highcharts({
+        //                title: {
+        //                    text: grahpic_name + '历史曲线',
+        //                    x: -20 //center
+        //                },
+
+        //                xAxis: {
+        //                    categories: ['一月', '二月', '三月', '四月', '六月', '七月', '八月']
+        //                },
+        //                yAxis: {
+        //                    title: {
+        //                        text: '数值'
+        //                    },
+        //                    plotLines: [{
+        //                        value: 0,
+        //                        width: 1,
+        //                        color: '#808080'
+        //                    }]
+        //                },
+        //                tooltip: {
+        //                    valueSuffix: ''
+        //                },
+        //                legend: {
+        //                    layout: 'vertical',
+        //                    align: 'right',
+        //                    verticalAlign: 'middle',
+        //                    borderWidth: 0
+        //                },
+        //                series: [{
+        //                    name: grahpic_name,
+        //                    data: data
+        //                }]
+        //            });
+
+        //        }
+        //     ,
+        //        error: function (err) {
+        //            alert(err.toString());
+        //        }
+        //    });
+
+
+        //}
+
+        function submit_click() {
+            var infile = $("#inputfile").val();
+            var uploadfilename = $("#fileUpLoad_name").val();
+            if (uploadfilename == "" && infile != "") {
+                alert("选择的文件没有上传，不能提交！");
+                return false;
+            }
+            if (!confirm('确定要提交吗？'))
+                return false;
+            //var flow_name = $("#wef_id").val();
+            var obj = document.getElementsByName('KPI'); //选择所有name="'KPI'"的对象，返回数组 
+            //取到对象数组后，我们来循环检测它是否有值 
+           
+            for (var i = 0; i < obj.length; i++) {
+                if (obj[i].value == "") {
+                    alert("KPI指标中有未填项！");
+                    return false;
+                }
+            }
+          
+                    $.ajax({
+                        type: 'POST',
+                        url: '/A15dot1/Submit_submitsignal',
+                        data: {
+                            json1: '{timesNonPlanStop: "' + $("#timesNonPlanStop").val()
+                                + '", scoreDeductFaultIntensity: "' + $("#scoreDeductFaultIntensity").val()
+                                + '", rateBigUnitFault: "' + $("#rateBigUnitFault").val()
+                                + '", rateFaultMaintenance: "' + $("#rateFaultMaintenance").val()
+                                + '", MTBF: "' + $("#MTBF").val()
+                                + '", rateEquipUse: "' + $("#rateEquipUse").val()
+                                + '", rateUrgentRepairWorkHour: "' + $("#rateUrgentRepairWorkHour").val()
+                                + '", hourWorkOrderFinish: "' + $("#hourWorkOrderFinish").val()
+                                + '", avgLifeSpanSeal: "' + $("#avgLifeSpanSeal").val()
+                                + '", avgLifeSpanAxle: "' + $("#avgLifeSpanAxle").val()
+                                + '", percentEquipAvailability: "' + $("#percentEquipAvailability").val()
+                                + '", percentPassOnetimeRepair: "' + $("#percentPassOnetimeRepair").val()
+                                + '", avgEfficiencyPump: "' + $("#avgEfficiencyPump").val()
+                                + '", avgEfficiencyUnit: "' + $("#avgEfficiencyUnit").val()
+                                + '", Count_timesNonPlanStop: "' + $("#Count_timesNonPlanStop").val()
+                                + '", Count_scoreDeductFaultIntensity: "' + $("#Count_scoreDeductFaultIntensity").val()
+                                + '", Count_rateBigUnitFault: "' + $("#Count_rateBigUnitFault").val()
+                                + '", Count_rateFaultMaintenance: "' + $("#Count_rateFaultMaintenance").val()
+                                + '", Count_MTBF: "' + $("#Count_MTBF").val()
+                                + '", Count_rateEquipUse: "' + $("#Count_rateEquipUse").val()                                
+                                + '", Count_avgLifeSpanSeal: "' + $("#Count_avgLifeSpanSeal").val()
+                                + '", Count_avgLifeSpanAxle: "' + $("#Count_avgLifeSpanAxle").val()
+                                + '", Count_percentEquipAvailability: "' + $("#Count_percentEquipAvailability").val()
+                                + '", Count_percentPassOnetimeRepair: "' + $("#Count_percentPassOnetimeRepair").val()                                
+                                + '", hiddenDangerInvestigation: "' + $("#hiddenDangerInvestigation").val()
+                                + '", rateLoad: "' + $("#rateLoad").val()
+                                + '", gyChange: "' + $("#gyChange").val()
+                                + '", equipChange: "' + $("#equipChange").val()
+                                + '", otherDescription: "' + $("#otherDescription").val()
+                                + '", evaluateEquipRunStaeDesc: "' + $("#evaluateEquipRunStaeDesc").val()
+                                + '", evaluateEquipRunStaeImgPath: "' + $("#fileUpLoad_name").val()
+                                + '", reliabilityConclusion: "' + $("#reliabilityConclusion").val()
+                                //+ '", jdcAdviseImproveMeasures: "' + $("#jdcAdviseImproveMeasures").val()
+                                + '", submitDepartment: "' + $("#submitDepartment").val()
+                                + '", submitUser: "' + $("#submitUser").val()
+                                + '", submitTime: "' + $("#submitTime").val()
+                                + '", jdcOperator: "' + $("#jdcOperator").val()
+                                + '", jdcOperateTime: "' + $("#jdcOperateTime").val()
+                                + '", state: "' + $('#state').find("option:selected").text()
+                                + '", reportType: "' + $('#reportType').find("option:selected").text()
+                                + '"}'
+                        },
+                        success: function (data) {
+                            alert('操作已完成！');
+                            location.href = "/A15dot1/Index";
+                        },
+                        error: function () {
+                            alert('error');
+                        }
+                    });
+            
+          
+                }
+                function btnDelAttach_click() {
+                    var filename = $("#fileUpLoad_name").val()
+                    //alert($("#fileUpLoad_name").val());
+                    $.ajax({
+                        url: '/Common/DelAttachment',
+                        type: 'post',
+                        dataType: 'json',
+                        data: { "file": filename },
+                        // contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data.status == "success") {
+                                $("#msg").empty(); $("#fileUpLoad_name").val(""); $('#inputfile').val("");
+                            } else {
+                                alert(data.message);
+                            }
+
+                        }
+                      ,
+                        error: function (err) {
+                            alert(err.toString());
+                        }
+                    });
+                };
+
+
+                $('#filePost').submit(function () {
+                    var infile = $('#inputfile').val();
+                    var options = {
+                        target: '#outputdiv',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.message == "上传成功") {
+                            $("#msg").empty().append("<table  ><td  class=\"col-sm-5\">已上传附件：" + data.fileName + "(" + data.fileSize + ")</td><td class=\"col-sm-2\"><input type='button' onclick=\"btnDelAttach_click()\" value='删除文件' class='fh_btn' id='btnDelAttach' filename='" + data.fileName + "' filesize='" + data.fileSize + "'></td>");
+                            $("#fileUpLoad_name").val(data.allFileNames);
+                            }
+                            else { $("#inputfile").val(""); alert(data.message); }
+                        },
+
+                        error: function (data) {
+                            // $("#outputdiv").val() = "上传失败！";
+                            alert(data);
+                        }
+                    };
+                    //alert($('#inputfile').val());
+                    /* alert($('#file').val());
+                     $.ajax({
+                         type: 'POST',
+                         url: '/Common/Upload',
+                         data: { "file": $('#file').val() },
+                         success: function (data) {
+                             $("#outputdiv").html = data;
+                         },
+        
+                         error: function (data) {
+                             $("#outputdiv").html = data;
+                         }*/
+
+                    if (infile != "") {
+                        //alert(infile);
+                        $(this).ajaxSubmit(options);
+                        return false;
+                    }
+                    else {
+                        alert("没有选择上传文件！");
+                        return false;
+                    }
+                });
+
+                function showRequest(formData, jqForm, options) {
+                    alert('发送前');
+                    return true;
+                }
+
+                function showResponse(responseText, statusText) {
+
+                };
+
+            
+        </script>
+}

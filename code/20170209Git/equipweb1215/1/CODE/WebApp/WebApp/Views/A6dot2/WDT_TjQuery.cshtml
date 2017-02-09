@@ -1,0 +1,320 @@
+﻿
+@{
+    ViewBag.Title = "WDT_TjQuery";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@section css{
+    <style type="text/css">
+        tr.MM_hidden {
+            display: none;
+        }
+
+        tr.MM_shown {
+        }
+
+        tr.selected {
+            background-color: #acbad4;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="~/Plugins/iconpicker.css" />
+}
+<section>
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">查询条件</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-group">
+                        <table>
+                            <tr>
+                                <td class="col-sm-2 control-label">
+                                    <label>时间范围:</label>
+                                </td>
+                                <td class="col-sm-9">
+                                    <div class="input-group col-sm-9">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input class="form-control pull-right active" id="reservationtime" type="text"></input>
+                                    </div>
+                                </td>
+                                <td class="col-sm-1">
+                                    <button type="button" class="btn btn-warning" onclick="Tj_PrePrint()">查询</button>
+                                </td>
+                            </tr>
+       
+                        </table>
+                        <!-- /.input group -->
+                    </div>
+                </div>
+
+                <!-- /.box-body -->
+            </div>
+
+
+
+            <!-- /.box -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">查询结果</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="TJResult" class="col-md-10">
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+            <div class="row" id="TJdetail_Div" >
+                <div class="col-md-12">
+                    <div class="box box-warning">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">超期未换油明细</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+                            <div class="row">
+                                <div id="WDT_Detail_Table" class="col-md-10">
+
+                                    <table id="TjDetail_datatable" width="100%" cellpadding="1" style="min-height:100px">
+                                        <thead>
+
+                                            <tr>
+                                                <th>片区名称</th>
+                                                <th>车间名称</th>
+                                                <th>装置名称</th>
+                                                <th>加油点设备</th>
+                                                <th>加油点设备描述</th>
+                                                <th>最近一次换油时间</th>
+                                                <th>下次换油时间</th>
+                                                <th>备注</th>
+                                                <th>规定油品描述</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.box-body -->
+
+            </div>
+
+
+
+
+
+
+            <div class="daterangepicker dropdown-menu opensleft" style="left: auto; top: 640.05px; right: 344px; display: none;">
+                <div class="calendar first left"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available"><i class="fa fa-arrow-left icon icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th class="month" colspan="5">Jan 2016</th><th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="available off" data-title="r0c0">27</td><td class="available off" data-title="r0c1">28</td><td class="available off" data-title="r0c2">29</td><td class="available off" data-title="r0c3">30</td><td class="available off" data-title="r0c4">31</td><td class="available" data-title="r0c5">1</td><td class="available" data-title="r0c6">2</td></tr><tr><td class="available" data-title="r1c0">3</td><td class="available" data-title="r1c1">4</td><td class="available" data-title="r1c2">5</td><td class="available" data-title="r1c3">6</td><td class="available" data-title="r1c4">7</td><td class="available" data-title="r1c5">8</td><td class="available" data-title="r1c6">9</td></tr><tr><td class="available" data-title="r2c0">10</td><td class="available" data-title="r2c1">11</td><td class="available" data-title="r2c2">12</td><td class="available" data-title="r2c3">13</td><td class="available" data-title="r2c4">14</td><td class="available" data-title="r2c5">15</td><td class="available" data-title="r2c6">16</td></tr><tr><td class="available" data-title="r3c0">17</td><td class="available" data-title="r3c1">18</td><td class="available active start-date" data-title="r3c2">19</td><td class="available in-range" data-title="r3c3">20</td><td class="available in-range" data-title="r3c4">21</td><td class="available in-range" data-title="r3c5">22</td><td class="available in-range" data-title="r3c6">23</td></tr><tr><td class="available in-range" data-title="r4c0">24</td><td class="available in-range" data-title="r4c1">25</td><td class="available in-range" data-title="r4c2">26</td><td class="available in-range" data-title="r4c3">27</td><td class="available in-range" data-title="r4c4">28</td><td class="available in-range" data-title="r4c5">29</td><td class="available in-range" data-title="r4c6">30</td></tr><tr><td class="available in-range" data-title="r5c0">31</td><td class="available off in-range" data-title="r5c1">1</td><td class="available off in-range" data-title="r5c2">2</td><td class="available off in-range" data-title="r5c3">3</td><td class="available off in-range" data-title="r5c4">4</td><td class="available off in-range" data-title="r5c5">5</td><td class="available off in-range" data-title="r5c6">6</td></tr></tbody></table></div></div><div class="calendar second right"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available"><i class="fa fa-arrow-left icon icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th class="month" colspan="5">Feb 2016</th><th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="available off in-range" data-title="r0c0">31</td><td class="available in-range" data-title="r0c1">1</td><td class="available in-range" data-title="r0c2">2</td><td class="available in-range" data-title="r0c3">3</td><td class="available in-range" data-title="r0c4">4</td><td class="available in-range" data-title="r0c5">5</td><td class="available in-range" data-title="r0c6">6</td></tr><tr><td class="available in-range" data-title="r1c0">7</td><td class="available in-range" data-title="r1c1">8</td><td class="available in-range" data-title="r1c2">9</td><td class="available in-range" data-title="r1c3">10</td><td class="available in-range" data-title="r1c4">11</td><td class="available in-range" data-title="r1c5">12</td><td class="available in-range" data-title="r1c6">13</td></tr><tr><td class="available in-range" data-title="r2c0">14</td><td class="available in-range" data-title="r2c1">15</td><td class="available in-range" data-title="r2c2">16</td><td class="available active end-date" data-title="r2c3">17</td><td class="available" data-title="r2c4">18</td><td class="available" data-title="r2c5">19</td><td class="available" data-title="r2c6">20</td></tr><tr><td class="available" data-title="r3c0">21</td><td class="available" data-title="r3c1">22</td><td class="available" data-title="r3c2">23</td><td class="available" data-title="r3c3">24</td><td class="available" data-title="r3c4">25</td><td class="available" data-title="r3c5">26</td><td class="available" data-title="r3c6">27</td></tr><tr><td class="available" data-title="r4c0">28</td><td class="available" data-title="r4c1">29</td><td class="available off" data-title="r4c2">1</td><td class="available off" data-title="r4c3">2</td><td class="available off" data-title="r4c4">3</td><td class="available off" data-title="r4c5">4</td><td class="available off" data-title="r4c6">5</td></tr><tr><td class="available off" data-title="r5c0">6</td><td class="available off" data-title="r5c1">7</td><td class="available off" data-title="r5c2">8</td><td class="available off" data-title="r5c3">9</td><td class="available off" data-title="r5c4">10</td><td class="available off" data-title="r5c5">11</td><td class="available off" data-title="r5c6">12</td></tr></tbody></table></div></div><div class="ranges"><ul><li>Today</li><li>Yesterday</li><li>Last 7 Days</li><li class="active">Last 30 Days</li><li>This Month</li><li>Last Month</li><li>Custom Range</li></ul><div class="range_inputs"><div class="daterangepicker_start_input"><label for="daterangepicker_start">From</label><input name="daterangepicker_start" class="input-mini" type="text" value=""></div><div class="daterangepicker_end_input"><label for="daterangepicker_end">To</label><input name="daterangepicker_end" class="input-mini" type="text" value=""></div><button class="applyBtn btn btn-small btn-sm btn-success">Apply</button>&nbsp;<button class="cancelBtn btn btn-small btn-sm btn-default">Cancel</button></div></div>
+            </div>
+
+
+
+</section>
+@section js{
+
+    <!-- DataTables -->
+    <script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script src="~/Plugins/iconpicker.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+        $(function () {
+
+            $(".select2").select2();
+
+
+
+        });
+
+        $(document).ready(function () {
+            $("#reservationtime").daterangepicker({
+                showDropdowns: true,
+                locale: {
+                    applyLabel: '确定',
+                    cancelLabel: '取消',
+                    fromLabel: '起始时间',
+                    toLabel: '结束时间',
+                    customRangeLabel: '自定义',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                },
+                format: 'MM/DD/YYYY', //控件中from和to 显示的日期格式
+
+
+
+                arrows: true
+            });
+
+            PageLoad()
+
+         
+
+
+
+
+        })
+       
+
+     
+        function PageLoad() {
+          
+            Tj_PrePrint()
+            $('#TjDetail_datatable').DataTable({
+                "scrollX": true,
+                "scrollY": "30vh",
+                "scrollCollapse": true,
+                "paging": true,
+                "searching": false,
+                "info": false,
+                "ordering": false,
+                "columns": [
+                       { "data": "equip_PqName" },
+                       { "data": "equip_CjName" },
+                       { "data": "equip_ZzName" },
+                       { "data": "equipCode" },
+                       { "data": "equipDesc" },
+                       { "data": "lastOilTime" },
+                       { "data": "NextOilTime" },
+                       { "data": "CQ_demo" },
+                       { "data": "oilCode_desc" }
+                ],
+                "ajax": {
+                    "url": "/A6dot2/CQ_detail?pqId=" + 1 +"&starttime=2010/1/2&endtime=2010/1/2'", //变量传递
+                    "type": "POST"
+
+
+                }
+
+
+            });
+
+        };
+      
+
+
+
+
+
+
+
+
+
+        function Tj_PrePrint() {
+            $.ajax({
+                url: '/A6dot2/Tj_Search',
+                type: 'post',
+                data: {
+                    "daterange": $('#reservationtime').val()
+                   
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var itemHtml = "<table id=\"testTj\" width=\"100%\"  border=1 cellpadding=\"1\" style=\"min-height:100px\"> <thead> <tr><th data-align=\"center\">片区名称</th> <th  data-align=\"center\">片区超时未换油设备数</th><th  data-align=\"center\">车间名称</th> <th  data-align=\"center\" >车间超时未换油设备数</th><th  data-align=\"center\" >装置名称</th> <th  data-align=\"center\">装置超时未换油设备数</th></tr>";
+
+                    for (i = 0; i < data.length ; i++) {
+
+                        for (var j = 0; j < data[i].row_ZzInfo.length; j++) {
+                            itemHtml = itemHtml + "<tr >";
+                            if (j == 0) {
+                                itemHtml = itemHtml + " <th rowspan=\"" + data[i].row_PqInfo.cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\" >" + data[i].row_PqInfo.cellName + "</th>";
+                                itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_PqInfo.cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\"><a  onclick=\"Tj_detail('" + data[i].row_PqInfo.cellId + "','" + data[i].starttime + "','" + data[i].endtime + "')\">" + data[i].row_PqInfo.cellNum + "</a></th>";
+                            }
+                            if (j < data[i].row_CjInfo.length) {
+                                itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_CjInfo[j].cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\">" + data[i].row_CjInfo[j].cellName + "</th>";
+                                itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_CjInfo[j].cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\" >" + data[i].row_CjInfo[j].cellNum + "</th>";
+                            }
+
+                            itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_ZzInfo[j].cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\">" + data[i].row_ZzInfo[j].cellName + "</th>";
+                            itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_ZzInfo[j].cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\">" + data[i].row_ZzInfo[j].cellNum + "</th>";
+
+                            itemHtml = itemHtml + "</tr >";
+                        }
+
+
+                    }
+                    itemHtml = itemHtml + "</thead></table>";
+
+                    $("#TJResult").empty().append(itemHtml);
+
+                 
+                    document.getElementById("TJdetail_Div").style.visibility = "hidden";
+                  
+
+
+
+
+
+                }
+            ,
+                error: function (err) {
+                    alert(err.toString());
+                }
+            });
+
+        };
+
+        function Tj_detail(pqId, starttime, endtime) {
+           
+            var str = "/A6dot2/CQ_detail?pqName=" + pqId + "&starttime=" + starttime + "&endtime=" + endtime;
+
+            $('#TjDetail_datatable').DataTable().ajax.url(str).load();
+            document.getElementById("TJdetail_Div").style.visibility = "visible";
+
+        }
+
+     
+     
+
+      
+
+
+
+    </script>
+}
+

@@ -1,0 +1,603 @@
+﻿
+@model WebApp.Controllers.CommonController.ZzSubmitModel
+@{
+    ViewBag.Title = "Ineligible_Submit";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：现场工程师或可靠性工程师提报不具备备用条件的设备
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">现场工程师或可靠性工程师提报</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <input type="text" id="Equipid" hidden="hidden" value="@ViewBag.equip_id">
+                                <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">申请车间</label>
+                                    <div class="col-sm-10">
+                                        @if (ViewBag.cj_id == 0)
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="cjname" onchange="list_Zz()">
+                                                <option value="">请选择</option>
+                                                @if (Model.UserHasEquips != null)
+                                                {
+                                                    foreach (var item in Model.UserHasEquips)
+                                                    {
+                                                        <option value="@item.EA_Id">@item.EA_Name</option>
+                                                    }
+                                                }
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="cjname" disabled="disabled">
+                                                <option value="@ViewBag.cj_id">@ViewBag.cj_name</option>
+                                            </select>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">申请装置</label>
+                                    <div id="Zz_Select" class="col-sm-10">
+                                        @if (ViewBag.zz_id == 0)
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="zzId" onchange="Zz_selected()">
+                                                <option value="">请选择</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="zzId" onchange="Zz_selected()">
+                                                <option value="@ViewBag.zz_id">@ViewBag.zz_name</option>
+                                            </select>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备工艺编号</label>
+                                    <div id="Equip_Select" class="col-sm-10">
+                                        @if (ViewBag.sb_gycode == "")
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="Equip_GyCode" onchange="Equip_selected()">
+                                                <option value="">请选择</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control select2" style="width: 100%;" id="Equip_GyCode" disabled="disabled">
+                                                <option value="@ViewBag.equip_id">@ViewBag.sb_gycode</option>
+                                            </select>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备编号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="E_Code" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备型号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="E_Type" disabled="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">无法备用原因说明：</label>
+                                    @*<div class="col-sm-10">
+                                        <input type="text" class="form-control" id="E_Reason" >
+                                    </div>*@
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">机泵</label>
+                                    <div class="col-sm-10">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_1" 
+                                                   value="盘车">盘车
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_1"
+                                                   value="辅助系统"> 辅助系统
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_1"
+                                                   value="附件"> 附件
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_1"
+                                                   value="预热情况"> 预热情况
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_1" onclick="reason()"
+                                                   class="ohter_reason" value="其他"> 其他
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">往复机</label>
+                                    <div class="col-sm-10">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_2" 
+                                                   value="盘车">盘车
+                                        </label>
+                                        <label class="checkbox-inline"> 
+                                            <input type="checkbox" name="not_reason_2" 
+                                                   value="电机"> 电机
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_2" 
+                                                   value="机体"> 机体
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_2" 
+                                                   value="辅助系统"> 辅助系统
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_2" 
+                                                   value="附件"> 附件
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_2" 
+                                                   value="仪表联锁"> 仪表联锁
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_2" onclick="reason()"
+                                                   class="ohter_reason" value="其他"> 其他
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">离心机</label>
+                                    <div class="col-sm-10">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" 
+                                                   value="工艺状态">工艺状态
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" 
+                                                   value="润滑油系统"> 润滑油系统
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" 
+                                                   value="油站"> 油站
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" 
+                                                   value="油路"> 油路
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" 
+                                                   value="电机"> 电机
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" 
+                                                   value="机体"> 机体
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" 
+                                                   value="增速机"> 增速机
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" 
+                                                   value="ccs"> ccs
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" 
+                                                   value="附件">附件
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="not_reason_3" onclick="reason()"
+                                                   class="ohter_reason" value="其他"> 其他
+                                        </label>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" id="ohter_reason" hidden="hidden">
+                                    <label class="col-sm-2 text-red">其他原因填写：</label>
+                                    <div class="col-sm-10">
+                                        <textarea class=" form-control" rows="3" id="ohter_reason_desc"></textarea>
+                                    </div>
+                                </div>
+
+
+
+
+                            </form>
+
+                         
+
+                            <form role="form">
+                                <div class="box-footer">
+                                    <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click(0)">确定提交</button>
+                                    <button class="btn btn-primary col-sm-offset-1" type="button" onclick="cancel_click()">取消提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <script>
+        function reason() {
+            if ($('.ohter_reason').is(':checked')) {
+                $("#ohter_reason").show();
+
+               
+
+            } else {
+                $("#ohter_reason").hide();
+            }
+         
+ 
+        }
+        function hidereason() {
+
+         
+
+        }
+        
+
+
+        $(function () {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+            getCurrentTime();
+
+
+        });
+
+
+
+
+
+        function getCurrentTime() {
+            var mydate = new Date();
+            var t = mydate.toLocaleString();
+            $("#submit_time").val(t);
+
+        };
+        function list_Zz() {
+            if ($('#cjname').val() != "") {
+                $.ajax({
+                    url: '/Common/Cj_Zzs',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "cj_id": $('#cjname').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            for (var i = 0; i < backdata.length; i++) {
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Zz_Id + "\">" + backdata[i].Zz_Name + "</option>";
+                            }
+                            $('#zzId').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+            }
+        };
+
+        function Zz_selected() {
+            if ($('#zzId').val() != "") {
+                $.ajax({
+                    url: '/Common/Zz_Equips',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "Zz_id": $('#zzId').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            for (var i = 0; i < backdata.length; i++) {
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Equip_Id + "\">" + backdata[i].Equip_GyCode + "</option>";
+                            }
+                            $('#Equip_GyCode').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+            }
+        };
+        function Equip_selected() {
+            if ($('#Equip_GyCode').val() != "") {
+                $.ajax({
+                    url: '/Common/ListEquip_Info',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "Equip_Id": $('#Equip_GyCode').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            $("#E_Code").val(backdata[0].Equip_Code);
+                            $("#E_Type").val(backdata[0].Equip_Type);
+
+                            $("input:radio[name='zyoptionsRadiosinline']").each(function () {
+                                $(this).val() == backdata[0].Equip_Specialty ? $(this).attr("checked", "checked") : null;
+                            })
+
+                            $("input:radio[name='subzyoptionsRadiosinline']").each(function () {
+                                $(this).val() == backdata[0].Equip_PhaseB ? $(this).attr("checked", "checked") : null;
+                            })
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                }
+                )
+            }
+        };
+
+        var submit_done = 1;
+        function submit_click(k) {
+
+            if (!myValidation())
+                return false;
+            submit_done = k;
+            var obj_1 = document.getElementsByName('not_reason_1'); //选择所有name="'not_reason_1'"的对象，返回数组 
+            var obj_2 = document.getElementsByName('not_reason_2'); //选择所有name="'not_reason_1'"的对象，返回数组 
+            var obj_3 = document.getElementsByName('not_reason_3'); //选择所有name="'not_reason_1'"的对象，返回数组 
+            //取到对象数组后，我们来循环检测它是不是被选中 
+            var s1 = '';
+            var s2='';
+            var s3='';
+            for (var i = 0; i < obj_1.length; i++) {
+                if (obj_1[i].value == "其他") {
+
+                    obj_1[i].value = "其他原因:" + $("#ohter_reason_desc").val();
+                }
+                if (obj_1[i].checked)
+
+
+                    
+
+                    s1 += obj_1[i].value + '、'; //如果选中，将value添加到变量s中 
+            }
+            if (s1 == "") {
+
+                s1 = "无";
+            
+            }
+
+
+            for (var i = 0; i < obj_2.length; i++) {
+                if (obj_2[i].value == "其他") {
+
+                    obj_2[i].value = "其他原因:" + $("#ohter_reason_desc").val();
+                }
+                if (obj_2[i].checked)
+                    s2 += obj_2[i].value + '、'; //如果选中，将value添加到变量s中 
+            }
+            if (s2 == "") {
+
+                s2 = "无";
+            
+            }
+
+            for (var i = 0; i < obj_3.length; i++) {
+                if (obj_3[i].value == "其他") {
+
+                    obj_3[i].value = "其他原因:" + $("#ohter_reason_desc").val();
+                }
+                if (obj_3[i].checked)
+                    s3 += obj_3[i].value + '、'; //如果选中，将value添加到变量s中 
+            }
+
+            if (s3 == "") {
+
+                s3= "无";
+             
+            }
+
+            if (s1 == "无" && s2 == "无" && s3 == "无") {
+
+                alert("你未选择无法备用原因！");
+ 
+                return false;
+
+            }
+
+        var s="机泵原因："+s1+";"+"往复机原因："+s2+";"+"离心机原因："+s3 ;
+      
+        alert(s);
+
+
+            if (!confirm('确定要提交吗？'))
+                return false;
+
+            var flow_name = $("#wef_id").val();
+            //alert(flow_name);
+            //alert($('#inputfile').val());
+            $.ajax({
+                type: 'POST',
+                url: '/A6dot3/Ineligible_submitsignal',
+                data: {
+                    json1: '{Flow_Name: "' + flow_name
+                         + '", Cj_Name: "' + $('#cjname').find("option:selected").text()
+                         + '", Zz_Name: "' + $('#zzId').find("option:selected").text()
+                         + '", Equip_GyCode: "' + $('#Equip_GyCode').find("option:selected").text()
+                         + '", Equip_Code: "' + $('#E_Code').val()
+                         + '", Equip_Type: "' + $('#E_Type').val()
+                               + '", Ineligible_Reason: "' +s
+        
+                         + '"}'
+                },
+                success: function (data) {
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+        };
+
+        function cancel_click() {
+            submit_done = 0;
+            if (!confirm('确定要取消吗？'))
+                return false;
+
+            //var wef_id = $("#wef_id").val();
+            //var return_url = "/A6dot3/Index";
+            //$.ajax({
+            //    type: 'POST',
+            //    url: '/Common/CancelSubmit',
+            //    data: {
+            //        json1: '{wef_id: "' + wef_id
+            //             + '", return_url: "' + return_url
+            //             + '"}'
+            //    },
+            //    success: function (data) {
+            //        location.href = data;
+            //    },
+            //    error: function () {
+            //        alert('error');
+            //    }
+            //});
+        };
+
+        $(document).ready(function () {
+
+            function Equip_selectedDS() {
+
+                $.ajax({
+                    url: '/Common/ListEquip_Info',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "Equip_Id": $('#Equipid').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            $("#E_Code").val(backdata[0].Equip_Code);
+                            $("#E_Type").val(backdata[0].Equip_Type);
+
+                            $("input:radio[name='zyoptionsRadiosinline']").each(function () {
+                                $(this).val() == backdata[0].Equip_Specialty ? $(this).attr("checked", "checked") : null;
+                            })
+
+                            $("input:radio[name='subzyoptionsRadiosinline']").each(function () {
+                                $(this).val() == backdata[0].Equip_PhaseB ? $(this).attr("checked", "checked") : null;
+                            })
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                }
+                )
+
+            };
+            if ($('#Equipid').val() != "")
+                Equip_selectedDS();
+
+            var options = {
+
+                target: '#outputdiv',
+                success: showResponse,
+                error: function (data) {
+                    $("#outputdiv").html = data;
+                }
+            };
+        });
+   
+
+
+  
+
+        function showRequest(formData, jqForm, options) {
+            alert('发送前');
+            return true;
+        }
+
+        function showResponse(responseText, statusText) {
+
+        };
+        window.onbeforeunload = function () {//离开当前页面触发//火狐可用
+
+            if (submit_done == 1) {
+                //   alert("1");
+                qx();
+            }
+        }
+
+
+        window.onunload = function () {//谷歌可用
+
+            if (submit_done == 1) {
+                //  alert("2");
+                qx();
+            }
+
+        }
+        function qx() {
+
+
+            var wef_id = $("#wef_id").val();
+            var return_url = "/A6dot3/Index";
+            $.ajax({
+                type: 'POST',
+                url: '/Common/CancelSubmit',
+                async: false,
+                data: {
+                    json1: '{wef_id: "' + wef_id
+                         + '", return_url: "' + return_url
+                         + '"}'
+                },
+                success: function (data) {
+
+
+                    location.href = data;
+
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+
+
+
+        }
+    </script>
+}
+
+
+

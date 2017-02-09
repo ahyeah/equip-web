@@ -1,0 +1,339 @@
+﻿@model WebApp.Controllers.CommonController.WFDetail_Model
+@{
+    ViewBag.Title = "CMConfirmSchedule";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-8">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        业务流水号：<button class="btn btn-default" onclick="DispalsySide('@ViewBag.WF_Ser')">@ViewBag.WF_Ser</button>
+                    </span>
+                </li>
+
+                <li class="time-label">
+
+                    <span class="bg-green">
+                        当前任务：开始安装施工，工程管理单位确认工期
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">填写工期时间</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"  >起止时间:</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                            <input type="text" onclick="blur()"  class="form-control" id="ScheduleTime" name="EquipMaintain_Time">
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                 
+                                        @*<label class="col-sm-1 control-label">结束时间:</label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </div>
+                                                <input type="text" class="form-control" id="ScheduleTime_End" name="EquipMaintain_Time">
+                                            </div>
+                                        
+                                        
+                                    </div>*@
+                                </div>
+                            
+                            </form>
+
+                            <form role="form">
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="button" onclick="submit_click()">确定</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流历史操作-通用部分Star -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前工作流历史操作
+                    </span>
+                </li>
+                <!-- timeline time label -->
+                @for (int i = @Model.ALLHistoryMiss.Count() - 1; i >= 1; i--)
+                {
+                <li class="time-label">
+                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@i" aria-expanded=true aria-controls="@i">
+                        @Model.MissTime[i] - @Model.ALLHistoryMiss[i].WE_Event_Desc
+                    </a>
+                </li>
+
+                    <li class="collapse" id="@i">
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o">@Model.MissTime[i]</i>操作用户： @Model.MissUser[i]</span>
+                            <h3 class="timeline-header lead"><span class="lead" style="color:red">@Model.ALLHistoryMiss[i].WE_Event_Desc</span></h3>
+                            <div class="timeline-body">
+                                <table class="table  table-hover table-bordered">
+                                    <tbody>
+                                        @foreach (var pp in @Model.ALLHistoryMiss[i].Miss_ParamsAppRes)
+                                        {
+                                            if (pp.Value.ToString() != "App_hidden")
+                                            {
+                                                <tr class="info">
+                                                    <th>@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key]</th>
+                                                    @if ((@Model.ALLHistoryMiss[i].Miss_ParamsDesc[pp.Key].ToString()).IndexOf("附件") > -1 && @Model.ALLHistoryMiss[i].Miss_Params[pp.Key] != "")
+                                                    {
+                                                        string[] savedFileName = (@Model.ALLHistoryMiss[i].Miss_Params[pp.Key].ToString()).Split(new char[] { '$' });
+                                                        string saveExistFilename = Path.Combine("/Upload", savedFileName[1]);
+                                                        <td><a href=@saveExistFilename target=_blank> @savedFileName[0]</a></td> }
+                                                    else
+                                                    {
+                                                    <td>@Model.ALLHistoryMiss[i].Miss_Params[pp.Key]</td>}
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+                }
+
+                <!-- END timeline item -->
+
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li> 
+                    </ul>
+        </div>
+        <!-- /.col -->
+   
+        <div class="col-md-4" id="sidebar"> </div>
+    
+    
+     </div>
+    <!-- /.row -->
+
+</section>
+
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处-->
+<div class="modal fade" id="EquipInfoModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备相关信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="EquipInfoDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+    </div>
+
+</div><!--设备信息显示模态框结束处-->
+
+@section js{
+       <!-- Page script -->
+<script src="~/Scripts/jquery.form.js"></script>
+<script src="~/Scripts/myFormValidator.js"></script>
+<link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+<script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+<script src="~/Scripts/myWorkFlowInfo.js"></script>
+@*<script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment-range.js"></script>*@
+    
+
+    <script>
+        $(function () {
+            $("#ScheduleTime").each(function (i) {
+                var myDate = new Date();
+                var nowyear = myDate.getFullYear();
+                var nowmonth = myDate.getMonth() + 1;
+                var nowday = myDate.getDate();
+              
+                $(this).daterangepicker({
+                    minDate: new Date(nowyear, nowmonth - 1, nowday),
+                    showDropdowns: true,
+                    locale: {
+                        applyLabel: '确定',
+                        cancelLabel: '取消',
+                        fromLabel: '起始时间',
+                        toLabel: '结束时间',
+                        customRangeLabel: '自定义',
+                        daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                        monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                            '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                        firstDay: 1
+                    },
+                    format: 'YYYY-MM-DD', //控件中from和to 显示的日期格式
+
+
+
+                    arrows: true,
+                },
+                function(start, end, label) {//格式化日期显示框
+ 
+                    $('#ScheduleTime').val(start.format('YYYY-MM-DD') +"-"+ end.format('YYYY-MM-DD'));
+                }
+
+
+                );
+
+            });
+            //Date picker
+            //$("#ScheduleTime_Begin").datepicker(
+            //   {
+            //       autoclose: true,
+            //       beforeShowDay: $.noop,
+            //       calendarWeeks: false,
+            //       clearBtn: false,
+            //       daysOfWeekDisabled: [],
+            //       endDate: Infinity,
+            //       forceParse: true,
+            //       format: 'yyyy-mm-dd',
+            //       keyboardNavigation: true,
+            //       language: 'zh-CN',
+            //       minViewMode: 0,
+            //       orientation: "auto",
+            //       rtl: false,
+            //       startDate: -Infinity,
+            //       startView: 0,
+            //       todayBtn: true,
+            //       todayHighlight: true,
+            //       weekStart: 0
+            //   });
+           // $("#ScheduleTime_End").datepicker(
+           //{
+           //    autoclose: true,
+           //    beforeShowDay: $.noop,
+           //    calendarWeeks: false,
+           //    clearBtn: false,
+           //    daysOfWeekDisabled: [],
+           //    endDate: Infinity,
+           //    forceParse: true,
+           //    format: 'yyyy-mm-dd',
+           //    keyboardNavigation: true,
+           //    language: 'zh-CN',
+           //    minViewMode: 0,
+           //    orientation: "auto",
+           //    rtl: false,
+           //    startDate: -Infinity,
+           //    startView: 0,
+           //    todayBtn: true,
+           //    todayHighlight: true,
+           //    weekStart: 0
+           //});
+
+           
+
+        });
+        function PageLoad() {
+
+        };
+        $(document).ready(
+            PageLoad());
+
+        //function blur() {
+        //    $("#ScheduleTime").blur();
+        //}
+
+        function submit_click() {
+            if ($("#ScheduleTime").val() == "") {
+                alert("你还未选择起止时间，请选择后再提交！");
+
+            } else {
+              
+
+
+
+                var flow_name = $("#wef_id").val();
+
+
+                var Scheduletime = $("#ScheduleTime").val();
+               
+                var time_start = Scheduletime.substr(0, 10);
+                var time_end = Scheduletime.substr(Scheduletime.length - 10);
+             //   alert("时间：" + Scheduletime);
+             //   alert("起始时间：" + time_start);
+             //   alert("截止时间：" + time_end);
+
+                if (!myValidation())
+                    return false;
+                if (!confirm('确定要提交吗？'))
+                    return false;
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/A4dot3/ScheduleTimeSubmit',
+                    data: {
+                        json1: '{Flow_Name: "' + flow_name
+                            + '", ScheduleTime_Begin: "' + time_start
+                              + '", ScheduleTime_End: "' + time_end
+                            + '"}'
+                    },
+                    success: function (data) {
+                        location.href = data;
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+
+
+            }
+
+
+         
+
+
+
+        }
+    </script>
+}
+

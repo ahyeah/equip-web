@@ -1,0 +1,8 @@
+﻿
+@{
+    ViewBag.Title = "CjMngCtlPlan";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>CjMngCtlPlan</h2>
+

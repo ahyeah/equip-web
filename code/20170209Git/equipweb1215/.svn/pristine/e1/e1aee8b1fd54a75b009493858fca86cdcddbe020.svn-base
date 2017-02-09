@@ -1,0 +1,140 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using EquipBLL.AdminManagment.MenuConfig;
+using EquipBLL.AdminManagment;
+using EquipModel.Entities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using FlowEngine;
+using FlowEngine.UserInterface;
+using EquipModel.Context;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+
+namespace WebApp.Controllers
+{
+    public class MainController : Controller
+    {
+        // GET: Main
+        private SysMenuManagment menuconfig = new SysMenuManagment();
+        public ActionResult Index1()
+        {
+            MenuTree mtree = menuconfig.BuildMenuTree();            
+            return View(mtree);
+        }
+        public ActionResult Index()
+        {
+            //CWFEngine.CreateAWFEntityByName("");
+            List<MenuListNode> mt = menuconfig.BuildMenuList();
+            int a = mt.Count();
+            return View(mt);
+        }
+        public ActionResult Index0()
+        {
+           return View();
+        }
+        // Get: Home
+        public ActionResult Home()
+        {
+            return View();
+        }
+
+        public string CreateFlow(string flowname)
+        {
+            UI_WorkFlow_Entity wfe = CWFEngine.CreateAWFEntityByName(flowname);
+            if (wfe != null)
+            {
+                Dictionary<string, string> record = wfe.GetRecordItems();
+
+               
+                    record["username"] = (Session["User"] as EquipModel.Entities.Person_Info).Person_Name;
+                    record["time"] = DateTime.Now.ToString();
+
+                return wfe.Start(record);
+                //Json(new { url = wfe.Start(record), wfe_id = wfe.EntityID }); 
+                //"{url:'" + wfe.Start(record) + "', wfe_id:'" + wfe.EntityID + "'}";
+
+            }
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 获得当前的任务列表
+        /// </summary>
+        /// <returns>前台JS解析的任务JSon数据</returns>
+        [HttpPost]
+        public JsonResult ListMission()
+        {
+            IObjectContextAdapter IOca = new EquipWebContext();
+
+            List<UI_MISSION> miss = CWFEngine.GetActiveMissions<Person_Info>(IOca.ObjectContext);
+            
+            List<Object> miss_obj = new List<object>();
+
+            foreach(UI_MISSION item in miss)
+            {
+                UI_MISSION mi = CWFEngine.GetHistoryMissions(item.WE_Entity_Id).Last();
+                IDictionary<string, string> record = CWFEngine.GetMissionRecordInfo(mi.Miss_Id);
+                DateTime dt = DateTime.Parse(!record.ContainsKey("time") ? DateTime.Now.ToString() : record["time"]);
+                TimeSpan ts = DateTime.Now - dt;
+                string time_last = "";
+                if (ts.TotalDays > 1)
+                    time_last += (((int)ts.TotalDays).ToString() + "天之前");
+                else if (ts.TotalHours > 1)
+                    time_last += (((int)ts.TotalHours).ToString() + "小时之前");
+                else
+                    time_last += (((int)ts.TotalMinutes).ToString() + "分钟之前");
+                object o = new  {
+                                WF_ICON = "fa fa-flash text-text-aqua",
+                                MISS_Url = item.Mission_Url,
+                                WF_Name = CWFEngine.GetWorkFlowDefine(item.WE_Name).wf_description,
+                                MISS_Name = item.WE_Event_Desc,
+                                TIME_Last = time_last};
+                
+                miss_obj.Add(o);
+            }
+            return Json(miss_obj.ToArray());
+        }
+
+        /// <summary>
+        /// 获得工作流进度信息
+        /// </summary>
+        /// <returns>前台JS解析的JSon数据</returns>
+        [HttpPost]
+        public JsonResult ListProcess()
+        {
+            List<UI_WFEntity_Info> start_entities = CWFEngine.GetWFEntityByHistoryStatus(t => t.Record_Info.Count(q => q.Re_Name=="username" && q.Re_Value=="cb") > 0);
+
+            List<object> proc_list = new List<object>();
+
+            IObjectContextAdapter IOca = new EquipWebContext();
+
+            foreach (var en in start_entities)
+            {
+                string startUser = CWFEngine.GetMissionRecordInfo(CWFEngine.GetHistoryMissions(en.EntityID).First().Miss_Id)["username"];
+                if (startUser != (Session["User"] as Person_Info).Person_Name)
+                    continue;
+
+                int total = CWFEngine.GetWorkFlowAvgSteps(en.name);
+                int curr = CWFEngine.GetWFEntityFinishSteps(en.EntityID);
+
+                if (total == 0)
+                    total = 5;
+                if (curr == 0)
+                    curr = 1;
+                object o = new
+                {
+                    WF_Name = en.description,
+                    MISS_Name = CWFEngine.GetActiveMission<Person_Info>(en.EntityID, IOca.ObjectContext).WE_Event_Desc,
+                    MISS_Present = (double)curr/(double)total * 100
+                };
+                proc_list.Add(o);
+            }
+            return Json(proc_list.ToArray());
+        }
+    }
+}

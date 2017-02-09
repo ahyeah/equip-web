@@ -1,0 +1,302 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content" >
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-green">
+
+                <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text"><b>快捷入口1</b></span>
+                    <span class="info-box-number">&nbsp</span>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 70%"></div>
+                    </div>
+                    <span class="progress-description">
+                        功能菜单入口
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-aqua">
+
+                <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Bookmarks</span>
+                    <span class="info-box-number">41,410</span>
+
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 70%"></div>
+                    </div>
+                    <span class="progress-description">
+                        70% Increase in 30 Days
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-yellow">
+
+                <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Bookmarks</span>
+                    <span class="info-box-number">41,410</span>
+
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 70%"></div>
+                    </div>
+                    <span class="progress-description">
+                        70% Increase in 30 Days
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-fuchsia">
+
+                <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Bookmarks</span>
+                    <span class="info-box-number">41,410</span>
+
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 70%"></div>
+                    </div>
+                    <span class="progress-description">
+                        70% Increase in 30 Days
+                    </span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <!-- MAP & BOX PANE -->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Visitors Report</h3>
+
+                    <div class="box-tools pull-right">                        
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="table-responsive">
+                        <table class="table no-margin">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Item</th>
+                                    <th>Status</th>
+                                    <th>Popularity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                    <td>Call of Duty IV</td>
+                                    <td><span class="label label-success">Shipped</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00a65a" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                    <td>Samsung Smart TV</td>
+                                    <td><span class="label label-warning">Pending</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f39c12" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                    <td>iPhone 6 Plus</td>
+                                    <td><span class="label label-danger">Delivered</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f56954" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                    <td>Samsung Smart TV</td>
+                                    <td><span class="label label-info">Processing</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00c0ef" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                    <td>Samsung Smart TV</td>
+                                    <td><span class="label label-warning">Pending</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f39c12" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                    <td>iPhone 6 Plus</td>
+                                    <td><span class="label label-danger">Delivered</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f56954" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                    <td>Call of Duty IV</td>
+                                    <td><span class="label label-success">Shipped</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00a65a" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> 
+                    
+                </div>
+                <!-- /.box-body -->
+            </div>
+            
+            
+        </div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h1 class="box-title">我的流程</h1>
+                </div>
+                <div class="box-body">
+                    <div class="direct-chat-messages" style="height:500px">
+                        <ul class="timeline">
+                            <!-- timeline time label -->
+                            <li class="time-label">
+                                <span class="bg-red">
+                                    10 Feb. 2014
+                                </span>
+                            </li>
+                            <!-- /.timeline-label -->
+                            <!-- timeline item -->
+                            <li>
+                                <i class="fa fa-envelope bg-blue"></i>
+
+                                <div class="timeline-item">
+                                    <div class="box box-default collapsed-box">
+                                        <div class="box-header">
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+                                            <div class="time">
+                                                <i class="fa fa-clock-o"></i> 12:05
+
+                                            </div>
+                                            <div class="timeline-header">
+                                                <a href="#">Support Team</a> sent you an email
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                                            quora plaxo ideeli hulu weebly balihoo...
+                                        </div>
+                                    </div>                               
+                                </div>
+                            </li>
+                            <!-- END timeline item -->
+                            <!-- timeline item -->
+                            
+                            <!-- END timeline item -->
+                            <li>
+                                <i class="fa fa-clock-o bg-gray"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    @*<button onclick="Treeinit()">qqq</button>
+        <div id="treeview1"></div>
+        @section js{
+            <!-- Page script -->
+            <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+            <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+
+            <script type="text/javascript">
+
+                var defaultData = [{
+                    text: '财务部',
+
+                    selectable: false, //设置此节点不可选，这是父节点，财务部
+                    nodes: [{
+                        text: '张三'
+                    }, {
+                        text: '李四'
+                    }]
+                },
+
+
+                             {
+                                 text: '会计部',
+                                 selectable: false, //设置此节点不可选，这是父节点，会计部
+                                 nodes: [{
+                                     text: '王五'
+                                 }, {
+                                     text: '赵六'
+                                 }]
+                             },
+
+                             {
+                                 text: '工程部',
+                                 selectable: false,//设置此节点不可选，这是父节点，工程部
+                                 nodes: [{
+                                     text: '孙七'
+                                 }, {
+                                     text: '周八'
+                                 }]
+                             }
+
+                ];
+
+
+                // $('#tree').treeview({ data: getTree() });
+                $(document).ready(function () {
+                    $('#treeview1').treeview({ data: defaultData })
+                });
+                $("h2").click(function () {
+                    $("h2").append(" <b>Appended text</b>.");
+                    $("#treeview1").treeview({ data: defaultData });
+
+                    $("h2").append(" <b>Appended text</b>.");
+
+                });
+                function Treeinit() {
+
+                    $('#treeview1').treeview({
+                        data: defaultData,
+
+                    });
+                }
+
+            </script>
+        }*@

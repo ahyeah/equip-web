@@ -1,0 +1,63 @@
+﻿@model WebApp.Controllers.CommonController.WFDetail_Model
+@{
+    ViewBag.Title = "WorkFolw_Detail";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- timeline time label -->  
+                @for (int i = @Model.ALLHistoryMiss.Count()-1; i >=1 ; i--)
+                {     <li class="time-label">
+                          <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@i" aria-expanded=true aria-controls="@i">
+                              @Model.MissTime[i] - @Model.ALLHistoryMiss[i].WE_Event_Desc
+                          </a>
+                       </li>
+                    
+                      <li class="collapse" id="@i">
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o">@Model.MissTime[i]</i>操作用户： @Model.MissUser[i]</span>
+                            <h3 class="timeline-header lead"><span class="lead" style="color:red">@Model.ALLHistoryMiss[i].WE_Event_Desc</span></h3>
+                            <div class="timeline-body">
+                                <table class="table  table-hover table-bordered">
+                                    <tbody>
+                                        @foreach (var pp in @Model.ALLHistoryMiss[i].Miss_Params)
+                                        {
+                                        <tr class="info">
+                                            <th>@pp.Key</th>
+                                            <td>@pp.Value.ToString()</td>
+                                        </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+                }
+                     
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+            </ul>        
+        </div>
+        <!-- /.col -->
+     </div>
+    <!-- /.row -->
+
+</section>
+
+
+@section js{
+    <script>
+    </script>
+}
+

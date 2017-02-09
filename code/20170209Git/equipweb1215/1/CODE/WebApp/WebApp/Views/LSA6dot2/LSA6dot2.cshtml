@@ -1,0 +1,201 @@
+﻿@{
+    ViewBag.Title = "zxhtest";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/css/editor.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/css/rowReorder.bootstrap.min.css">
+
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">A6.2-润滑管理临时任务管理</h3>
+                </div>
+                <div class="box-body">
+  <input type="text" id="run_result" hidden="hidden"  value="@ViewBag.run_result"/>
+                    <table id="A6dot2jobs_table" class="table table-hover table-bordered display" width="100%">
+                        
+                        <thead>
+                            <tr ><td colspan="9"><h3 style="text-align:center">@ViewBag.jobtitle</h3></td>
+</tr>
+                            <tr>
+                                @*<th></th>*@
+                                <th>ID</th>
+                                <th>装置</th>
+                                <th>机组名称</th>
+                                <th>设备编号</th>
+                                <th>上次化验月份</th>
+                                <th>化验结果</th>
+                                <th>整改方案制定</th>
+                                <th>整改实施情况</th>
+                                <th>二次化验结果</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+  
+</section>
+
+@section js {
+    <!-- Page script -->
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/dataTables.editor.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/editor.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+ 
+
+    <style>
+        th {
+            background: rgb(124, 205, 124);
+        }
+       th, td {
+            white-space: nowrap;
+            text-align: left;
+        }
+    </style>
+   
+
+    <script type="text/javascript">
+ 
+        var run_result = $("#run_result").val();
+         
+
+        $(document).ready(function () {
+            console.debug("js开始运行");
+          
+      var   table=   $('#A6dot2jobs_table').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "iDisplayLength": 20,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "info": true,
+                "scrollX":true,
+                "ajax": {
+                  
+                    "url": "/LSA6dot2/A6dot2GetTimerJobs?run_result="+run_result,
+                    "type": "POST"
+                },
+              
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                }],
+                 columns: [
+                         //{
+                         //    data: null,
+                         //    defaultContent: '',
+                         //    className: 'select-checkbox',
+                         //    orderable: false
+                         //},
+                            { data: null },
+                                 {data: "zz_name"},
+                                 { data: "jz_name" },
+                                 { data: "sb_code" },
+                                 {
+                                     data: "last_check_month",
+                                     "render": function (data, type, full, meta) {
+                                         if (full.last_check_month != "") {
+                                             var time = full.last_check_month;
+                                             var time_str = time.split("/");
+
+                                             return time_str[1]+"月";
+
+                                         } else
+                                             return "";
+                                     }
+                                 },
+                                 {
+                                     data: "check_result",
+                                  "render": function (data, type, full, meta) {
+                                      if (full.check_result != "") {
+                                          if (full.check_result == "false") {
+                                              return "不合格";
+                                          } else if (full.check_result == "true") {
+                                              return "合格";
+
+                                          }
+                                      } else
+                                          return "";
+                                  }
+
+                                 },
+                                 {
+                                     data: "zz_file",
+                                     "render": function (data, type, full, meta) {
+                                         if (full.zz_file != "") {
+
+                                             var file = full.zz_file;
+                                             var file1 = file.split("$");
+
+                                             return "<a href=\"../Upload/" + file1[1] + "\">" + file1[0] + "</a>";
+
+                                         } else
+                                             return "";
+
+
+
+                                     }
+
+                                 },
+                                 { data: "zz_done" },
+                                 {
+                                     data: "second_check_result",
+                                     "render": function (data, type, full, meta) {
+                                         if (full.second_check_result != "") {
+                                             if (full.second_check_result == "否") {
+                                                 return "不合格";
+                                             } else if (full.second_check_result == "是") {
+                                                 return "合格";
+
+                                             }
+                                         } else
+                                             return "";
+                                     }
+                                 }
+                ],
+                
+            });
+         table.on('order.dt search.dt',
+    function () {
+        table.column(0, {
+            search: 'applied',
+            order: 'applied'
+        }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+        })
+
+    </script>
+}

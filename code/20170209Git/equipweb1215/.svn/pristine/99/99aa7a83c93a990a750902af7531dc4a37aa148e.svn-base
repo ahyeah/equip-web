@@ -1,0 +1,8 @@
+﻿
+@{
+    ViewBag.Title = "LeaderConfirm";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>LeaderConfirm</h2>
+

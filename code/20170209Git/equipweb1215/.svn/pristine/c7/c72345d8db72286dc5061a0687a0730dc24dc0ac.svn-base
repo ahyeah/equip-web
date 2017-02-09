@@ -1,0 +1,103 @@
+﻿using EquipDAL.Implement;
+using EquipDAL.Interface;
+using EquipModel.Context;
+using EquipModel.Entities;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EquipBLL.AdminManagment
+{
+   public  class PersonManagment
+    {
+        private Person_Infos  Persons= new Person_Infos();
+
+        public Person_Info  Get_Person(string userName)
+        {
+             var P = Persons.GetPerson_info(userName);
+            return P;
+        }
+
+        public bool Add_Person(Person_Info p)
+        {
+            return Persons.AddPerson_info(p);
+        }
+
+        public bool Modify_Person(int id,Person_Info p)
+        {
+            return Persons.ModifyPerson_info(id, p);
+        }
+        public bool Delete_Person(int id)
+        {
+            return Persons.DeletePerson_info(id);
+        }
+        public List<Role_Info> Get_Person_Roles(int id)
+        {
+            List<Role_Info> r = new List<Role_Info>();
+            r=Persons.GetPerson_Roles(id);
+            return r;
+        }
+
+       //获取某操作员管理的装置列表
+        public List<Equip_Archi> Get_Person_Cj(int id)
+        {
+            List<Equip_Archi> r = Persons.getEA_of_Person(id);
+            return r;
+        }
+
+       //获取某操作员管理的设备列表
+        
+        public List<Equip_Info> Get_Person_Equips(int id)
+        {
+            List<Equip_Info> r = new List<Equip_Info>();
+            r = Persons.GetPerson_Equips(id);
+            return r;
+        }
+       //获取某操作员所在部分
+        public Depart_Archi Get_Person_Depart(int id)
+        {
+            Depart_Archi r = new Depart_Archi();
+            r = Persons.GetPerson_Depart(id);
+            return r;
+        }
+       //获取某装置操作员用户所属车间
+        public Depart_Archi Get_Person_DepartOfParent(int id)
+        {
+            Depart_Archi r = new Depart_Archi();
+            r = Persons.GetPerson_Depart(id);
+            Depart_Archis DA = new Depart_Archis();
+            r = DA.getDepart_Parent(r.Depart_Id);
+
+            
+            return r;
+        }
+       //给用户添加一组角色
+       public bool Add_Roles(int Person_Id,List<int> RoleIdSet)
+        {
+            try { 
+           foreach(var i in RoleIdSet)
+           {
+               Persons.AddRole(Person_Id, i);
+           }
+           return true;
+                }
+            catch { return false; }
+        }
+       public bool Add_Equips(int Person_Id,List<int> EquipIdSet)
+       {
+           try { 
+                   foreach(var i in EquipIdSet)
+                   {
+                       Persons.AddEquip(Person_Id, i);
+                   }
+                   return true;
+                }
+            catch { return false; }
+        }
+      
+
+    }
+}

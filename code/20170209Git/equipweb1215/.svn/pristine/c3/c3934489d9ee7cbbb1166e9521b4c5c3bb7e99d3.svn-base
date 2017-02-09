@@ -1,0 +1,136 @@
+﻿using EquipModel.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EquipDAL.Implement
+{
+   public  class Equips:BaseDAO
+    {   
+        public Equip_Info getEquip_Info(int Equip_id)
+        {
+            using (var db = base.NewDB())
+            {
+                try
+                {
+                    var E = db.Equips.Where(a => a.Equip_Id == Equip_id).First();
+                    return E;
+                }
+                catch
+                { return null; }
+            }
+        }
+       public Equip_Archi getEquip_EA(int Equip_id)
+        {
+            using (var db = base.NewDB())
+            {
+                try
+                {
+                    var E = db.Equips.Where(a => a.Equip_Id == Equip_id).First();
+
+                    return E.Equip_Location;
+                }
+                catch
+                { return null; }
+            }
+        }
+
+        public List<Person_Info> getEquipManagers(int Equip_id)
+        {
+            using (var db = base.NewDB())
+            {
+                try
+                {
+                    var E = db.Equips.Where(a => a.Equip_Id == Equip_id).First();
+                    return E.Equip_Manager.ToList();
+                }
+                catch
+                { return null; }
+            }
+        }
+
+        public bool AddEquip_Manager(int Equip_id,int Person_id)
+        {
+            try
+            {
+                using (var db = base.NewDB())
+                {
+                    var E = db.Equips.Where(a => a.Equip_Id == Equip_id).First();
+                    var P = db.Persons.Where(a => a.Person_Id == Person_id).First();
+                    E.Equip_Manager.Add(P);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+             
+        }
+        public bool AddEquip(Equip_Info New_Equip_Info)
+        {
+            try
+            {
+                using (var db = base.NewDB())
+                {
+                    db.Equips.Add(New_Equip_Info);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+             
+
+        }
+
+        public bool DeleteEquip(int Equip_id)
+        {
+            using (var db = base.NewDB())
+            {
+                try
+                {
+                    var E = db.Equips.Where(a => a.Equip_Id == Equip_id).First();
+                    if (E == null)
+                        return false;
+                    else
+                    {
+                        E.Equip_Manager.Clear();
+                        db.Equips.Remove(E);
+                        db.SaveChanges();
+                        return true;
+
+                    }
+                }
+                catch { return false; }
+            }
+
+        }
+        public bool ModifyEquip(int Equip_id ,Equip_Info New_Equip_Info)
+        {
+            using (var db = base.NewDB())
+            {
+                try
+                {
+                    var E = db.Equips.Where(a => a.Equip_Id == Equip_id).First();
+                    if (E == null)
+                        return false;
+                    else
+                    {
+                        E.Equip_GyCode = New_Equip_Info.Equip_GyCode;
+                        E.Equip_Location = New_Equip_Info.Equip_Location;
+                        db.SaveChanges();
+                        return true;
+
+                    }
+                }
+                catch { return false; }
+            }
+        }
+    }
+}

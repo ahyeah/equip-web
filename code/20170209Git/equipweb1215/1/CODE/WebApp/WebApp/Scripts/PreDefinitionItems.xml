@@ -1,0 +1,127 @@
+﻿<?xml version="1.0"?>
+<Reference name="PreDefinitionItems" desc="预定义项" >
+  <paramtable  desc="常用参数表">
+    <param name="Flow_Serial" desc="业务流水号" type="string">
+    </param>
+    <param name="Cj_Name" desc="车间名称" type="string">      
+    </param>
+    <param name="Zz_Name" desc="装置名称" type="string">      
+    </param>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">      
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">      
+    </param>
+    <param name="Equip_Type" desc="设备型号" type="string">      
+    </param>
+    <param name="Zy_Type" desc="专业分类" type="string">
+    </param>
+    <param name="Zy_SubType" desc="专业分类子类" type="string">
+    </param>
+    <param name="Problem_DataSrc" desc="数据来源" type="string">
+    </param>
+    <param name="Problem_Desc" desc="设备问题描述" type="string">
+    </param>
+    <param name="Problem_DescFilePath" desc="问题描述文档（附件）" type="string">
+    </param>
+    <param name="Plan_Desc" desc="方案描述" type="string">
+    </param>
+    <param name="Plan_DescFilePath" desc="方案描述文档（附件）" type="string">
+    </param>
+    <param name="XX_Intensity" desc="XX强度等级" type="string">
+    </param>
+    <param name="XX_Level" desc="XX等级" type="string">
+    </param>
+    <param name="Risk_IsAcceptable" desc="风险是否可接受" type="bool">
+    </param>
+    <param name="Submit_done" desc="提交是否完成" type="bool">
+    </param>
+    <param name="Assess_done" desc="评估是否完成" type="bool">
+    </param>
+    <param name="Assess_Result" desc="评估结果" type="string">
+    </param>
+    <param name="Catalog_done" desc="分类是否完成" type="bool">
+    </param>
+    <param name="Catalog_Result" desc="分类结果" type="string">
+    </param>
+    <param name="Confirm_IsOK" desc="审核结果(是否同意)" type="bool">
+    </param>
+    <param name="Confirm_Result" desc="审核结果" type="string">
+    </param>
+    <param name="CreatePlan_done" desc="确立方案是否完成" type="bool">
+    </param>
+    <param name="ImplementPlan_done" desc="组织实施是否完成" type="bool">
+    </param>
+    <param name="Supervise_done" desc="监督执行是否完成" type="bool">
+    </param>
+  </paramtable>
+  <events desc="常用事件">
+    <event name="Submition" desc="提报" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="Catalog" desc="分类" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="Assess" desc="评估" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="Confirm" desc="审核" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="CreatePlan" desc="确立方案" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="ImplementPlan" desc="组织实施方案" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="Supervise" desc="监督执行" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+    <event name="Select" desc="评选" type="normlevent">
+      <actions>
+        <beforeaction><![CDATA[]]></beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction><![CDATA[]]></afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+    </event>
+  </events>
+  <recorditems desc="常用记录项">
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</Reference>

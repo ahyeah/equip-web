@@ -1,0 +1,40 @@
+﻿using FlowEngine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using WebApp.Models;
+using WebApp.Models.User;
+using EquipBLL.AdminManagment;
+using EquipModel.Entities;
+
+namespace WebApp.Controllers
+{
+    public class LoginController : Controller
+    {
+        //
+        // GET: /Login/
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public string LogOn(string userName, string userPwd)
+        {
+            PersonManagment pm = new PersonManagment();
+            Person_Info p = pm.Get_Person(userName);
+            if (p == null)
+                return "Index";
+
+            else
+            {
+                CWFEngine.authority_params["currentuser"] = userName;
+                Session["User"] = p;
+                return "/Main/Index0";
+            }
+
+        }
+    }
+}

@@ -1,0 +1,318 @@
+﻿@{
+    ViewBag.Title = "Index_Tj";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A6.2-润滑管理</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+
+                    <a id="PqSummary" class="btn btn-block btn-social btn-primary" onclick="JavaScript: location.href = '/A6dot2/Index_Tj'">
+
+                        <i class="glyphicon glyphicon-log-in"></i>润滑管理换油提示表
+                    </a>
+
+                </div>
+                <div class="col-xs-6 col-md-3">
+
+                    <a id="PqSummary" class="btn btn-block btn-social btn-primary" onclick="JavaScript: location.href = '/A6dot2/Index'">
+
+                        <i class="glyphicon glyphicon-log-in"></i>机组润滑管理
+                    </a>
+
+                </div>
+                <div class="col-xs-6 col-md-3">
+
+                    <a id="PqSummary" class="btn btn-block btn-social btn-primary" onclick="JavaScript: location.href = '/A6dot2dot1/Index'">
+
+                        <i class="glyphicon glyphicon-log-in"></i>润滑间管理
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">本周超期未换油统计结果</h3>
+                    <div class="box-tools pull-right">
+                        <!--导出excel开始处-->
+                        <button class="btn btn-info" onclick="out_excel()" type="button">导出统计结果Excel表</button>
+                        <!--导出excel结束处-->
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="TJResult" class="col-md-10">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="TJdetail_Div">
+        <div class="col-md-10">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">超期未换油明细</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                    <div class="row">
+                        <div id="WDT_Detail_Table" class="col-md-10">
+
+                            <table id="TjDetail_datatable" width="100%" cellpadding="1" style="min-height:100px">
+                                <thead>
+
+                                    <tr>
+                                        <th>片区名称</th>
+                                        <th>车间名称</th>
+                                        <th>装置名称</th>
+                                        <th>加油点设备</th>
+                                        <th>加油点设备描述</th>
+                                        <th>最近一次换油时间</th>
+                                        <th>下次换油时间</th>
+                                        <th>备注</th>
+                                        <th>规定油品描述</th>
+                                    </tr>
+                                </thead>
+                            </table>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.box-body -->
+
+    </div>
+</section>
+
+
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+
+    <script>
+
+        function PageLoad() {
+            document.getElementById("TJdetail_Div").style.visibility = "hidden";
+            Tj_PrePrint()
+            $('#TjDetail_datatable').DataTable({
+                "scrollX": true,
+                "scrollY": "30vh",
+                "scrollCollapse": true,
+                "paging": true,
+                "searching": false,
+                "info": false,
+                "ordering": false,
+                "columns": [
+                       { "data": "equip_PqName" },
+                       { "data": "equip_CjName" },
+                       { "data": "equip_ZzName" },
+                       { "data": "equipCode" },
+                       { "data": "equipDesc" },
+                       { "data": "lastOilTime" },
+                       { "data": "NextOilTime" },
+                       { "data": "CQ_demo" },
+                       { "data": "oilCode_desc" }
+                ],
+
+
+
+            });
+
+        };
+        $(document).ready(
+           PageLoad()
+           );
+
+
+
+
+
+        /*  "ajax": {
+              "url": "/A6dot2/CQ_detail?starttime=2000/1/01 &endtime=2000/1/01", //变量传递
+              "type": "POST"
+
+
+          }*/
+        function formatDate(date) {
+            var myyear = date.getFullYear();
+            var mymonth = date.getMonth() + 1;
+            var myweekday = date.getDate();
+
+            if (mymonth < 10) {
+                mymonth = "0" + mymonth;
+            }
+            if (myweekday < 10) {
+                myweekday = "0" + myweekday;
+            }
+            return (mymonth + "/" + myweekday + "/" + myyear);
+        }
+
+
+        //获得本周的开始日期
+        function getWeekStartDate() {
+            var now = new Date();                    //当前日期
+            var nowDayOfWeek = now.getDay();         //今天本周的第几天
+            var nowDay = now.getDate();              //当前日
+            var nowMonth = now.getMonth();           //当前月
+            var nowYear = now.getYear();             //当前年
+            nowYear += (nowYear < 2000) ? 1900 : 0;  //
+
+            var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
+            return formatDate(weekStartDate);
+
+        }
+
+        //获得本周的结束日期
+        function getWeekEndDate() {
+            var now = new Date();                    //当前日期
+            var nowDayOfWeek = now.getDay();         //今天本周的第几天
+            var nowDay = now.getDate();              //当前日
+            var nowMonth = now.getMonth();           //当前月
+            var nowYear = now.getYear();             //当前年
+            nowYear += (nowYear < 2000) ? 1900 : 0;  //
+            var weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek));
+            return formatDate(weekEndDate);
+        }
+
+
+        function Tj_PrePrint() {
+            var starttime = getWeekStartDate();//.Format("MM/dd/yyyy");
+            var endtime = getWeekEndDate();//.Format("MM/dd/yyyy");
+
+            $.ajax({
+                url: '/A6dot2/Tj_PrePrintIndex',
+                type: 'post',
+                data: {
+                    "starttime": starttime,
+                    "endtime": endtime
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var itemHtml = "<table id=\"testTj\" width=\"100%\"  border=1 cellpadding=\"1\" style=\"min-height:100px\"> <thead> <tr><th data-align=\"center\">片区名称</th> <th  data-align=\"center\">片区超时未换油设备数</th><th  data-align=\"center\">车间名称</th> <th  data-align=\"center\" >车间超时未换油设备数</th><th  data-align=\"center\" >装置名称</th> <th  data-align=\"center\">装置超时未换油设备数</th></tr>";
+
+                    for (i = 0; i < data.length ; i++) {
+
+                        for (var j = 0; j < data[i].row_ZzInfo.length; j++) {
+                            itemHtml = itemHtml + "<tr >";
+                            if (j == 0) {
+                                itemHtml = itemHtml + " <th rowspan=\"" + data[i].row_PqInfo.cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\" >" + data[i].row_PqInfo.cellName + "</th>";
+                                itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_PqInfo.cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\"><a  onclick=\"Tj_detail('" + data[i].row_PqInfo.cellId + "','" + data[i].starttime + "','" + data[i].endtime + "')\">" + data[i].row_PqInfo.cellNum + "</a></th>";
+                            }
+                            if (j < data[i].row_CjInfo.length) {
+                                itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_CjInfo[j].cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\">" + data[i].row_CjInfo[j].cellName + "</th>";
+                                itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_CjInfo[j].cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\" >" + data[i].row_CjInfo[j].cellNum + "</th>";
+                            }
+
+                            itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_ZzInfo[j].cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\">" + data[i].row_ZzInfo[j].cellName + "</th>";
+                            itemHtml = itemHtml + " <th  rowspan=\"" + data[i].row_ZzInfo[j].cellSpanNum + "\" data-valign=\"middle\" data-align=\"center\">" + data[i].row_ZzInfo[j].cellNum + "</th>";
+
+                            itemHtml = itemHtml + "</tr >";
+                        }
+
+
+                    }
+                    itemHtml = itemHtml + "</thead></table>";
+
+                    $("#TJResult").empty().append(itemHtml);
+
+                    document.getElementById("TJdetail_Div").style.visibility = "hidden";
+
+
+
+
+                }
+            ,
+                error: function (err) {
+                    alert(err.toString());
+                }
+            });
+
+        };
+
+        function Tj_detail(pqName, starttime, endtime) {
+
+            var str = "/A6dot2/CQ_detail?pqName=" + pqName + "&starttime=" + starttime + "&endtime=" + endtime;
+            $('#TjDetail_datatable').DataTable().ajax.url(str).load();
+            document.getElementById("TJdetail_Div").style.visibility = "visible";
+
+        }
+        function out_excel() {
+            var cols1 = "";
+            var cols3 = "";
+            var cols5 = "";
+
+            //列1的值
+            $("#testTj tr").each(function () {
+                var text = $(this).children("th:eq(1)").text();
+                cols1 += text + ",";
+            })
+            cols1 = cols1.length > 0 ? cols1.substring(0, cols1.length - 1) : "";
+
+            //列3的值
+            $("#testTj tr").each(function () {
+                var text = $(this).children("th:eq(3)").text();
+                cols3 += text + ",";
+            })
+            cols3 = cols3.length > 0 ? cols3.substring(0, cols3.length - 1) : "";
+            //列4的值
+            $("#testTj tr").each(function () {
+                var text = $(this).children("th:eq(5)").text();
+                cols5 += text + ",";
+            })
+            cols5 = cols5.length > 0 ? cols5.substring(0, cols5.length - 1) : "";
+
+            console.log("cols1:" + cols1 + ";" + "cols3:" + cols3 + ";" + "cols5:" + cols5);
+
+
+            alert("表格导出后请核对数据是否一致！");
+            $.ajax({
+                type: 'POST',
+                url: '/A6dot2/out_excel',
+                data: {
+                    json1: '{cols1: "' + cols1
+                        + '", cols3: "' + cols3
+                         + '", cols5: "' + cols5
+                        + '"}'
+                },
+                success: function (data) {
+                    //alert(data);
+                    location.href = data;
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        }
+    </script>
+}
+

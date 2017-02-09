@@ -1,0 +1,115 @@
+﻿@model WebApp.Controllers.A5dot1Controller.PqcheckModel
+@{
+    ViewBag.Title = "HistoryCheck";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- timeline time label -->
+               
+                <li class="time-label">
+                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#1" aria-expanded=true aria-controls="1">
+                        @Model.a5dot1Tab1.pqCheckTime - 可靠性工程师检查
+                    </a>
+                </li>
+
+                    <li class="collapse" id="1">
+                        <i class="fa fa-camera bg-purple"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"> @Model.a5dot1Tab1.pqCheckTime</i>操作用户： @Model.a5dot1Tab1.pqUserName</span>
+                            <h3 class="timeline-header lead"><span class="lead" style="color:red">可靠性工程师检查</span></h3>
+                            <div class="timeline-body">
+                                <table class="table  table-hover table-bordered">
+                                    <tbody>
+                                        
+                                        <tr class="info">
+                                            <th>设备工艺编号</th>
+                                            <td>@Model.a5dot1Tab1.sbGyCode</td>
+                                        </tr>
+                                        <tr class="info">
+                                            <th>设备编号</th>
+                                            <td>@Model.a5dot1Tab1.sbCode</td>
+                                        </tr>
+                                        
+                                        <tr class="info">
+                                            <th>片区检查结果（是否已整改）</th>
+                                            <td>是</td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </li>
+
+                <li class="time-label">
+                    <a class="btn btn-primary" role="button" data-toggle="collapse" href="#2" aria-expanded=true aria-controls="2">
+                        @Model.a5dot1Tab1.zzSubmitTime - 现场工程师提报
+                    </a>
+                </li>
+
+                <li class="collapse" id="2">
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"> @Model.a5dot1Tab1.zzSubmitTime</i>操作用户： @Model.a5dot1Tab1.zzUserName</span>
+                        <h3 class="timeline-header lead"><span class="lead" style="color:red">现场工程师提报</span></h3>
+                        <div class="timeline-body">
+                            <table class="table  table-hover table-bordered">
+                                <tbody>
+
+                                    <tr class="info">
+                                        <th>车间名称</th>
+                                        <td>@Model.a5dot1Tab1.cjName</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>装置名称</th>
+                                        <td>@Model.a5dot1Tab1.zzName</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>设备工艺编号</th>
+                                        <td>@Model.a5dot1Tab1.sbGyCode</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>设备编号</th>
+                                        <td>@Model.a5dot1Tab1.sbCode</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>设备型号</th>
+                                        <td>@Model.a5dot1Tab1.sbType</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th>不完好内容</th>
+                                        <td>@Model.a5dot1Tab1.notGoodContent</td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </li>
+                
+
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+
+
+

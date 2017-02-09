@@ -1,0 +1,588 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="~/Plugins/uploadify.css">
+    <style type="text/css">
+        tr.selected {
+            background-color: #B0BED9;
+        }
+    </style>
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="col-md-3">
+        <div class="box box-primary">
+            <div class="box-header with-border bg-gray">
+                <h3 class="box-title">年度总结与规划管理目录</h3>
+            </div>
+            <div class="box-body no-padding">
+                <div class="btn-group">
+                    <button id="AddCatalog" class="btn btn-tumblr btn-sm" data-toggle="modal" data-target="#AddCataModal" title="添加">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <div class="modal fade" id="AddCataModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aira-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">添加规划总结分类</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+                                            <label for="parent_input" class="col-sm-3 control-label">上一级分类</label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" class="from-control col-sm-9" id="parent_input" width="100%" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newcat_input" class="col-sm-3 control-label">新分类</label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" class="from-control col-sm-12" id="newcat_input" placeholder="输入新的规划总结分类..." />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">CLose</button>
+                                    <button type="button" class="btn btn-primary" onclick="SaveAddCata()">确定保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="ModifyCatalog" class="btn btn-info btn-sm" title="修改" data-target="#ModifyCataModal" data-toggle="modal">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                    <div class="modal fade" id="ModifyCataModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aira-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">添加规划总结分类</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal">
+                                        <label id="Modify_ID" style="display:none"></label>
+                                        <div class="form-group">
+                                            <label for="Old_Name" class="col-sm-3 control-label">分类名称</label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" class="from-control col-sm-9" id="Old_Name" width="100%" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="New_Name" class="col-sm-3 control-label">新分类名称</label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" class="from-control col-sm-12" id="New_Name" placeholder="输入新的规划总结分类名..." />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">CLose</button>
+                                    <button type="button" class="btn btn-primary" onclick="ModifyCata($('#Modify_ID').html(), $('#New_Name').val())" id="SaveModify">确定保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="RemoveCatalog" class="btn btn-warning btn-sm" onclick="DeleteCata()" title="删除">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12" id="treeview1"> </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="box">
+            <div class="box-header with-border bg-gray">
+                <h3 class="box-title">规划总结列表</h3>
+            </div>
+
+            <div class="box-body">
+                <div class="btn-group">
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#AddFileModel" title="添加"><i class="fa fa-plus"></i></button>
+                    <!--文件上传-->
+                    <div class="modal fade" id="AddFileModel" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aira-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">添加规划总结</h4>
+                                </div>
+                                <form id="AddFileForm" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                    <label id="Parent_CatalogID" style="display:none"></label>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="FileCataName" class="col-sm-3 control-label">所属分类</label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" class="from-control col-sm-9" id="FileCataName" width="100%" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="New_Name" class="col-sm-3 control-label">规划总结</label>
+
+                                            <div class="col-sm-9">
+                                                <input type="file" name="file" class="from-control col-sm-12 " id="New_File" multiple="true" placeholder="选择规划总结..." />
+                                            </div>
+                                        </div>
+                                        <div class="progress progress-sm active" id="progress_upload" style="display:none">
+                                            <div id="UP_PRO" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                                                <span class="sr-only">20% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <button type="button" class="btn btn-primary" onclick="UploadFile($('#Parent_CatalogID').html())" id="SaveAddFile">保存</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--文件上传结束-->
+                    <button class="btn btn-default btn-sm" title="删除" onclick="DelFileModalShow()"><i class="fa fa-trash-o"></i></button>
+                    <!--文件删除-->
+                    <div class="modal fade" id="DelFileModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aira-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">删除规划总结</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <label id="DelFileID" style="display:none"></label>
+                                    <h4>确定要删除<label id="DelFile_Name">aaaa</label>?</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" onclick="DelFile($('#DelFileID').html())">确定</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--文件删除结束-->
+                </div><!-- /.btn-group -->
+                <table id="file_table" class="table table-hover table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>上传人</th>
+                            <th>
+                                规划总结名称
+                            </th>
+                            <th>更新日期</th>
+                            <th>查看/下载</th>
+                        </tr>
+                    </thead>
+                </table>
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+@section js {
+    <!-- Page script -->
+
+    <script src="~/Plugins/jquery.uploadify-3.1.min.js"></script>
+
+
+
+
+    <script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+
+
+    <script type="text/javascript">
+        var catalogID = -1;
+        function DelFileModalShow() {
+            var nTrs = $('#file_table').DataTable().row('.selected').data();
+            if (nTrs == null || typeof (nTrs) == 'undefined') {
+                return;
+            }
+            $('#DelFileID').html(nTrs.fID);
+            $('#DelFile_Name').html(nTrs.fName);
+            $('#DelFileModal').modal('show');
+        };
+        function DelFile(fId) {
+            $.ajax({
+                type: 'POST',
+                url: '/A2dot2/DelFileById',
+                data: {
+                    fileID: fId
+                },
+                success: function (result) {
+                    $('#DelFileModal').modal('hide');
+                    $('#file_table').DataTable().ajax.reload();
+                }
+            });
+        };
+
+        function ModifyCata(id, name) {
+            $.ajax({
+                type: 'POST',
+                url: '/A2dot2/ModifyFileCatalog',
+                data: {
+                    ID: id,
+                    newName: name
+                },
+                success: function (result) {
+                    $('#ModifyCataModal').modal('hide');
+                    $('#treeview1').treeview({ data: getTree() });
+                }
+            });
+        };
+
+        function SaveAddCata() {
+            var sNode = $('#treeview1').treeview('getSelected', -1);
+
+            var pID = -1;
+            if (sNode.length == 0) {
+                pID = -1;
+            }
+            else {
+                pID = sNode[0].tags[0];
+            }
+
+            var addName = $('#newcat_input').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/A2dot2/AddFileCatalog',
+                data: {
+                    parentID: pID,
+                    newCataName: addName
+                },
+                success: function (result) {
+                    $('#AddCataModal').modal('hide');
+                    $('#treeview1').treeview({ data: getTree() });
+                }
+            });
+        };
+
+        function DeleteCata() {
+            var sNode = $('#treeview1').treeview('getSelected', -1);
+
+            var pID = -1;
+            if (sNode.length == 0) {
+                alert('请选择一个规划总结分类');
+                return;
+            }
+            else {
+                pID = sNode[0].tags[0];
+            }
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/A2dot2/DeleteFileCatalog',
+                data: {
+                    cataID: pID
+                },
+                success: function (result) {
+                    if (result == 'False')
+                        alert('不能删除非空规划总结类别');
+                    $('#treeview1').treeview({ data: getTree() });
+                }
+            });
+        };
+
+        function getTree() {
+            $.ajax({
+                type: 'POST',
+                url: '/A2dot2/tree',
+                // data: { flowname: flow_name },
+
+                success: function (result) {
+
+
+                    var json = eval('(' + result + ')');
+
+
+                    //初始显示时折叠父节点
+                    $('#treeview1').treeview('collapseAll', {
+                        silent: true
+                    });
+
+                    $('#treeview1').treeview({
+                        data: json,
+                        enableLinks: true
+                    });
+                    $('#treeview1').treeview('collapseAll', { silent: true });
+                    $('#treeview1').on('nodeSelected', function (event, data) {
+                        catalogID = data.tags[0];
+
+                        $('#file_table').DataTable().ajax.url("/A2dot2/GetFilesLIst?cataID=" + catalogID).load();
+                    });
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+            // Some logic to retrieve, or generate tree structure;
+        };
+
+
+        $(document).ready(function () {
+
+
+
+            $('#treeview1').treeview({
+                data: getTree()
+            });
+
+
+
+            var table = $('#file_table').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "createdRow": function (row, data, index) {
+                    var item = $('<i></i>');
+                    item.addClass('fa fa-fw');
+
+                    var link = $('<a href=\"' + data.fPath + '\\' + data.fRName + '\" target=\"_blank\"><i class=\"fa fa-fw fa-link\"></i></a>')
+                    if (data.ext == '.pdf') {
+                        item.addClass('fa-file-pdf-o');
+                    }
+                    else if (data.ext == '.doc') {
+                        item.addClass('fa-file-word-o');
+                    }
+                    else if (data.ext == '.docx') {
+                        item.addClass('fa-file-word-o');
+                    }
+                    else if (data.ext == '.rar') {
+                        item.addClass('fa-file-zip-o');
+                    }
+                    else if (data.ext == '.zip') {
+                        item.addClass('fa-file-zip-o');
+                    }
+                    else if (data.ext == '.png') {
+                        item.addClass(' fa-file-image-o');
+                    }
+                    else if (data.ext == '.bmp') {
+                        item.addClass(' fa-file-image-o');
+                    }
+                    else if (data.ext == '.jpg') {
+                        item.addClass(' fa-file-image-o');
+                    }
+                    else if (data.ext == '.ppt') {
+                        item.addClass(' fa-file-powerpoint-o');
+                    }
+                    else if (data.ext == '.pptx') {
+                        item.addClass(' fa-file-powerpoint-o');
+                    }
+                    else {
+                        item.addClass('fa-file-code-o');
+                    }
+                    $('td', row).eq(0).append(item);
+                    $('td', row).eq(4).append(link);
+                },
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": "/A2dot2/GetFilesLIst?cataID=" + catalogID,
+                    "type": "POST"
+
+                },
+                "columns": [
+                    {
+                        "class": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    },
+                    { "data": 'fSubmiter' },
+                    { "data": 'fName' },
+                    { "data": 'fTime' },
+                    {
+                        "class": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    }
+                ]
+            });
+            $('#AddCataModal').on('show.bs.modal', function (event) {
+                var sNode = $('#treeview1').treeview('getSelected', -1);
+
+                if (sNode.length == 0) {
+                    $('#parent_input').val('root');
+                }
+                else {
+                    $('#parent_input').val(sNode[0].text);
+                }
+            });
+            $('#ModifyCataModal').on('show.bs.modal', function (event) {
+                var sNode = $('#treeview1').treeview('getSelected', -1);
+
+                if (sNode.length == 0) {
+                    alert('请选择一个规划总结分类');
+                    $('#SaveModify').addClass('disabled');
+                    $('#SaveModify').attr('disabled', true);
+                }
+                else {
+                    $('#Old_Name').val(sNode[0].text);
+                    $('#Modify_ID').html(sNode[0].tags[0]);
+                    $('#SaveModify').removeClass('disabled');
+                    $('#SaveModify').attr('disabled', false);
+                }
+            });
+            $('#AddFileModel').on('show.bs.modal', function (event) {
+                var sNode = $('#treeview1').treeview('getSelected', -1);
+                var file = document.getElementById("New_File");
+                $('#progress_upload').hide();
+                if (file.outerHTML) {
+                    file.outerHTML = file.outerHTML;
+                } else { // FF(包括3.5)
+                    file.value = "";
+                }
+                $('#UP_PRO').css('width', '0%');
+                if (sNode.length == 0) {
+                    alert('请选择一个规划总结分类');
+                    $('#SaveAddFile').addClass('disabled');
+                    $('#SaveAddFile').attr('disabled', true);
+                }
+                else {
+                    $('#FileCataName').val(sNode[0].text);
+                    $('#Parent_CatalogID').html(sNode[0].tags[0]);
+                    $('#SaveAddFile').removeClass('disabled');
+                    $('#SaveAddFile').attr('disabled', false);
+                }
+            });
+
+            $('#file_table tbody').on('click', 'tr', function () {
+
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+
+        });
+
+        function UploadFile(pCID) {
+
+            //alert($("#New_File")[0].files[0].name);
+            //alert($("#New_File")[0].files[1].name);//lastModifiedDate，name，size，type，webkitRelativePath。
+
+
+            var obj = $('form').get(2);
+            //var obj = $("#New_File")[0].files[1];
+            var fromdata = new FormData(obj);
+            fromdata.append('pCataID', pCID);
+
+            $.ajax({
+                url: '/Common/UploadForFileManage2',  //server script to process data
+                type: 'POST',
+                xhr: function () {  // custom xhr
+                    myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // check if upload property exists
+                        myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // for handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                //Ajax事件
+                beforeSend: function () {
+                    $('#SaveAddFile').attr({ 'disabled': 'disabled' });
+                    $('#progress_upload').show();
+                    $('#UP_PRO').css('width', '0%');
+                },
+                success: function (data) {
+                    $('#UP_PRO').css('width', '100%');
+                    $('#SaveAddFile').removeAttr('disabled');
+                    $('#AddFileModel').modal('hide');
+                    $('#file_table').DataTable().ajax.reload();
+                },
+                error: function (data) {
+                    alert(JSON.stringify(data));
+                },
+                data: fromdata,
+                //Options to tell JQuery not to process data or worry about content-type
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+
+
+
+
+
+
+
+
+
+        };
+
+        function progressHandlingFunction(e) {
+            if (e.lengthComputable) {
+                var precent = (e.loaded / e.total) * 100;
+                $('#UP_PRO').css('width', precent + '%');
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+}

@@ -1,0 +1,10 @@
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\bin\x86\Debug\EquipDAL.dll
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\bin\x86\Debug\EquipDAL.pdb
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\bin\x86\Debug\EntityFramework.dll
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\bin\x86\Debug\EquipModel.dll
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\bin\x86\Debug\EquipModel.pdb
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\bin\x86\Debug\EntityFramework.xml
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\bin\x86\Debug\zh-Hans\EntityFramework.resources.dll
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\obj\x86\Debug\EquipDAL.csprojResolveAssemblyReference.cache
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\obj\x86\Debug\EquipDAL.dll
+D:\equipweb0702\equipweb5.6完整\equipweb\1\CODE\WebApp\EquipDAL\obj\x86\Debug\EquipDAL.pdb

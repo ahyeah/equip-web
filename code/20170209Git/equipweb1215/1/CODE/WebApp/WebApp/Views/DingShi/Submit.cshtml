@@ -1,0 +1,706 @@
+﻿@model WebApp.Controllers.CommonController.ZzSubmitModel
+@{
+    ViewBag.Title = "TimerJobs";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@section css{
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/css/buttons.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/css/editor.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/css/rowReorder.bootstrap.min.css">
+}
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="box">
+                <h3 class="box-title"><span style="color: red; text-align: center;">发起定时性事务</span></h3>
+                <div class="box-body">
+                    <form class="form-horizontal" role="form">
+                        <input type="text" id="wef_id" hidden="hidden" value="@ViewBag.WF_NAME">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">定时性事务名称：</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="TempMissionName" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">事务类别：</label>
+                            <div class="col-sm-10">
+                                <select class="form-control select2" style="width: 100%;" id="MissionCategory" onchange="Sw_Slect()">
+                                    <option value="">请选择</option>
+                                    <option value="A5dot1dot2">A5.1设备完好</option>
+                                    <option value="A5dot2dot2">A5.2竖向管理</option>
+                                    <option value="A6dot2">A6.2润滑-机组类</option>
+
+                                    <option value="A6dot3">A6.3备用设备管理</option>
+                                    <option value="A7dot1dot1">A7.1特护报表</option>
+                                    <option value="A11dot2dot2">A11.2隐患排查类</option>
+                                    <option value="A12dot2dot1">A12.2工艺变更申请</option>
+                                    <option value="A14dot1">A14.1DRBPM计划</option>
+                                    <option value="A14dot2">A14.2每月重点设备维护清单</option>
+                                    <option value="A14dot3dot2">A14.3计划管理</option>
+                                    <option value="A15dot1">A15.1KPI月报</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group" id="Cj_Seclet">
+                            <label class="col-sm-2 control-label">申请车间：</label>
+                            <div class="col-sm-10">
+                                <select class="form-control select2 " multiple="multiple" style="width: 100%;" id="cjname">
+                                    <option value="2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18">全车间</option>
+
+                                    @if (Model.UserHasEquips != null)
+                                    {
+                                        foreach (var item in Model.UserHasEquips)
+                                        {
+                                            <option value="@item.EA_Id">@item.EA_Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group" id="Zz_Seclet">
+                            <label class="col-sm-2 control-label">申请装置：</label>
+                            <div id="Zz_Select" class="col-sm-10">
+                                <select class="form-control select2" multiple="multiple" style="width: 100%;" id="zzId" name="zzname">
+                                    @*<option value="">请选择</option>*@
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">定时时间：</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control pull-right active" id="reservationtime" type="text" onfocus="DingshiTime()">
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control pull-right active" style="display:none" id="cornexpress" type="text">
+                    </form>
+                    @*<div class="box">
+                            <div class="box-body">
+                                <table id="jobs_table" class="table table-hover table-bordered display">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>ID</th>
+                                            <th>任务名称</th>
+                                            <th>任务类型</th>
+                                            <th>关联工作流</th>
+                                            <th>状态</th>
+                                            <th>上次执行时间</th>
+                                            <th>计划时间</th>
+                                            <th>创建时间</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>*@
+
+                    <form role="form">
+                        <div class="box-footer">
+                            <button class="btn btn-primary col-sm-offset-2" type="button" onclick="submit_click()">确定提交</button>
+                            <button class="btn btn-primary col-sm-offset-1" type="button" onclick="cancel_click()">取消提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+
+</section>
+<!--对话框-->
+<!--计划时间设置对话框-->
+<div id="ModfiyTimer" class="modal" style="display:none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="关闭">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">计划执行时间设置</h4>
+            </div>
+            <div class="modal-body">
+                <p id="corn_value" style="display:none"></p>
+                <div class="row">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab_minute" data-toggle="tab">分</a></li>
+                            <li><a href="#tab_hour" data-toggle="tab">小时</a></li>
+                            <li><a href="#tab_date" data-toggle="tab">天</a></li>
+                            <li><a href="#tab_month" data-toggle="tab">月</a></li>
+                            <li><a href="#tab_week" data-toggle="tab">周</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_minute">
+                                <form role="form">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" value="0" name="Minute_Select">每分钟
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Minute_Select" value="1">特定时间
+                                            <select id="Speciry_Minute" class="select2" multiple="multiple" data-placeholder="选择具体分钟" style="width: 100%;">
+                                                @for (int i = 0; i < 60; i++)
+                                                {
+                                                    <option value="@i">@i</option>
+                                                }
+                                            </select>
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="tab_hour">
+                                <form role="form">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" value="0" name="Hour_Select">每小时
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Hour_Select" value="1">特定时间
+                                            <select id="Speciry_Hour" class="select2" multiple="multiple" data-placeholder="选择具体小时" style="width: 100%;">
+                                                @for (int i = 0; i < 24; i++)
+                                                {
+                                                    <option value="@i">@i</option>
+                                                }
+                                            </select>
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="tab_date">
+                                <form role="form">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" value="0" name="Date_Select">每天
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Date_Select" value="1">特定日期
+                                            <select id="Speciry_Date" class="select2" multiple="multiple" data-placeholder="选择具体日期" style="width: 100%;">
+                                                @for (int i = 1; i < 32; i++)
+                                                {
+                                                    <option value="@i">@i</option>
+                                                }
+                                            </select>
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="tab_month">
+                                <form role="form">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" value="0" name="Month_Select">每月
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Month_Select" value="1">特定日期
+                                            <select id="Speciry_Month" class="select2" multiple="multiple" data-placeholder="选择具体月份" style="width: 100%;">
+                                                @for (int i = 1; i < 13; i++)
+                                                {
+                                                    <option value="@i">@i</option>
+                                                }
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="radio" style="display:none">
+                                        <label>
+                                            <input type="radio" name="Month_Select" value="2">不指定
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="tab_week">
+                                <form role="form">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" value="0" name="Week_Select">每周
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Week_Select" value="1">特定日期
+                                            <select id="Speciry_Week" class="select2" multiple="multiple" data-placeholder="选择具体日期" style="width: 100%;">
+                                                <option value="0">星期天</option>
+                                                <option value="1">星期一</option>
+                                                <option value="2">星期二</option>
+                                                <option value="3">星期三</option>
+                                                <option value="4">星期四</option>
+                                                <option value="5">星期五</option>
+                                                <option value="6">星期六</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="radio" style="display:none">
+                                        <label>
+                                            <input type="radio" name="Week_Select" value="2">不指定
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group col-sm-10 col-sm-offset-1">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary">计划时间</button>
+                        </div>
+                        <input id="corn_logic" type="text" class="form-control" readonly="readonly">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">放弃</button>
+                <button type="button" class="btn btn-primary" onclick="UploadTriggerTiming()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section js {
+    <!-- Page script -->
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/dataTables.editor.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/Editor/js/editor.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/AdminLTE/plugins/datatables/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/moment.js"></script>
+    <script src="~/Plugins/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+
+    <script type="text/javascript">
+        var AllZz = "";//选择车间后存其中的所有装置
+
+        function list_Zz() {
+            if ($('#cjname').val() != "" || $('#cjname').val() != null) {
+                //alert("here");
+                //alert($('#cjname').val());
+
+                aa = $('#cjname').val().toString();
+                $.ajax({
+                    url: '/Common/Cj_ZzsForA16',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "cj_id": aa },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"qwdasd\">" + "全装置" + "</option>";
+                            var AllZzTemp = "";
+                            for (var i = 0; i < backdata.length; i++) {
+
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Zz_Id + "\">" + backdata[i].Zz_Name + "</option>";
+
+                                AllZzTemp += backdata[i].Zz_Id + ",";
+
+                            }
+                            AllZz = AllZzTemp;
+                            $('#zzId').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+
+            }
+        };
+        function Zz_selected() {
+            if ($('#zzId').val() != "") {
+                $.ajax({
+                    url: '/Common/Zz_Equips',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "Zz_id": $('#zzId').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            for (var i = 0; i < backdata.length; i++) {
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Equip_Id + "\">" + backdata[i].Equip_GyCode + "</option>";
+                            }
+                            $('#Equip_GyCode').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+            }
+        };
+        $('.select2').select2();
+        //车间下拉框的选择值发生变化时，响应
+        $("#cjname").select2().on('change', function (e) {
+            //alert("point1");
+            //alert($('#cjname').val());
+            list_Zz();
+        });
+        function submit_click() {
+            if ($("#TempMissionName").val() == "") {
+                alert("请填写定时性事物名称");
+
+                return false;
+            }
+            if ($("#MissionCategory").val() == "") {
+                alert("请选择事物类别");
+                return false;
+            }        
+            var Zz_id;
+            if ($('#MissionCategory').val() == "A6dot2") {
+                Zz_id = ""
+
+            } else {
+                Zz_id = $('#zzId').val();
+            }
+            
+            var Cj_id;
+            if ($('#MissionCategory').val() == "A7dot1dot1" || $('#MissionCategory').val() == "A15dot1") {
+                Cj_id = "";
+                Zz_id = "";
+
+            } else {
+                Cj_id = $('#cjname').val();
+            }
+            if (Cj_id == null) {
+                alert("请选择车间");
+                return false;
+            }
+            if (Zz_id == null) {
+                alert("请选择装置");
+                return false;
+            }
+            if ($('#zzId').val() != null)
+                {
+            if ($('#zzId').val().indexOf("qwdasd") != -1)
+                Zz_id = AllZz;
+            }
+            
+            
+            if (!confirm('确定要提交吗？'))
+                return false;
+            //   alert($("#cjname").val());
+            $.ajax({
+                type: 'POST',
+                url: '/DingShi/DSJob_Submit',
+                data: {
+                    json1: '{  Job_Name: "' + $("#TempMissionName").val()
+                         + '", Work_Name: "' + $('#MissionCategory').val()
+                         + '", Cj_Name: "' + Cj_id
+                         + '", Zz_Name: "' + Zz_id
+                         + '", corn_express: "' + $('#cornexpress').val()//corn表达式
+                         + '", reservationtime: "' + $('#reservationtime').val()
+                         + '"}'
+                },
+                success: function (data) {
+                    alert(data);
+                    location.href = "/DingShi/Index";
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        };
+        function cancel_click() {
+            submit_done = 0;
+            if (!confirm('确定要取消吗？'))
+                return false;
+            location.href = "/DingShi/Index";
+        };
+        //选择事物类别后，根据事物类别的结果是否显示装置项
+        function Sw_Slect() {
+            if ($('#MissionCategory').val() == "A6dot2") {
+                $('#Zz_Seclet').hide();
+                $('#Cj_Seclet').show();
+            }
+            else if ($('#MissionCategory').val() == "A7dot1dot1" || $('#MissionCategory').val() == "A15dot1") {
+                $('#Zz_Seclet').hide();
+                $('#Cj_Seclet').hide();
+
+            }
+            else {
+                $('#Cj_Seclet').show();
+                $('#Zz_Seclet').show();
+            }
+        }
+        function UploadTriggerTiming() {
+
+            $('#reservationtime').val($('#corn_logic').val());
+
+            //alert($('#cornexpress').val());
+
+            $('#ModfiyTimer').modal('hide');
+        }
+
+        function DingshiTime() {
+            if ($('#corn_value').val() != "")
+                var corn_str = $('#corn_value').val();
+            else
+                var corn_str = "0 0 0 * * ?";
+            $('#corn_value').html(corn_str);
+            $('#corn_logic').val(parseCorn(corn_str));
+
+            $('#ModfiyTimer').modal('show');
+
+        }
+
+        $('#reservationtime').val(parseCorn("0 0 0 * * ?"));
+        if ($("input:radio[name='Minute_Select']:checked").val() == 0)
+            $("#Speciry_Minute").attr('disabled', true);
+        function buildCorn(val) {
+            var corn_str = '';
+            for (var i = 0; i < val.length; i++) {
+                if (i != val.length - 1) {
+                    corn_str = corn_str + val[i] + ' ';
+                }
+                else {
+                    corn_str = corn_str + val[i];
+                }
+            }
+            return corn_str;
+        }
+        //将CornExpress解析到UI界面
+        function parseCornToUI(val) {
+            var pars = val.split(' ');
+            var perfix = ['', 'Minute', 'Hour', 'Date', 'Month', 'Week'];
+            for (var i = 1; i <= 5; i++) {
+                if (pars[i] == '*') {
+                    SetRadioChecked(perfix[i] + '_Select', '0');
+                }
+                else if (pars[i] == '?') {
+                    SetRadioChecked(perfix[i] + '_Select', '2');
+                }
+                else {
+                    SetRadioChecked(perfix[i] + '_Select', '1');
+
+                    innerPars = pars[i].split(',');
+                    $('#Speciry_' + perfix[i]).select2('val', innerPars)
+                }
+            }
+        }
+
+        //用于响应计划时间设置对话框中Radio按钮的选择发生变化时
+        $("input:radio").change(function (e) {
+            var check_val = $("input:radio[name='" + e.currentTarget.name + "']:checked").val();
+            var corn_str = $('#corn_value').html();
+            var c_strs = corn_str.split(' ');
+
+            var ind = -1;
+            var target = '';
+            if (e.currentTarget.name == 'Minute_Select') {
+                target = 'Speciry_Minute';
+                ind = 1;
+                init = '0';
+            }
+            else if (e.currentTarget.name == 'Hour_Select') {
+                target = 'Speciry_Hour';
+                ind = 2;
+                init = '0';
+            }
+            else if (e.currentTarget.name == 'Date_Select') {
+                target = 'Speciry_Date';
+                ind = 3;
+                init = '1';
+            }
+            else if (e.currentTarget.name == 'Month_Select') {
+                target = 'Speciry_Month';
+                ind = 4;
+                init = '1';
+            }
+            else if (e.currentTarget.name == 'Week_Select') {
+                target = 'Speciry_Week';
+                ind = 5;
+                init = '0';
+            }
+            else {
+                return;
+            }
+
+            if (check_val == 0) {
+                $("#" + target).attr('disabled', true);
+                c_strs[ind] = '*';
+                if (e.currentTarget.name == 'Date_Select') {
+                    var list = document.getElementsByName("Week_Select");
+                    for (var x = 0; x < list.length; x++) {
+                        if (list[x].attributes['value'].value == '2')
+                            list[x].checked = true;
+                        else
+                            list[x].checked = false;
+                    }
+                    c_strs[5] = '?';
+                }
+                if (e.currentTarget.name == 'Week_Select') {
+                    var list = document.getElementsByName("Date_Select");
+                    for (var x = 0; x < list.length; x++) {
+                        if (list[x].attributes['value'].value == '2')
+                            list[x].checked = true;
+                        else
+                            list[x].checked = false;
+                    }
+                    c_strs[3] = '?';
+                }
+            }
+            else if (check_val == 1) {
+                $("#" + target).attr('disabled', false);
+                if (e.currentTarget.name == 'Date_Select') {
+                    var list = document.getElementsByName("Week_Select");
+                    for (var x = 0; x < list.length; x++) {
+                        if (list[x].attributes['value'].value == '2')
+                            list[x].checked = true;
+                        else
+                            list[x].checked = false;
+                    }
+                    c_strs[5] = '?';
+                }
+                if (e.currentTarget.name == 'Week_Select') {
+                    var list = document.getElementsByName("Date_Select");
+                    for (var x = 0; x < list.length; x++) {
+                        if (list[x].attributes['value'].value == '2')
+                            list[x].checked = true;
+                        else
+                            list[x].checked = false;
+                    }
+                    c_strs[3] = '?';
+                }
+                var tmp = $('#' + target).select2('val');
+                if (tmp == null)
+                    tmp = [];
+                var tmp1 = '';
+                if (tmp.length == 0)
+                    tmp1 = init;
+
+                for (i = 0; i < tmp.length; i++) {
+                    if (i != tmp.length - 1)
+                        tmp1 = tmp1 + tmp[i] + ',';
+                    else
+                        tmp1 = tmp1 + tmp[i];
+                }
+                c_strs[ind] = tmp1;
+            }
+            else if (check_val == 2) {
+                c_strs[ind] = '?';
+            }
+            else
+                return;
+            corn_str = buildCorn(c_strs);
+            $('#corn_logic').val(parseCorn(corn_str));
+            $('#corn_value').html(corn_str);
+            $('#cornexpress').val(corn_str);
+
+        });
+        $('.select2 #Speciry_Minute,#Speciry_Hour,#Speciry_Date,#Speciry_Month,#Speciry_Week,#Speciry_Minute').select2().on('change', function (e) {
+            var corn_str = $('#corn_value').html();
+
+            var c_strs = corn_str.split(' ');
+            //alert(c_strs);
+            var ind = -1;
+            if (e.currentTarget.id == 'Speciry_Minute') {
+                ind = 1;
+                init = '0';
+            }
+            else if (e.currentTarget.id == 'Speciry_Hour') {
+                ind = 2;
+                init = '0';
+            }
+            else if (e.currentTarget.id == 'Speciry_Date') {
+                ind = 3;
+                init = '1';
+            }
+            else if (e.currentTarget.id == 'Speciry_Month') {
+                ind = 4;
+                init = '1';
+            }
+            else if (e.currentTarget.id == 'Speciry_Week') {
+                ind = 5;
+                init = '0';
+            }
+            else
+                return;
+
+            var tmp = $('#' + e.currentTarget.id).select2('val');
+            if (tmp == null)
+                tmp = [];
+            var tmp1 = '';
+            if (tmp.length == 0)
+                tmp1 = init;
+
+            for (i = 0; i < tmp.length; i++) {
+                if (i != tmp.length - 1)
+                    tmp1 = tmp1 + tmp[i] + ',';
+                else
+                    tmp1 = tmp1 + tmp[i];
+            }
+            c_strs[ind] = tmp1;
+            corn_str = buildCorn(c_strs);
+            $('#corn_logic').val(parseCorn(corn_str));
+            $('#cornexpress').val(corn_str);
+            $('#corn_value').html(corn_str);
+        });
+
+        //计划时间设置事件
+
+        //解析CornExpress为自然语言
+        function parseCorn(val) {
+            var ret = "";
+            var pars = val.split(' ')
+            var tmp = pars[4];
+            pars[4] = pars[5];
+            pars[5] = tmp;
+            var pre = new Array();
+            pre[0] = ['秒', '分', '点', '日', '星期', '月', '年'];
+            pre[1] = ['秒', '分', '小时', '天', '周', '月', '年'];
+            var week = ['日', '一', '二', '三', '四', '五', '六'];
+
+            for (i = 0; i < pars.length; i++) {
+                var ret1 = "";
+                var c = pars[i];
+                var str1 = "";
+                if (c[0] == '*') {
+
+                    k = 1;
+                    str1 = str1 + '每' + pre[k][i];
+                }
+                else if (c[0] == '?') {
+                    str1 = "";
+                }
+                else {
+
+                    k = 0;
+                    if (i == 4) {
+                        cc = c.split(',');
+                        tmp2 = "";
+                        for (kk = 0; kk < cc.length; kk++) {
+                            if (kk == cc.length - 1)
+                                tmp2 = tmp2 + week[parseInt(cc[kk])];
+                            else
+                                tmp2 = tmp2 + week[parseInt(cc[kk])] + ',';
+                        }
+                        str1 = str1 + pre[k][i] + '[' + tmp2 + ']';
+                    }
+                    else
+                        str1 = str1 + '[' + c + ']' + pre[k][i];
+                }
+                ret = str1 + ret;
+            }
+            return ret;
+        }
+
+    </script>
+}

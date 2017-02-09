@@ -1,0 +1,103 @@
+﻿@model WebApp.Controllers.A11dot2Controller.CatalogModel
+@{
+    ViewBag.Title = "CjImplementPlan";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- timeline time label -->
+                <li class="time-label">
+                     <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                                @Model.miModel.WE_Event_Desc
+                           </a>
+                    <span class="bg-red">
+                        23 DEC. 2015
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li id="collapseExample">
+                    <i class="fa fa-envelope bg-blue"></i>
+                    <div class="timeline-item">
+                        
+                        <h3 class="timeline-header"><p class="lead">车间组织和实施应急方案</p></h3>
+                        <div class="timeline-body">
+                            <form role="form" >
+                                <input type="text" id="wef_id"  hidden="hidden" value="@ViewBag.WF_NAME">  
+                                   <div id="CjImplementedPlan"  class="form-group">
+                                    <p class="text-green">车间组织和实施应急方案，是否完成</p>
+                                    <div class="radio" >
+                                        <label>
+                                            <input name="CjImplementedPlan" id="CjImplementedPlanYes" type="radio" value="1" checked="" ">
+                                            已完成 
+                                        </label>
+                                        <label>
+                                            <input name="CjImplementedPlan" id="CjImplementedPlanNo" type="radio" value="0" ">
+                                           未完成
+                                        </label>  
+                                       
+                                    </div>
+                                </div>
+                        
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="button" onclick="submit_click()">确定</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+ 
+</section>
+
+
+@section js{
+<script>
+    function PageLoad() {
+        $("#FaultIntensity").hide();       
+    };
+    $(document).ready(
+        PageLoad());
+
+   
+    function submit_click() {
+        var flow_name = $("#wef_id").val();
+        var ImplementPlan_done = "true";
+        if ($("#CjImplementedPlanNo").attr("checked"))
+            ImplementPlan_done = "false";
+
+        $.ajax({
+            type: 'POST',
+            url: '/A11dot2/submitImplementPlan_signal',
+            data: {
+                json1: '{Flow_Name: "' + flow_name
+                        + '", ImplementPlan_done: "' + ImplementPlan_done + '"}'
+            },
+            success: function (data) {
+                location.href = data;
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+
+    }
+    </script>
+}
+

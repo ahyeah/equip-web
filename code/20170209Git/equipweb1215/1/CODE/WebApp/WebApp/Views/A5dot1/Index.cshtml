@@ -1,0 +1,296 @@
+﻿ @model WebApp.Controllers.A5dot1Controller.indexmodel  
+@{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    }
+
+    <style type="text/css">
+        tr.MM_hidden {
+            display: none;
+        }
+
+        /*tr.MM_shown {
+        }*/
+
+        tr.selected {
+            background-color: #acbad4;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+
+
+    <section class="content" style="background-color: #ecf0f5;">
+        <div class="box box-primary">
+            <div class="box-header with-border bg-gray">
+                <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A5.1-设备完好</h3>
+            </div>
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a id="Add" class="btn btn-block btn-social btn-warning" target="_blank" href='/files/A5dot1.pdf'>
+                            <i class="fa fa-pencil-square-o"></i>流程图
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <p></p>
+                    </div>
+                </div>
+                @if (Model.xcgcs == 1 || Model.kxxgcs == 1)
+                {
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a id="Add" class="btn btn-block btn-social btn-info" onclick="Create()">
+                            <i class="fa fa-pencil-square-o"></i>设备不完好问题提报
+                        </a>
+                    </div>
+                </div>
+                }
+                 <div class="row">
+                  <div class="col-xs-6 col-md-3">
+                  <p></p>
+                 </div>
+                </div>
+       @if(Model.kxxgcs==1)
+                {
+               <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a id="PqSummary" class="btn btn-block btn-social btn-info" onclick="JavaScript: location.href='PqSummary'">
+                            <i class="fa fa-pencil-square-o"></i>可靠性工程师选择最差五台机泵
+                        </a>
+                    </div>
+                </div>
+}
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <p></p>
+                    </div>
+                </div>
+@if(Model.jxdw==1)
+                {
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a id="PqSummary" class="btn btn-block btn-social btn-info" onclick="JavaScript: location.href='JxEdit'">
+                            <i class="fa fa-pencil-square-o"></i>检修单位修改
+                        </a>
+                    </div>
+                </div>
+}
+                 <div class="row">
+                  <div class="col-xs-6 col-md-3">
+                  <p></p>
+                 </div>
+                </div>
+@if(Model.jdc==1)
+                {
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                        <a id="JdcSummary" class="btn btn-block btn-social btn-info" onclick="JavaScript: location.href='JdcSummary'">
+                            <i class="fa fa-pencil-square-o"></i>机动处选择最差十台机泵
+                        </a>
+                    </div>
+                </div>
+}
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <p class="box-title" style="font:bold; color:red">待处理任务列表</p>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table id="example1" class="table table-hover table-bordered">                           
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>装置</th>
+                                        <th>设备工艺编号</th>
+                                        <th>设备编号</th>
+                                        <th>不完好内容</th>
+                                        <th>操作</th>
+                                 </tr>
+                                </thead> 
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <p class="box-title " style="font:bold; color:red">已完成历史任务列表</p>
+            </div>
+            <div class="box-body table-responsive no-padding">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table id="example2" class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>装置</th>
+                                    <th>设备工艺编号</th>
+                                    <th>设备编号</th>
+                                    <th>不完好内容</th>
+                                    <th>查看详情</th>
+                                </tr>
+                             </thead>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+
+
+
+    </section>
+    @section js{
+        <!-- Page script -->
+<script src="~/Plugins/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/js/dataTables.select.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#example1').DataTable({
+                    "columns": [
+                     
+
+                         { "data": null },
+                          { "data": "zzname" },
+                        { "data": "sbgybh" },
+                        { "data": "sbcode" },
+                        { "data": "notgood" },
+                        
+                      {
+                          //"data": "mod_equipcode",
+                          "render": function (data, type, full, meta) {
+
+                              return '<button onclick="JavaScript: location.href=\'Pqcheck?a_id=' + full.a_id + '\'">处理</button>';
+                          }
+                      },
+                    ],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sZeroRecords": "抱歉， 没有找到",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "没有数据",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "sZeroRecords": "没有检索到数据",
+                        "sSearch": "模糊查询:  ",
+                        "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        }
+                    },
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": true,
+                    //"ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "aoColumnDefs": [ { "bSortable": false, "aTargets": [0,3,4,5] }] ,
+                    "ajax": {
+                        "url": "/A5dot1/dcl_list",
+                        "type": "POST"
+                    }
+
+                });
+                var table = $('#example1').DataTable();
+                table.on('order.dt search.dt',
+                       function () {
+                           table.column(0, {
+                               search: 'applied',
+                               order: 'applied'
+                           }).nodes().each(function (cell, i) {
+                               cell.innerHTML = i + 1;
+                           });
+                       }).draw();
+
+                $('#example2').DataTable({
+                    "columns": [
+
+                         { "data": null },
+                          { "data": "zzname" },
+                        { "data": "sbgybh" },
+                        { "data": "sbcode" },
+                        { "data": "notgood" },
+
+                      {
+                          //"data": "mod_equipcode",
+                          "render": function (data, type, full, meta) {
+
+                              return '<button onclick="JavaScript: location.href=\'HistoryCheck?a_id=' + full.a_id + '\'">查看</button>';
+                          }
+                      },
+                    ],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sZeroRecords": "抱歉， 没有找到",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "没有数据",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "sZeroRecords": "没有检索到数据",
+                        "sSearch": "模糊查询:  ",
+                        "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        }
+                    },
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": true,
+                    //"ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "aoColumnDefs": [ { "bSortable": false, "aTargets": [0,3,4,5] }] ,
+                    "ajax": {
+                        "url": "/A5dot1/ycl_list",
+                        "type": "POST"
+                    }
+
+                });
+                var table2 = $('#example2').DataTable();
+                table2.on('order.dt search.dt',
+                       function () {
+                           table2.column(0, {
+                               search: 'applied',
+                               order: 'applied'
+                           }).nodes().each(function (cell, i) {
+                               cell.innerHTML = i + 1;
+                           });
+                       }).draw();
+
+            })
+
+
+            $(function () {
+                $("thead").css("background", "#7CCD7C");
+                $("tbody tr").addClass("info");
+            });
+
+            function Create() {
+           
+                location.href = "Zzsubmit";
+            }
+
+           
+        </script>
+
+
+    }
+
+

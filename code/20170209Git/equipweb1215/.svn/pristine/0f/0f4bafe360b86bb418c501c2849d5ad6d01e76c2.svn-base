@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using EquipDAL.Implement;
+using EquipModel.Context;
+using EquipModel.Entities;
+namespace EquipBLL.AdminManagment
+{
+    class RoleManagment
+    {
+        private Roles R = new Roles();
+        public bool AddPersons(int Role_Id,List<int> PersonIdSet)
+        {
+            try
+            {
+                foreach(var i in PersonIdSet)
+                {
+                    R.AddPerson(Role_Id, i);
+                }
+                return true;
+            }
+            catch { return false; }
+        }
+        public List<Person_Info> getRole_Persons(int Role_Id)
+        {
+            return R.getRole_Persons(Role_Id);
+        }
+
+    }
+}

@@ -1,0 +1,498 @@
+﻿@model WebApp.Controllers.A2Controller.submitmodel
+@{
+    ViewBag.Title = "PqConfirm";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：动专业绩效评估
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">动专业绩效评估</span></h3>
+
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">提交车间</label>
+                                    <div id="Equip_Select" class="col-sm-10">
+                                        <select class="form-control select2" style="width: 100%;" id="cjname" name="cjname" onchange="list_Zz()">
+                                            <option value="">请选择</option>
+                                            @if (Model.UserHasEquips != null)
+                                            {
+                                                foreach (var item in Model.UserHasEquips)
+                                                {
+                                                    <option value="@item.EA_Id">@item.EA_Name</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">提交装置</label>
+                                    <div id="Equip_Select" class="col-sm-10">
+                                        <select class="form-control select2" style="width: 100%;" id="zzId" name="zzname">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">报告类型</label>
+                                    <div id="Equip_Select" class="col-sm-10">
+                                        <select style="width: 100%;" id="reportType" disabled="disabled">
+                                            <option value="月报">月报</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+
+
+
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+
+                        <h3 class="timeline-header"><span class="lead" style="color:red">一、KPI指标</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                <div id="Jxpg" class="form-group">
+                                    <table id="example1" class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>指标类型</th>
+                                                <th>指标名称</th>
+                                                <th>年度目标值</th>
+                                                <th>累计值</th>
+                                                <th>当月完成值</th>
+                                                <th>趋势图</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>KPI</td>
+                                                <td>故障强度扣分</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="gzqdkf" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'equipReliableExponent')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('gzqdkf')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>大机组故障率</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="djzgzl" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'maintainChargeExponent')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('djzgzl')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>故障维修率</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="gzwxl" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'thousandLXBrate')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('gzwxl')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>千台离心泵密封消耗率</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="qtlxbmfxhl" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'thousandColdChangeRate')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('qtlxbmfxhl')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>紧急抢修工时率</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="jjqxgsl" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'instrumentControlRate')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('jjqxgsl')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>工单平均完成时间</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="gdpjwcsj" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'eventNumber')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('gdpjwcsj')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>机械密封平均寿命</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="jxmfpjsm" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'troubleKoufen')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('jxmfpjsm')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>轴承平均寿命</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="zcpjsm" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'troubleKoufen')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('zcpjsm')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>设备完好率</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="sbwhl" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'projectLateRate')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('sbwhl')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>检修一次合格率</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="jxychgl" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'trainAndAbility')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('jxychgl')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>主要机泵平均效率</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="zyjbpjxl" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'trainAndAbility')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('zyjbpjxl')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>机组平均效率</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="jzpjxl" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'trainAndAbility')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('jzpjxl')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>往复机组故障率</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="wfjzgzl" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'trainAndAbility')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('wfjzgzl')">查看</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>年度百台机泵重复检修台次</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="ndbtjbcfjxtc" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'trainAndAbility')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('ndbtjbcfjxtc')">查看</button></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>机泵平均无故障间隔时间MTBF</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><input type="text" name="KPI" id="jbpjwgzjgsjMTBF" class="form-control" placeholder="输入实际值 ..." onchange="vail(this.value, 'trainAndAbility')"></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="graphic_show('jbpjwgzjgsjMTBF')">查看</button></td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                        <form role="form">
+
+                            <div class="box-footer">
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button class="btn btn-primary col-sm-offset-4" type="button" onclick="submit_click()">保存</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </li>
+
+
+
+
+
+
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+<div class="modal fade" id="qst" tabindex="-1" role="dialog"
+     aria-labelledby="qst_title" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;height:800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="qst_title">
+                    趋势图
+                </h4>
+            </div>
+            <div class="modal-body" id="qst_graphic" style="width:700px;height:50%">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+@section js{
+    <script src="~/Scripts/highcharts.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script>
+
+
+        $(function () {
+
+            //Date picker
+            $('#submitTime').datepicker(
+               {
+                   autoclose: true,
+                   beforeShowDay: $.noop,
+                   calendarWeeks: false,
+                   clearBtn: false,
+                   daysOfWeekDisabled: [],
+                   endDate: Infinity,
+                   forceParse: true,
+                   format: 'yyyy-mm-dd',
+                   keyboardNavigation: true,
+                   language: 'zh-CN',
+                   minViewMode: 0,
+                   orientation: "auto",
+                   rtl: false,
+                   startDate: -Infinity,
+                   startView: 0,
+                   todayBtn: false,
+                   todayHighlight: true,
+                   weekStart: 0
+               });
+
+            $('#jdcOperateTime').datepicker(
+               {
+                   autoclose: true,
+                   beforeShowDay: $.noop,
+                   calendarWeeks: false,
+                   clearBtn: false,
+                   daysOfWeekDisabled: [],
+                   endDate: Infinity,
+                   forceParse: true,
+                   format: 'yyyy-mm-dd',
+                   keyboardNavigation: true,
+                   language: 'zh-CN',
+                   minViewMode: 0,
+                   orientation: "auto",
+                   rtl: false,
+                   startDate: -Infinity,
+                   startView: 0,
+                   todayBtn: false,
+                   todayHighlight: true,
+                   weekStart: 0
+               });
+
+        });
+        function list_Zz() {
+            if ($('#cjname').val() != "") {
+                $.ajax({
+                    url: '/Common/Cj_Zzs',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { "cj_id": $('#cjname').val() },
+                    success: function (backdata) {
+                        if (backdata) {
+                            var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                            for (var i = 0; i < backdata.length; i++) {
+                                itemHtml = itemHtml + "<option value=\"" + backdata[i].Zz_Id + "\">" + backdata[i].Zz_Name + "</option>";
+                            }
+                            $('#zzId').html(itemHtml);
+                        }
+                        else {
+                            alert("error!!!");
+                        }
+                    }
+                })
+            }
+        };
+        function vail(value, id) {
+
+            if (value.match(/^(\d*\.)?\d+$/) == null) {
+                alert('只需且必须输入数值');
+                document.getElementById(id).value = "";//getElementById(id)括号内不需要引号也能用
+            }
+        }
+        function graphic_show(grahpic_name) {
+            //var signal = $(this).parents("button").parents("td").parents("tr").find("td:eq(1)").text();
+            //alert($("#example1 tr:eq(1) td:nth-child(2)").text());
+
+            SD = $('#zzId').find("Option:selected").text();
+            $.ajax({
+                url: '/A2/Dongqst',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    "grahpic_name": grahpic_name,
+                    "zz": SD
+                },
+
+                success: function (data) {
+
+                    //highchart中xAxis的categories与yAxis中series的data所需的格式均为Array，yAxis中的Array必须为数值，xAxis则任意格式
+                    var dataforqst = new Array();
+                    zz = data.toString().split(",$$,");
+
+                    dataforqst = zz[0].split(",");
+                    //将dataforqst中的值由字符串变为数值
+                    for (i = 0; i < dataforqst.length; i++) {
+                        dataforqst[i] = parseFloat(dataforqst[i]);
+                    }
+                    var xArray = new Array();
+                    xArray = zz[1].split(",");
+                    for (j = 0; j < xArray.length; j++) {
+                        xArray[j] = xArray[j].toString().substr(2, 5);
+
+                    }
+                    $('#qst').modal('show');
+
+                    $('#qst_graphic').highcharts({
+                        title: {
+                            text: grahpic_name + '历史曲线',
+                            x: -20 //center
+                        },
+                        xAxis: {
+                            categories: xArray
+                        },
+                        yAxis: {
+                            title: {
+                                text: '数值'
+                            },
+                            plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }]
+                        },
+                        tooltip: {
+                            valueSuffix: ''
+                        },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                            borderWidth: 0
+                        },
+                        series: [{
+                            name: grahpic_name,
+                            data: dataforqst
+                        }]
+                    });
+
+                }
+             ,
+                error: function (err) {
+                    alert(err.toString());
+                }
+            });
+
+
+        }
+
+
+        function submit_click() {
+
+
+            var s = '请选择';
+            if (s == $('#zzId').find("Option:selected").text()) {
+                alert("未填写装置");
+                return false;
+            }
+
+
+            var obj = document.getElementsByName('KPI'); //选择所有name="'KPI'"的对象，返回数组
+            //取到对象数组后，我们来循环检测它是否有值
+
+            for (var i = 0; i < obj.length; i++) {
+                if (obj[i].value == "") {
+                    alert("KPI指标中有未填项！");
+                    return false;
+                }
+            }
+
+
+
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/A2/DongSubmit_submitsignal',
+                data: {
+                    json1: '{gzqdkf: "' + $("#gzqdkf").val()
+                        + '", djzgzl: "' + $("#djzgzl").val()
+                        + '", gzwxl: "' + $("#gzwxl").val()
+                        + '", qtlxbmfxhl: "' + $("#qtlxbmfxhl").val()
+                        + '", jjqxgsl: "' + $("#jjqxgsl").val()
+                        + '", gdpjwcsj: "' + $("#gdpjwcsj").val()
+                        + '", jxmfpjsm: "' + $("#jxmfpjsm").val()
+                        + '", zcpjsm: "' + $("#zcpjsm").val()
+                        + '", sbwhl: "' + $("#sbwhl").val()
+                        + '", jxychgl: "' + $("#jxychgl").val()
+
+                        + '", zyjbpjxl: "' + $("#zyjbpjxl").val()
+                        + '", jzpjxl: "' + $("#jzpjxl").val()
+                        + '", wfjzgzl: "' + $("#wfjzgzl").val()
+                        + '", ndbtjbcfjxtc: "' + $("#ndbtjbcfjxtc").val()
+                        + '", jbpjwgzjgsjMTBF: "' + $("#jxychgl").val()
+
+                        + '", zzId: "' + $('#zzId').find("Option:selected").text()
+                        + '", cjname: "' + $('#cjname').find("Option:selected").text()
+                        + '"}'
+                },
+                success: function (data) {
+                    if (data) {
+                        alert('操作已完成！');
+                    } else {
+                        alert('操作失败！');
+                    }
+                    location.href = "/A2/Index2";
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+
+
+        }
+
+
+
+
+
+
+    </script>
+}

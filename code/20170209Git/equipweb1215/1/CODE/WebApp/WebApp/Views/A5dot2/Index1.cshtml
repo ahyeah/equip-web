@@ -1,0 +1,392 @@
+﻿@model WebApp.Controllers.A5dot2Controller.Index_ModelforA5dot2Tab2
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<section class="content" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A5.2-竖向管理</h3>
+        </div>
+        <div class="box-body">
+            <div id="zhiduwenjian" class="row"></div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <p></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <a id="Add" class="btn btn-block btn-social btn-warning" target="_blank" href='/files/A5dot2.pdf'>
+                        <i class="fa fa-pencil-square-o"></i>流程图
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <p></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+
+                    <a id="PqSummary" class="btn btn-block btn-social btn-info" onclick="JavaScript: location.href = '/A5dot2/Index'">
+
+                        <i class="glyphicon glyphicon-log-in"></i>进入[A5.2]竖向管理-业务流程
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+      
+    </div>
+    
+    <!-- row -->
+    <div class="box">
+        <div class="box-header">
+
+            
+           
+            @*                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+
+        <div class="col-xs-12">
+            <table>
+                <tr>
+                    <td class="col-sm-2 control-label">
+                        <label>选择时间:</label>
+                    </td>
+                    <td class="col-sm-9">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                            <input type="text" class="form-control" id="reservationtime" name="datepicker">
+                        </div>
+                    </td>
+                    <td class="col-sm-4">
+                        <button type="button" class="btn btn-warning" onclick="Search()">查询</button>
+                    </td>                   
+                </tr>
+            </table>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+                <p></p>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    @*<div style="text-align:center;">  <h2 style="  color:red;" id="titlename">2016-8月最脏十台机泵</h2></div>*@
+
+                    <table id="example1" class="table table-hover table-bordered">
+                        <caption class="box-title" style="text-align:center;color:red;font-size:large"> 最脏十台机泵</caption>
+                        <thead>
+                            <tr>
+                                <th>车间</th>
+                                <th>生产装置</th>
+                                <th>设备位号</th>
+                                <th>设备编号</th>
+                                <th>设备型号</th>
+                                <th>本月竖向问题次数</th>
+                                <th>当前累计未整改不完好数</th>
+                                <th></th>
+                                <th>竖向问题事项详情</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.Am)
+                            {
+                                <tr>
+                                    <td>@item.cjName</td>
+                                    <td>@item.zzName</td>
+                                    <td>@item.sbGyCode</td>
+                                    <td>@item.sbCode</td>
+                                    <td>@item.sbType</td>
+                                    <td>@item.nProblemsInCurMonth</td>
+                                    <td>@item.nProblemsInCurYear</td>
+                                    <th></th>
+                                    <td><button onclick="xiangqing('@item.sbCode','@item.problemDescription')">查看</button></td>
+                                </tr>
+
+                            }*@
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- /.row -->
+
+</section>
+<div class="modal fade" id="qst" tabindex="-1" role="dialog"
+     aria-labelledby="qst_title" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;height:800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="qst_title">
+                    问题详情
+                </h4>
+            </div>
+            <div class="modal-body" id="qst_graphic" style="width:800px;height:50%">
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+@section js{
+    <script src="~/Scripts/jquery.form.js"></script>
+<style>
+    th {
+        white-space: nowrap;
+        text-align: left;
+    }
+</style>
+
+    <script>
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false,
+
+                "ajax": {
+                    //"data": { "time": "2016-8" },
+                    "url": "/A5dot2/zuizhang10bytime",
+                    "type": "POST"
+
+                },
+                columns: [
+                         { data: 'cjname' },
+                         { data: 'zzname' },
+                         { data: 'sbGyCode' },
+                         { data: 'sbCode' },
+                         { data: 'sbType' },
+                         { data: 'nProblemsInCurMonth' },
+                         { data: 'AllProblem' },
+                         { data: 'problemDescription' },
+                         {
+
+
+                             "render": function (data, type, full, meta) {
+                                 return "<td><button onclick=\"xiangqing('" + full.problemDescription + "','" + full.sbCode + "')\">查看</button></td>";
+                             }
+
+
+
+
+                         }
+                ],
+                "columnDefs": [
+                                 {
+                                     "targets": [7],
+                                     "visible": false
+                                 }]
+            });
+        });
+
+        $(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+        });
+        function xiangqing(problemDescription, sbCode) {
+            $("#qst_graphic").empty();
+            var ihtml = "<table id=\"example" + sbCode + "\" class=\"table table-striped table-bordered\">" +
+
+
+                   " </table>";
+            $("#qst_graphic").append(ihtml);
+
+            var nproblem = problemDescription.split("$");
+            var temp = [];
+            for (i = 0; i < nproblem.length; i++) {
+                temp.push(['序号', nproblem[i]]);
+
+            }
+            $('#qst').modal('show');
+            var t = $('#example' + sbCode).DataTable({
+                "aoColumnDefs": [
+
+                    { "sWidth": "1", "aTargets": [0] },
+                    //{ "sWidth": "80%", "aTargets": [ 1 ] }
+
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                //每页显示十条数据
+                pageLength: 10,
+                data: temp,
+                columns: [{ "title": "序号" },
+                          { "title": "问题详情" }
+
+
+                ],
+                "paging": true,
+                "lengthChange": false,
+                
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false
+
+
+            });
+
+            //前台添加序号
+            t.on('order.dt search.dt',
+            function () {
+                t.column(0, {
+                    "search": 'applied',
+                    "order": 'applied'
+                }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+
+        }
+
+        var myDate = new Date();
+        var nowyear = myDate.getFullYear();
+        var nowmonth = myDate.getMonth() + 1;
+        var nowday = myDate.getDate();
+
+
+        //Date picker
+        $('input[name="datepicker"]').datepicker(
+           {
+               format: 'yyyy-m',
+               weekStart: 1,
+               autoclose: true,
+
+               startView: 2,
+               maxViewMode: 2,
+               minViewMode: 1,
+               forceParse: false,
+               language: 'zh-CN',
+               endDate: new Date(nowyear, nowmonth - 1, nowday),
+               startDate: -Infinity,
+           });
+        function Search() {
+            var str = "/A5dot2/zuizhang10bytime?time=" + $('#reservationtime').val();
+            $('#example1').DataTable().ajax.url(str).load();
+            var itemHtml = " <span  id=\"titlename\">" + $('#reservationtime').val() + "月最脏十台机泵" + "</span>";
+
+            $('#titlename').html(itemHtml);
+        }
+    </script>
+    <script>
+        $(function () {
+           
+            $('#example2').DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false,
+
+            });
+
+            $.ajax({
+                url: '/Common/get_zhidubymenu',
+                dataType: 'json',
+                type: 'post',
+                data: { "menu_id": 15 },
+                success: function (backdata) {
+                    if (backdata) {
+                        //var itemHtml = "<option value=\"\">" + "请选择" + "</option>";
+                        //for (var i = 0; i < backdata.length; i++) {
+                        //    itemHtml = itemHtml + "<option value=\"" + backdata[i].sp_Id + "\">" + backdata[i].sp_Name + "</option>";
+                        //}
+                        //$('#Sps_id').html(itemHtml);
+                        var itemHtml = "";
+                        for (i = 0; i < backdata.length; i++) {
+                            itemHtml = itemHtml + "   <div class=\"col-xs-6 col-md-3\"><a id=\"Add\" class=\"btn btn-block btn-social btn-success\" target=\"_blank\" href='/files/A5.2竖向管理/" + backdata[i].pdf_name + "'><i class=\"glyphicon glyphicon-list\"></i>" + backdata[i].pdf_name + "</a></div>";
+                            if ((i + 1) % 4 == 0) {
+                                itemHtml = itemHtml + "<div class=\"row\"><div class=\"col-xs-6 col-md-3\"><p></p></div></div>"
+
+                            }
+
+                        }
+
+                        $("#zhiduwenjian").append(itemHtml);
+                    }
+                    else {
+                        alert("error!!!");
+                    }
+                }
+            }
+)
+        });
+    </script>
+}

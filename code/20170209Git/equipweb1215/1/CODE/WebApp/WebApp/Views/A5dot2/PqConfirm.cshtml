@@ -1,0 +1,225 @@
+﻿@model WebApp.Controllers.A5dot2Controller.Index_ModelforA5dot2
+@{
+    ViewBag.Title = "ShuxiangCheck";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<section class="content">
+    <!-- row -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- 工作流当前任务-Star -->
+                <!-- timeline item -->
+                <li class="time-label">
+                    <span class="bg-green">
+                        当前任务：竖向检查
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                    <i class="fa fa-camera bg-purple"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o">@ViewBag.curtime</i>当前用户：@ViewBag.curuser</span>
+                        <h3 class="timeline-header"><span class="lead" style="color:red">竖向检查</span></h3>
+                        <div class="timeline-body">
+                            <form class="form-horizontal" role="form">
+                                @foreach(var item in Model.Am)
+                                { 
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">申请车间</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control select2" disabled="" style="width: 100%;" id="cjname">
+                                            <option value="@item.cjName">@item.cjName</option>
+
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">申请装置</label>
+                                    <div id="Zz_Select" class="col-sm-10">
+                                        <select class="form-control select2" disabled="" style="width: 100%;" id="zzId">
+                                            <option value="@item.zzName">@item.zzName</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备工艺编号</label>
+                                    <div id="Equip_Select" class="col-sm-10">
+                                        <select class="form-control select2" disabled="" style="width: 100%;" id="Equip_GyCode">
+                                            <option value="@item.sbGyCode">@item.sbGyCode</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备编号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" value="@item.sbCode" class="form-control" id="E_Code" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">设备型号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" value="@item.sbType" class="form-control" id="E_Type" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">问题专业分类</label>
+                                    <div class="col-sm-10">
+                                        @if (item.zyType=="动")
+                                        {
+                                            <label class="checkbox-inline">
+                                            <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios1"
+                                                  disabled="" checked="" value="动">动
+                                        </label>
+                                        }
+                                        else
+                                        {
+                                            <label class="checkbox-inline">
+                                            <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios1"
+                                                  disabled=""  value="动">动
+                                        </label>
+                                        }
+                                        @if (item.zyType=="静")
+                                        {
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios2"
+                                                   disabled="" checked="" value="静"> 静
+                                        </label>
+                                        }
+                                        else
+                                        {
+                                            <label class="checkbox-inline">
+                                            <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios2"
+                                                   disabled="" value="静"> 静
+                                        </label>
+                                        }
+                                        @if (item.zyType == "电")
+                                        { 
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios3"
+                                                   disabled="" checked="" value="电"> 电
+                                        </label>
+                                        }
+                                        else
+                                        { 
+                                            <label class="checkbox-inline">
+                                            <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios3"
+                                                   disabled="" value="电"> 电
+                                        </label>
+                                        }
+                                        @if (item.zyType == "仪")
+                                        {
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios4"
+                                                   disabled="" checked="" value="仪"> 仪
+                                        </label>
+                                        }
+                                        else
+                                        {
+                                            <label class="checkbox-inline">
+                                            <input type="radio" name="zyoptionsRadiosinline" id="optionsRadios4"
+                                                   disabled="" value="仪"> 仪
+                                        </label>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">内容描述</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" disabled="" rows="3" id="problemDescription">@item.problemDescription</textarea>
+                                    </div>
+                                </div>
+                                    <input type="text" id="A5dot2Tab1_id" hidden="hidden" value="@item.Id"> 
+                                }
+                                <div id="Jxdw" class="form-group">
+                                    <label class="col-sm-2 control-label">可靠性工程师确认设备是否已整改</label>
+                                    <div class="col-sm-10">
+                                        <div class="radio">
+                                            <label>
+                                                <input name="PqConfirm_Result" id="PqConfirm_ResultYes" type="radio" value="1">
+                                                是
+                                            </label>
+                                            <label>
+                                                <input name="PqConfirm_Result" id="PqConfirm_ResultNo" type="radio" value="0" checked="">
+                                                否
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="box-footer">
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button class="btn btn-primary col-sm-offset-4" type="button" onclick="submit_click()">确定</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            
+                        </div>
+                    </div>
+                </li>
+                <!-- END timeline item -->
+                <!-- timeline item -->
+                <!-- 工作流当前任务-End -->
+
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+@section js{
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script>
+        function PageLoad() {
+
+        };
+        $(document).ready(
+            PageLoad());
+      
+
+        function submit_click() {
+
+            if (!confirm('确定要提交吗？'))
+                return false;
+            //var flow_name = $("#wef_id").val();
+
+            var A5dot2Tab1_id = $("#A5dot2Tab1_id").val();
+              
+                $.ajax({
+                    type: 'POST',
+                    url: '/A5dot2/Pq_submitsignal',
+                    data: {
+                        json1: '{ cjName: "' + $('#cjname').find("option:selected").text()                         
+                             + '", zzName: "' + $('#zzId').find("option:selected").text()
+                             + '", sbGyCode: "' + $('#Equip_GyCode').find("option:selected").text()
+                             + '", sbCode: "' + $('#E_Code').val()
+                             + '", sbType: "' + $('#E_Type').val()
+                             + '", zyType: "' + $("input:radio[name='zyoptionsRadiosinline']:checked").val()
+                             + '", problemDescription: "' + $('#problemDescription').val()
+                             + '",isRectified: "' + $("input:radio[name='PqConfirm_Result']:checked").val()
+                             + '", A5dot2Tab1_id: "' + A5dot2Tab1_id
+                             + '"}'
+                    },
+                    success: function (data) {
+                        alert('操作已完成！');
+                        location.href = "Index";
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
+          
+        }
+
+    </script>
+}

@@ -1,0 +1,432 @@
+<workflow name="A4dot1" desc="设备前期管理" current_event="">
+  <paramtable>
+    <param name="Client" desc="委托单位" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Design</linkevent>
+      </linkevents>
+    </param>
+    <param name="Cj_Name" desc="申请车间" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Design</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Zz_Name" desc="申请装置" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Design</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_Name" desc="项目名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Design</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Design_Description" desc="设计说明" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Design</linkevent>
+      </linkevents>
+    </param>
+    <param name="Plan_Order" desc="计划号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Design</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="CM_Department" desc="工程管理单位" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Design</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Design_Done" desc="设计申报是否完成" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">Design</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="PqConfirm_Result" desc="可靠性工程师审查结果" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PqConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="PqSuggestion" desc="可靠性工程师修改意见（针对设计委托）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">PqConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdConfirm_Result" desc="专业团队审查设计委托结果" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdSuggestion" desc="专业团队修改意见（针对设计委托）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="UploadBlueprint_Done" desc="是否完成上传设计图" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">UploadBlueprint</linkevent>
+      </linkevents>
+    </param>
+    <param name="Blueprint" desc="设计方案及图纸（附件）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">UploadBlueprint</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdReason" desc="专业团队修改意见（针对设计图纸）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirm2</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdConfirm2_Result" desc="专业团队审核结果" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirm2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Order_Form" desc="订货单（附件）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">OrderForm</linkevent>
+      </linkevents>
+    </param>
+    <param name="OrderForm_Done" desc="是否完成出订货单" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">OrderForm</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdReason2" desc="专业团队修改意见（针对订货单）" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirm3</linkevent>
+      </linkevents>
+    </param>
+    <param name="ZytdConfirm3_Result" desc="专业团队审核决定" type="string">
+      <linkevents>
+        <linkevent app_reserve="">ZytdConfirm3</linkevent>
+      </linkevents>
+    </param>
+    <param name="JscSave_Done" desc="是否完成技术处备案" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">JscSave</linkevent>
+      </linkevents>
+    </param>
+    <param name="WzcConfirm_Done" desc="是否完成物资处确认" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">WzcConfirm</linkevent>
+      </linkevents>
+    </param>
+    <param name="Fittings_Name" desc="设备名称" type="string">
+      <linkevents>
+        <linkevent app_reserve="">OrderForm</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Fittings_Code" desc="设备型号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">OrderForm</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_GyCode" desc="设备工艺编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Design</linkevent>
+        <linkevent app_reserve="">OrderForm</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="Equip_Code" desc="设备编号" type="string">
+      <linkevents>
+        <linkevent app_reserve="App_hidden">OrderForm</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+    <param name="currentuser" desc="当前用户" type="string">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+      </linkevents>
+    </param>
+    <param name="start_done" desc="" type="bool">
+      <linkevents>
+        <linkevent app_reserve="">Start</linkevent>
+        <linkevent app_reserve="">Design</linkevent>
+        <linkevent app_reserve="">JumpToA4dot2</linkevent>
+      </linkevents>
+    </param>
+  </paramtable>
+  <events>
+    <event name="Start" desc="Start" type="startevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="End" desc="End" type="endevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="Design" desc=" 设计申报" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot1/Design]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and (exists(select d from u. Person_roles as d where d.Role_Name = '现场工程师') or u.Dept_Belong.Depart_Name ='工程处')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="PqConfirm" desc="可靠性工程师审查设计委托" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot1/PqConfirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '可靠性工程师')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZytdConfirm" desc="专业团队审查设计委托" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot1/ZytdConfirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="UploadBlueprint" desc="设计院线下出设计图，线上上传" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot1/UploadBlueprint]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name ='设计院']]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZytdConfirm2" desc="专业团队审核意见" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot1/ZytdConfirm2]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="OrderForm" desc="设计院（出订货单）" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot1/OrderForm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name ='设计院']]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="ZytdConfirm3" desc="专业团队审查" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot1/ZytdConfirm3]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and exists(select d from u. Person_roles as d where d.Role_Name = '专业团队')]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="JscSave" desc="技术处备案" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot1/JscSave]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name ='技术处']]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="WzcConfirm" desc="物资处确认" type="normalevent">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[/A4dot1/WzcConfirm]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where u.Person_Name = @OP_currentuser and u.Dept_Belong.Depart_Name ='物资处']]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+    </event>
+    <event name="JumpToA4dot2" desc="跳转至A4dot2" type="subprocess">
+      <actions>
+        <beforeaction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </beforeaction>
+        <currentaction><![CDATA[]]></currentaction>
+        <afteraction>
+          <url><![CDATA[]]></url>
+          <action_params />
+        </afteraction>
+      </actions>
+      <authority><![CDATA[select value u from EquipWebContext.Persons as u where 1<>1]]></authority>
+      <timeout_setting action="">
+        <call_back><![CDATA[]]></call_back>
+      </timeout_setting>
+      <linkworkflow name="A4dot2" workingmodel="parallel">
+        <paramtransfer>
+          <item parent="Cj_Name" child="Cj_Name" direction="to" />
+          <item parent="Zz_Name" child="Zz_Name" direction="to" />
+          <item parent="Plan_Order" child="Plan_Order" direction="to" />
+          <item parent="Plan_Name" child="Plan_Name" direction="to" />
+          <item parent="CM_Department" child="CM_Department" direction="to" />
+          <item parent="Design_Done" child="CaiGouSubmit_Done" direction="to" />
+          <item parent="Fittings_Name" child="Fittings_Name" direction="to" />
+          <item parent="Fittings_Code" child="Fittings_Code" direction="to" />
+          <item parent="Equip_GyCode" child="Equip_GyCode" direction="to" />
+          <item parent="Equip_Code" child="Equip_Code" direction="to" />
+          <item parent="start_done" child="start_done" direction="to" />
+        </paramtransfer>
+      </linkworkflow>
+    </event>
+  </events>
+  <flows>
+    <flow source="Start" destination="Design">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+    <flow source="Design" destination="PqConfirm">
+      <condition><![CDATA[Design_Done==true]]></condition>
+    </flow>
+    <flow source="PqConfirm" destination="End">
+      <condition><![CDATA[PqConfirm_Result=="否"]]></condition>
+    </flow>
+    <flow source="PqConfirm" destination="Design">
+      <condition><![CDATA[PqConfirm_Result=="修改"]]></condition>
+    </flow>
+    <flow source="PqConfirm" destination="ZytdConfirm">
+      <condition><![CDATA[PqConfirm_Result=="是"]]></condition>
+    </flow>
+    <flow source="ZytdConfirm" destination="Design">
+      <condition><![CDATA[ZytdConfirm_Result=="否"]]></condition>
+    </flow>
+    <flow source="ZytdConfirm" destination="UploadBlueprint">
+      <condition><![CDATA[ZytdConfirm_Result=="是"]]></condition>
+    </flow>
+    <flow source="UploadBlueprint" destination="ZytdConfirm2">
+      <condition><![CDATA[UploadBlueprint_Done==true]]></condition>
+    </flow>
+    <flow source="ZytdConfirm2" destination="UploadBlueprint">
+      <condition><![CDATA[ZytdConfirm2_Result=="否"]]></condition>
+    </flow>
+    <flow source="ZytdConfirm2" destination="OrderForm">
+      <condition><![CDATA[ZytdConfirm2_Result=="是"]]></condition>
+    </flow>
+    <flow source="OrderForm" destination="ZytdConfirm3">
+      <condition><![CDATA[OrderForm_Done==true]]></condition>
+    </flow>
+    <flow source="ZytdConfirm3" destination="OrderForm">
+      <condition><![CDATA[ZytdConfirm3_Result=="否"]]></condition>
+    </flow>
+    <flow source="ZytdConfirm3" destination="JscSave">
+      <condition><![CDATA[ZytdConfirm3_Result=="是"]]></condition>
+    </flow>
+    <flow source="JscSave" destination="WzcConfirm">
+      <condition><![CDATA[JscSave_Done==true]]></condition>
+    </flow>
+    <flow source="WzcConfirm" destination="JumpToA4dot2">
+      <condition><![CDATA[WzcConfirm_Done==true]]></condition>
+    </flow>
+    <flow source="JumpToA4dot2" destination="End">
+      <condition><![CDATA[1==1]]></condition>
+    </flow>
+  </flows>
+  <recorditems>
+    <item>username</item>
+    <item>time</item>
+  </recorditems>
+</workflow>

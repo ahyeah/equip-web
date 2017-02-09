@@ -1,0 +1,360 @@
+﻿@model WebApp.Controllers.CommonController.Index_Model
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<style type="text/css">
+    tr.MM_hidden {
+        display: none;
+    }
+
+    tr.MM_shown {
+    }
+
+    tr.selected {
+        background-color: #acbad4;
+    }
+</style>
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/Plugins/AdminLTE/plugins/datatables/extensions/Select/css/select.bootstrap.min.css" />
+
+<section class="content" id="table_show_8" style="background-color: #ecf0f5;">
+    <div class="box box-primary">
+        <div class="box-header with-border bg-gray">
+            <h3 class="box-title" style="font: medium bold; font-family:SimHei;color:red">A14-检验测试预防性维修</h3>
+        </div>
+        <div class="box-body">
+            <div class="col-xs-12">
+                <table>
+                    <tr>
+                        <td class="col-sm-2 control-label">
+                            <label>选择年月:</label>
+                        </td>
+                        <td class="col-sm-9">
+                            <div class="input-group col-sm-9">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control pull-right active" id="reservationtime" type="text">
+                            </div>
+                        </td>
+                        <td class="col-sm-4">
+                            <button type="button" class="btn btn-warning" onclick="search()">查询</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            </div>
+        </div>
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title " style="font:bold; color:red">未封闭的DRBPM计划统计表</p>
+        </div>
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example2" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>业务流水号</th>
+                                <th>设备工艺编号</th>
+                                <th>工作流名称</th>
+                                <th>任务发起人</th>
+                                <th>任务发起时间</th>
+                                <th>任务进展状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.Hm)
+                                {
+                                    <tr>
+                                        <td>@item.missIndex</td>
+                                        <td>@item.wfe_serial</td>
+                                        <td>@item.missStartName</td>
+                                        <td>@item.missStartTime</td>
+                                        <td>@item.miss_LastStatusdesc</td>
+                                        <td><button onclick="JavaScript: location.href='/A8dot2/WorkFolw_Detail?wfe_id=@item.miss_wfe_Id'">查看详情</button></td>
+                                    </tr>
+
+                                }*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <p class="box-title " style="font:bold; color:red">已封闭的DRBPM计划统计表</p>
+        </div>
+        <div class="box-body table-responsive no-padding">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="example3" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>业务流水号</th>
+                                <th>设备工艺编号</th>
+                                <th>工作流名称</th>
+                                <th>任务发起人</th>
+                                <th>任务发起时间</th>
+                                <th>任务进展状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in Model.Hm)
+                                {
+                                    <tr>
+                                        <td>@item.missIndex</td>
+                                        <td>@item.wfe_serial</td>
+                                        <td>@item.missStartName</td>
+                                        <td>@item.missStartTime</td>
+                                        <td>@item.miss_LastStatusdesc</td>
+                                        <td><button onclick="JavaScript: location.href='/A8dot2/WorkFolw_Detail?wfe_id=@item.miss_wfe_Id'">查看详情</button></td>
+                                    </tr>
+
+                                }*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+
+
+
+</section>
+<div class="col-md-4" id="sidebar"> </div>
+<!--参数显示模态框开始处-->
+<div class="modal fade" id="ParamModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">相关参数显示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="ParamDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!--参数显示模态框结束处-->
+<!--设备信息显示模态框开始处-->
+<div class="modal fade" id="EquipInfoModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设备相关信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body" id="EquipInfoDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+
+    </div>
+
+</div><!--设备信息显示模态框结束处-->
+@section js{
+    <!-- Page script -->
+    <script src="~/Plugins/jquery.ba-resize.js"></script>
+
+    <!-- Page script -->
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/myFormValidator.js"></script>
+    <link href="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Plugins/AdminLTE/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+    <script src="~/Scripts/myWorkFlowInfo.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("thead").css("background", "#7CCD7C");
+            $("tbody tr").addClass("info");
+            $('#reservationtime').datepicker({
+                format: 'yyyy/mm',
+                weekStart: 1,
+                autoclose: true,
+
+                startView: 1,
+                maxViewMode: 1,
+                minViewMode: 1,
+                forceParse: false,
+                language: 'zh-CN'
+
+
+            });
+
+            $("#example2").DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    // "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+
+
+                //"ajax": {
+                //    "data": { "WorkFlow_Name": "A8dot2" },
+                //    "url": "/A14dot1/A14ActiveList",
+                //    "type": "POST"
+
+                //},
+                columns: [
+
+                      {
+                          data: 'wfe_serial',
+
+                          "render": function (data, type, full, meta) {
+
+                              return ' <a style=\"cursor:pointer\";  onclick=\"showSide(' + full.wfe_serial + ')\">' + full.wfe_serial + '</a> ';
+                          }
+
+
+
+                      },
+                      { data: 'equip_gycode' },
+                      { data: 'workflow_name' },
+                      { data: 'missStartName' },
+                        { data: 'missStartTime' },
+                          { data: 'miss_LastStatusdesc' },
+                       {
+
+
+                           "render": function (data, type, full, meta) {
+                               return " <button onclick=\"JavaScript:location.href='/A14dot1/WorkFolw_DetailforA14?wfe_id=" + full.miss_wfe_Id + "'\">查看详情</button>";
+
+                               // return '<a  href=' + full.miss_url + '><button type="button" class="btn btn-primary" >处理</button></a>';
+                           }
+
+
+
+
+                       }
+                ],
+                "bProcessing": true,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "aoColumnDefs": [{ "bSortable": false, "aTargets": [6] }]
+            });
+            $("#example3").DataTable({
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    // "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "sZeroRecords": "没有检索到数据",
+                    "sSearch": "模糊查询:  ",
+                    "sProcessing": "<img src='/images/loading.gif'>  努力加载数据中.",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    }
+                },
+
+
+                //"ajax": {
+                //    "data": { "WorkFlow_Name": "A8dot2" },
+                //    "url": "/A14dot1/A14HistoryList",
+                //    "type": "POST"
+
+                //},
+                columns: [
+
+                      {
+                          data: 'wfe_serial',
+
+                          "render": function (data, type, full, meta) {
+
+                              return ' <a style=\"cursor:pointer\";  onclick=\"showSide(' + full.wfe_serial + ')\">' + full.wfe_serial + '</a> ';
+                          }
+
+
+
+                      },
+                      { data: 'equip_gycode' },
+                      { data: 'workflow_name' },
+                      { data: 'missStartName' },
+                        { data: 'missStartTime' },
+                          { data: 'miss_LastStatusdesc' },
+                       {
+
+
+                           "render": function (data, type, full, meta) {
+                               return " <button onclick=\"JavaScript:location.href='/A14dot1/WorkFolw_DetailforA14?wfe_id=" + full.miss_wfe_Id + "'\">查看详情</button>";
+
+                               // return '<a  href=' + full.miss_url + '><button type="button" class="btn btn-primary" >处理</button></a>';
+                           }
+
+
+
+
+                       }
+                ],
+                "bProcessing": true,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                //"ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "aoColumnDefs": [{ "bSortable": false, "aTargets": [6] }]
+            });
+
+        });
+        function search()
+        {
+            var str = "/A14dot1/A14ActiveList?WorkFlow_Name=A8dot2" + "&yearandmonth=" + $('#reservationtime').val();
+            $('#example2').DataTable().ajax.url(str).load();
+            var str3 = "/A14dot1/A14HistoryList?WorkFlow_Name=A8dot2" + "&yearandmonth=" + $('#reservationtime').val();
+            $('#example3').DataTable().ajax.url(str3).load();
+        }
+
+        function showSide(wfe_serial) {
+            var wfe = wfe_serial;
+
+            $("#table_show_8").attr("class", "col-md-8");
+
+
+            DispalsySide(wfe);
+
+
+        }
+    </script>
+}
