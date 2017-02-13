@@ -84,6 +84,7 @@
     <Compile Include="Entities\File_Info.cs" />
     <Compile Include="Entities\KpiWeight.cs" />
     <Compile Include="Entities\Menu.cs" />
+    <Compile Include="Entities\NWorkFlowSer.cs" />
     <Compile Include="Entities\Person_Info.cs" />
     <Compile Include="Entities\Pq_EC_map.cs" />
     <Compile Include="Entities\Pq_Zz_map.cs" />
@@ -97,9 +98,9 @@
     <Compile Include="Entities\WorkSummary.cs" />
     <Compile Include="Entities\yimodel.cs" />
     <Compile Include="Entities\ZhiduFile.cs" />
-    <Compile Include="Migrations\201701150901252_0115.cs" />
-    <Compile Include="Migrations\201701150901252_0115.Designer.cs">
-      <DependentUpon>201701150901252_0115.cs</DependentUpon>
+    <Compile Include="Migrations\201702100509116_0210.cs" />
+    <Compile Include="Migrations\201702100509116_0210.Designer.cs">
+      <DependentUpon>201702100509116_0210.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,8 +113,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201701150901252_0115.resx">
-      <DependentUpon>201701150901252_0115.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201702100509116_0210.resx">
+      <DependentUpon>201702100509116_0210.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

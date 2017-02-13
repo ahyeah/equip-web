@@ -69,6 +69,7 @@
     <Compile Include="AdminManagment\EquipArchiManagment.cs" />
     <Compile Include="AdminManagment\EquipManagment.cs" />
     <Compile Include="AdminManagment\ERPInfoManagement.cs" />
+    <Compile Include="AdminManagment\GetNWorkSerManagment.cs" />
     <Compile Include="AdminManagment\JxpgManagment.cs" />
     <Compile Include="AdminManagment\KpiManagement.cs" />
     <Compile Include="AdminManagment\MenuListNode.cs" />

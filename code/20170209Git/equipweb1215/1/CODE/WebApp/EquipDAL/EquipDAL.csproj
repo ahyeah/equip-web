@@ -71,6 +71,7 @@
     <Compile Include="Implement\ERP_Infos.cs" />
     <Compile Include="Implement\FileCatalogs.cs" />
     <Compile Include="Implement\Files.cs" />
+    <Compile Include="Implement\GetNWorkSer.cs" />
     <Compile Include="Implement\Jxpg.cs" />
     <Compile Include="Implement\Kpi.cs" />
     <Compile Include="Implement\Menus.cs" />

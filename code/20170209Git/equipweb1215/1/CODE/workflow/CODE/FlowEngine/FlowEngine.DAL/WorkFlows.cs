@@ -285,49 +285,7 @@ namespace FlowEngine.DAL {
             }//unlocked
             return (num != 0);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="wfName"></param>
-        /// <param name="we"></param>
-        /// <returns></returns>
-        public bool AddNWorkEntity(string wfName, string WE_Ser="")
-        {
-            int num = 0;
-            lock (insert_lock)
-            { //locked
-                using (var db = base.NewDB())
-                {
-              
-                    if (WE_Ser == "") //保证子工作流串号与父工作流相同
-                    {
-                        //对WorkFlow_Entity编号的处理
-                        string perFix = DateTime.Now.ToString("yyyyMM");
-                        IQueryable<WorkFlow_Entity> we_Ser = db.workflow_entities.Where(s => s.WE_Ser.StartsWith(perFix)).OrderBy(s => s.WE_Ser);
-                        if (we_Ser.ToList().Count == 0)
-                            WE_Ser = perFix + "00001";
-                        else
-                        {
 
-                            WE_Ser = (Convert.ToInt64(we_Ser.ToList().Last().WE_Ser) + 1).ToString();
-                        }
-                    }
-
-
-                    if (wd == null)
-                        return false;
-
-                    wd.W_Wentities.Add(we);
-
-                  
-
-                    num = db.SaveChanges();
-                    //return (db.SaveChanges() != 0);
-
-                }
-            }//unlocked
-            return (num != 0);
-        }
 
 
 

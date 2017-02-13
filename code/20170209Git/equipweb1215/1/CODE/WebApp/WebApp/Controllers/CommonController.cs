@@ -29,6 +29,7 @@ namespace WebApp.Controllers
 {
     public class CommonController : Controller
     {
+      
         //Page Models
 
         public class MainMissionsModel
@@ -227,6 +228,13 @@ namespace WebApp.Controllers
             public string gd_state;
             public string detail;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="wfName"></param>
+        /// <param name="we"></param>
+        /// <returns></returns>
+      
         public MainMissionsModel GetMainMissionsInfo(int entity_id)
         {
             MainMissionsModel mm = new MainMissionsModel();

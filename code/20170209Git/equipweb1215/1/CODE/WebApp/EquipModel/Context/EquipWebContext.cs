@@ -96,6 +96,8 @@ namespace EquipModel.Context
         //系统菜单表
         public DbSet<Menu> Sys_Menus { get; set; }
 
+        public DbSet<NWorkFlowSer> NWorkFlowSer { get; set; }
+
         //组织结构
         public DbSet<Depart_Archi> Department { get; set; }
 

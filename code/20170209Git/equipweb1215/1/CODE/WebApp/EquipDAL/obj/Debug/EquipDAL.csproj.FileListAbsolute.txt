@@ -208,3 +208,13 @@ C:\Users\Administrator\Desktop\1215堡垒机工程20170118\equipweb1215\1\CODE\W
 C:\Users\Administrator\Desktop\1215堡垒机工程20170118\equipweb1215\1\CODE\WebApp\EquipDAL\obj\Debug\EquipDAL.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\1215堡垒机工程20170118\equipweb1215\1\CODE\WebApp\EquipDAL\obj\Debug\EquipDAL.dll
 C:\Users\Administrator\Desktop\1215堡垒机工程20170118\equipweb1215\1\CODE\WebApp\EquipDAL\obj\Debug\EquipDAL.pdb
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\bin\Debug\EquipDAL.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\bin\Debug\EquipDAL.pdb
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\bin\Debug\EntityFramework.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\bin\Debug\EquipModel.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\bin\Debug\EquipModel.pdb
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\bin\Debug\EntityFramework.xml
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\bin\Debug\zh-Hans\EntityFramework.resources.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\obj\Debug\EquipDAL.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\obj\Debug\EquipDAL.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipDAL\obj\Debug\EquipDAL.pdb

@@ -44,9 +44,10 @@ namespace WebApp.Controllers
                  Session["User"] = p;
                  return "/Main/Index0";
              }*/
-       
 
 
+            //GetNWorkSerManagment g = new GetNWorkSerManagment();
+            //g.AddNWorkEntity("A11dot3", "20170200001");
             int a;
             PersonManagment pm = new PersonManagment();
             MD5 md5 = new MD5CryptoServiceProvider();

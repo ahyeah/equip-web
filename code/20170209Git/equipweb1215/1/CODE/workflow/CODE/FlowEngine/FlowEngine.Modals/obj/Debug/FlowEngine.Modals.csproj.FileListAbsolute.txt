@@ -176,3 +176,15 @@ D:\中石化\1215堡垒机工程20170115\equipweb1215\1\CODE\workflow\CODE\FlowE
 D:\中石化\1215堡垒机工程20170115\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\obj\Debug\FlowEngine.Modals.csproj.GenerateResource.Cache
 D:\中石化\1215堡垒机工程20170115\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\obj\Debug\FlowEngine.Modals.dll
 D:\中石化\1215堡垒机工程20170115\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\obj\Debug\FlowEngine.Modals.pdb
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\bin\Debug\FlowEngine.Modals.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\bin\Debug\FlowEngine.Modals.pdb
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\bin\Debug\EntityFramework.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\bin\Debug\EntityFramework.xml
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\bin\Debug\zh-Hans\EntityFramework.resources.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\obj\Debug\FlowEngine.Modals.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\obj\Debug\FlowEngine.Modals.Migrations.dd.resources
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\obj\Debug\FlowEngine.Modals.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\obj\Debug\FlowEngine.Modals.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\workflow\CODE\FlowEngine\FlowEngine.Modals\obj\Debug\FlowEngine.Modals.pdb

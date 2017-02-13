@@ -222,3 +222,15 @@ D:\中石化\1215堡垒机工程20170115\equipweb1215\1\CODE\WebApp\EquipModel\o
 D:\中石化\1215堡垒机工程20170115\equipweb1215\1\CODE\WebApp\EquipModel\obj\Debug\EquipModel.csproj.GenerateResource.Cache
 D:\中石化\1215堡垒机工程20170115\equipweb1215\1\CODE\WebApp\EquipModel\obj\Debug\EquipModel.dll
 D:\中石化\1215堡垒机工程20170115\equipweb1215\1\CODE\WebApp\EquipModel\obj\Debug\EquipModel.pdb
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\bin\Debug\EquipModel.dll.config
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\bin\Debug\EquipModel.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\bin\Debug\EquipModel.pdb
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\bin\Debug\EntityFramework.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\bin\Debug\EntityFramework.xml
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\obj\Debug\EquipModel.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\obj\Debug\EquipModel.dll
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\obj\Debug\EquipModel.pdb
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\obj\Debug\EquipModel.Migrations._0210.resources
+C:\Users\Administrator\Desktop\equipGit\code\20170209Git\equipweb1215\1\CODE\WebApp\EquipModel\obj\Debug\EquipModel.csproj.GenerateResource.Cache
