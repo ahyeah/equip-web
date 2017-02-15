@@ -79,3 +79,15 @@ C:\Users\Administrator\Desktop\equipweb\CODE\WebApp\EquipModel\obj\Release\Equip
 C:\Users\Administrator\Desktop\equipweb\CODE\WebApp\EquipModel\obj\Release\EquipModel.csproj.GenerateResource.Cache
 C:\Users\Administrator\Desktop\equipweb\CODE\WebApp\EquipModel\obj\Release\EquipModel.dll
 C:\Users\Administrator\Desktop\equipweb\CODE\WebApp\EquipModel\obj\Release\EquipModel.pdb
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\bin\Release\EquipModel.dll.config
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\bin\Release\EquipModel.dll
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\bin\Release\EquipModel.pdb
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\bin\Release\EntityFramework.dll
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\bin\Release\EntityFramework.xml
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\obj\Release\EquipModel.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\obj\Release\EquipModel.dll
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\obj\Release\EquipModel.pdb
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\obj\Release\EquipModel.Migrations._0215.resources
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipModel\obj\Release\EquipModel.csproj.GenerateResource.Cache

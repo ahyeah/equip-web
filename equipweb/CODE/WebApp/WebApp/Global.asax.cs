@@ -19,28 +19,28 @@ namespace WebApp
         private const string DummyKey = @"ForGlobalTimer";
         protected void Application_Start()
         {
-            FileStream fs = new FileStream("D:\\web\\ZJtest.txt", FileMode.Append, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(fs); // 创建写入流
-            sw.WriteLine("App_Start" + "   " + DateTime.Now.ToString()); // 写入
-            sw.Close(); //关闭文件
+            //FileStream fs = new FileStream("D:\\web\\ZJtest.txt", FileMode.Append, FileAccess.Write);
+            //StreamWriter sw = new StreamWriter(fs); // 创建写入流
+            //sw.WriteLine("App_Start" + "   " + DateTime.Now.ToString()); // 写入
+            //sw.Close(); //关闭文件
             // Database.SetInitializer(new UserAccount());
             Database.SetInitializer(new WorkFlowInit());
             //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<EquipModel.Context.EquipWebContext>());
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            CTimerManage.InitTimerManager();
-            CTimerManage.Start();
+            //CTimerManage.InitTimerManager();
+            //CTimerManage.Start();
 
             RegisterCacheEntry();
         }
-        protected void Application_End()
-        {
-            FileStream fs = new FileStream("D:\\web\\ZJtest.txt", FileMode.Append, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(fs); // 创建写入流
-            sw.WriteLine("App_End" + "   " + DateTime.Now.ToString()); // 写入
-            sw.Close(); //关闭文件
-        }
+        //protected void Application_End()
+        //{
+        //    FileStream fs = new FileStream("D:\\web\\ZJtest.txt", FileMode.Append, FileAccess.Write);
+        //    StreamWriter sw = new StreamWriter(fs); // 创建写入流
+        //    sw.WriteLine("App_End" + "   " + DateTime.Now.ToString()); // 写入
+        //    sw.Close(); //关闭文件
+        //}
         private void RegisterCacheEntry()
         {
             //FileStream fs = new FileStream("D:\\web\\ZJtest.txt", FileMode.Append, FileAccess.Write);

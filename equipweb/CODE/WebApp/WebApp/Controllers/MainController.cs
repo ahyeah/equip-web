@@ -448,6 +448,7 @@ namespace WebApp.Controllers
                 EquipBLL.AdminManagment.PersonManagment.P_viewModal pv = pm.Get_PersonModal(UserId);
                 if (pv.Role_Names.Contains("可靠性工程师"))
                 {
+                    string wfe_ser = "";
                     List<string> cjname = new List<string>();
                     List<Equip_Archi> EA = pm.Get_Person_Cj(UserId);
                     foreach (var ea in EA)
@@ -458,6 +459,8 @@ namespace WebApp.Controllers
 
                     for (int i = 0; i < E.Count; i++)
                     {
+                        if (E[i].dataSource != null)
+                            wfe_ser = E[i].dataSource;
                         object o = new
                         {
 
@@ -465,7 +468,7 @@ namespace WebApp.Controllers
                             MISS_Url = "/A5dot1/Index",
                             WF_Name = "设备完好",
                             MISS_Name = "可靠性工程师确认整改",
-                            wfe_serial = E[i].dataSource.ToString(),
+                            wfe_serial = wfe_ser,
                             sbCode = E[i].sbGyCode.ToString(),
                             time = E[i].zzSubmitTime.ToString(),
                             endtime = "",
@@ -477,13 +480,15 @@ namespace WebApp.Controllers
                     List<A5dot2Tab1> EE = Sx.GetSxItem(cjname);
                     foreach (var item in EE)
                     {
+                        if (item.temp2 != null)
+                            wfe_ser = item.temp2;
                         object o = new
                         {
                             WF_ICON = "fa fa-flash text-text-aqua",
                             MISS_Url = "/A5dot2/Index",
                             WF_Name = "竖向问题",
                             MISS_Name = "可靠性工程师确认整改",
-                            wfe_serial = item.temp2.ToString(),
+                            wfe_serial = wfe_ser,
                             sbCode = item.sbGyCode.ToString(),
                             time = item.jxSubmitTime.ToString(),
                             endtime = "",

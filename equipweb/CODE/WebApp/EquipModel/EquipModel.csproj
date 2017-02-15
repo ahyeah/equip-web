@@ -102,9 +102,9 @@
     <Compile Include="Entities\WorkSummary.cs" />
     <Compile Include="Entities\yimodel.cs" />
     <Compile Include="Entities\ZhiduFile.cs" />
-    <Compile Include="Migrations\201701230247110_0123.cs" />
-    <Compile Include="Migrations\201701230247110_0123.Designer.cs">
-      <DependentUpon>201701230247110_0123.cs</DependentUpon>
+    <Compile Include="Migrations\201702150156563_0215.cs" />
+    <Compile Include="Migrations\201702150156563_0215.Designer.cs">
+      <DependentUpon>201702150156563_0215.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,8 +117,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201701230247110_0123.resx">
-      <DependentUpon>201701230247110_0123.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201702150156563_0215.resx">
+      <DependentUpon>201702150156563_0215.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -68,3 +68,13 @@ C:\Users\Administrator\Desktop\equipweb\CODE\WebApp\EquipDAL\bin\Release\zh-Hans
 C:\Users\Administrator\Desktop\equipweb\CODE\WebApp\EquipDAL\obj\Release\EquipDAL.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\equipweb\CODE\WebApp\EquipDAL\obj\Release\EquipDAL.dll
 C:\Users\Administrator\Desktop\equipweb\CODE\WebApp\EquipDAL\obj\Release\EquipDAL.pdb
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\bin\Release\EquipDAL.dll
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\bin\Release\EquipDAL.pdb
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\bin\Release\EntityFramework.dll
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\bin\Release\EquipModel.dll
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\bin\Release\EquipModel.pdb
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\bin\Release\EntityFramework.xml
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\bin\Release\zh-Hans\EntityFramework.resources.dll
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\obj\Release\EquipDAL.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\obj\Release\EquipDAL.dll
+C:\Users\Administrator\Desktop\equipGit\equipweb\CODE\WebApp\EquipDAL\obj\Release\EquipDAL.pdb
