@@ -1,8 +1,0 @@
-﻿
-@{
-    ViewBag.Title = "JdcSummary";
-    Layout = "~/Views/Shared/_LayoutMain.cshtml";
-}
-
-<h2>这里是【A5.2】竖向管理-机动处汇总页面</h2>
-

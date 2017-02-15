@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{01521EB9-81A8-4AF2-8BEE-8F06D1CE5E95}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EquipDAL</RootNamespace>
+    <AssemblyName>EquipDAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseDAO.cs" />
+    <Compile Include="Implement\A6dot2LsTaskTabs.cs" />
+    <Compile Include="Implement\A6dot2Tabs.cs" />
+    <Compile Include="Implement\Equip_Archis.cs" />
+    <Compile Include="Implement\Depart_Archis.cs" />
+    <Compile Include="Implement\Equips.cs" />
+    <Compile Include="Implement\ERP_Infos.cs" />
+    <Compile Include="Implement\FileCatalogs.cs" />
+    <Compile Include="Implement\Files.cs" />
+    <Compile Include="Implement\GetNWorkSer.cs" />
+    <Compile Include="Implement\guidelines.cs" />
+    <Compile Include="Implement\guidelinescatalogs.cs" />
+    <Compile Include="Implement\Jxpg.cs" />
+    <Compile Include="Implement\Kpi.cs" />
+    <Compile Include="Implement\Menus.cs" />
+    <Compile Include="Implement\MyDsWorks.cs" />
+    <Compile Include="Implement\NociteView.cs" />
+    <Compile Include="Implement\PersonAndWorkflow.cs" />
+    <Compile Include="Implement\Person_Infos.cs" />
+    <Compile Include="Implement\Q_Entrance.cs" />
+    <Compile Include="Implement\Roles.cs" />
+    <Compile Include="Implement\Speciaties.cs" />
+    <Compile Include="Implement\Sxgl.cs" />
+    <Compile Include="Implement\WorkFlowTables.cs" />
+    <Compile Include="Implement\WorkSum.cs" />
+    <Compile Include="Implement\WorkSummaryCatalog.cs" />
+    <Compile Include="Implement\zhidus.cs" />
+    <Compile Include="Implement\Zy.cs" />
+    <Compile Include="Interface\IEquipArchis.cs" />
+    <Compile Include="Interface\IMenus.cs" />
+    <Compile Include="Interface\IPerson_Infos.cs" />
+    <Compile Include="Interface\ISpecialty.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\EquipModel\EquipModel.csproj">
+      <Project>{d4bc0076-da1d-4566-a251-2c662608b07e}</Project>
+      <Name>EquipModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

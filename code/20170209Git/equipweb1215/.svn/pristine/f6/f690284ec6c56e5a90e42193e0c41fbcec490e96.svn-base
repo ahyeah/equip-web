@@ -1,8 +1,0 @@
-﻿
-@{
-    ViewBag.Title = "ZytdConfirm";
-    Layout = "~/Views/Shared/_LayoutMain.cshtml";
-}
-
-<h2>ZytdConfirm</h2>
-

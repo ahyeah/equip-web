@@ -1,8 +1,0 @@
-﻿
-@{
-    ViewBag.Title = "JdcSupervise";
-    Layout = "~/Views/Shared/_LayoutMain.cshtml";
-}
-
-<h2>JdcSupervise</h2>
-

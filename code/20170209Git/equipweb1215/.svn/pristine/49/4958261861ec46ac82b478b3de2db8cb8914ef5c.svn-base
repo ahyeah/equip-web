@@ -1,8 +1,0 @@
-﻿
-@{
-    ViewBag.Title = "PqSummary";
-    Layout = "~/Views/Shared/_LayoutMain.cshtml";
-}
-
-<h2>这里是【A5.1】设备完好模块-片区汇总页面</h2>
-

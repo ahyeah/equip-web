@@ -1,8 +1,0 @@
-﻿
-@{
-    ViewBag.Title = "WorkFolw_Detail";
-    Layout = "~/Views/Shared/_LayoutMain.cshtml";
-}
-
-<h2>WorkFolw_Detail</h2>
-

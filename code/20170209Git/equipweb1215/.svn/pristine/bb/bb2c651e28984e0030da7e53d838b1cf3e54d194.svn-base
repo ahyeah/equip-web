@@ -1,8 +1,0 @@
-﻿
-@{
-    ViewBag.Title = "PqConfirm";
-    Layout = "~/Views/Shared/_LayoutMain.cshtml";
-}
-
-<h2>PqConfirm</h2>
-

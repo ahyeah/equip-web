@@ -1,8 +1,0 @@
-﻿
-@{
-    ViewBag.Title = "CjSupervise";
-    Layout = "~/Views/Shared/_LayoutMain.cshtml";
-}
-
-<h2>CjSupervise</h2>
-

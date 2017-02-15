@@ -1,0 +1,970 @@
+﻿@model WebApp.Controllers.MainController.getIndexmodel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+    <div style="width: 100%; background: url(../images/logo_red.jpg) repeat-x; padding: 0px; ">
+        <img src="~/images/logo.jpg">
+    </div>
+
+    <div style="padding: 0px;">
+        <div class="wrapper">
+            <header class="main-header">
+                <!-- Logo -->
+                <a href="~/Main/Index0" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><b>A</b>LT</span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg"><b>Equipment </b>Integrity</span>
+                </a>
+                <!-- Header Navbar: style can be found in header.less -->
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <a href="~/Main/Index0" >
+                        <button style="margin-top:10px" class="btn btn-info">刷新主页</button>
+                        </a>
+                        @*<button style="margin-top:10px" class="btn btn-info" onclick="$('#runtime').attr('src', '/Query/Gxq_Query');">可能感兴趣的工作流</button>*@
+                        <!-- Navbar Right Menu -->
+                        <div class="navbar-custom-menu">
+
+                            <ul class="nav navbar-nav">
+                                <!-- Messages: style can be found in dropdown.less-->
+                                @*<li class="dropdown messages-menu" >
+                        <a id="Message_List" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-envelope-o"></i>
+                            <span id="Miss_Num_Small" class="label label-success">4</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li id="Miss_Num" class="header">You have messages</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul id="Mission_Menu" class="menu">
+                                    <div class="box box-solid">
+                                        <div class="box-body">
+                                            The body of the box
+                                        </div><!-- /.box-body -->
+                                        <!-- Loading (remove the following to stop the loading)-->
+                                        <div class="overlay">
+                                            <i class="fa fa-refresh fa-spin"></i>
+                                        </div>
+                                        <!-- end loading -->
+                                    </div><!-- /.box -->
+                                </ul>
+                            </li>
+                            <li class="footer"><a href="#">See All Messages</a></li>
+                        </ul>
+                    </li>*@
+                                <!-- Tasks: style can be found in dropdown.less -->
+                                @*<li class="dropdown tasks-menu" hidden="">
+                        <a id="Process_List" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-flag-o"></i>
+                            <span id="Process_Num_Small" class="label label-danger">9</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">流程的进度</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul id="Process_Menu" class="menu">
+                                    <div class="box box-solid">
+                                        <div class="box-body">
+                                            The body of the box
+                                        </div><!-- /.box-body -->
+                                        <!-- Loading (remove the following to stop the loading)-->
+                                        <div class="overlay">
+                                            <i class="fa fa-refresh fa-spin"></i>
+                                        </div>
+                                        <!-- end loading -->
+                                    </div><!-- /.box -->
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="#">查看所有进度</a>
+                            </li>
+                        </ul>
+                    </li>*@
+                                <!-- User Account: style can be found in dropdown.less -->
+                                <li class="dropdown user user-menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <img src="~/Plugins/AdminLTE/dist/img/person.jpg" class="user-image" alt="User Image">
+                                        <span class="hidden-xs">@Model.username</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <!-- User image -->
+                                        <li class="user-header">
+                                            <img src="~/Plugins/AdminLTE/dist/img/person.jpg" class="img-circle" alt="User Image">
+                                            <p>
+                                                所属部门： @Model.belong_depart
+                                                @*<small>Member since Nov. 2012</small>*@
+                                            </p>
+                                        </li>
+                                        <!-- Menu Body -->
+                                        @*<li class="user-body">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Sales</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
+                            </li>*@
+                                        <!-- Menu Footer-->
+                                        <li class="user-footer">
+                                            @*<div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                </div>*@
+                                            <div class="pull-right">
+                                                <a class="btn btn-default btn-flat" href="javascript:void(0);" onclick="$('#runtime').attr('src', '/Login/ModifyPWD_Index')">修改密码</a>
+
+                                            </div>
+
+                                            <div class="pull-right">
+                                                <a href="#" onclick="login_out()" class="btn btn-default btn-flat">安全退出</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <!-- Control Sidebar Toggle Button -->
+                                <li>
+                                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+</nav>
+            </header>
+            <aside class="main-sidebar" style="
+    margin-top: 100px;
+">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <!-- Sidebar user panel -->
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img src="~/images/zgshlogo.png" /> class="img-circle" alt="Logo Image">
+                        </div>
+                        <div class="pull-left info">
+                            <p>武汉分公司</p>
+                            <p><i class="fa fa-circle text-success"></i> Wuhan Branch</p>
+                        </div>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li id="mm" class="header" style="font:bolder;font-size:medium"><strong>【设备完整性】导航</strong></li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A1dot1/Index');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A1-方针政策</span>
+                            </a>
+
+                        </li>
+
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A2-目标计划</span>&nbsp;<small id="A2" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A2/Index2');"><i class="glyphicon glyphicon-hand-right"></i>A2.1-KPI报表<small id="A2" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A2dot2/Index');"><i class="glyphicon glyphicon-hand-right"></i>A2.2-年度总结与规划<small id="A2dot2" class=""></small></a></li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A3-机构|培训|文件</span>&nbsp;<small id="A3" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A3dot1/Index');"><i class="glyphicon glyphicon-hand-right"></i>A3.1-机构人员职责<small id="A3dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');"><i class="glyphicon glyphicon-hand-right"></i>A3.2-设备培训<small id="A3dot2" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A3dot3/Index');"><i class="glyphicon glyphicon-hand-right"></i>A3.3-文件资料<small id="A3dot3" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A4-前期管理</span>&nbsp;<small id="A4" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A4dot1/Index');"><i class="glyphicon glyphicon-hand-right"></i>A4.1-设计<small id="A4dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A4dot2/Index');"><i class="glyphicon glyphicon-hand-right"></i>A4.2-采购<small id="A4dot2" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A4dot3/Index');"><i class="glyphicon glyphicon-hand-right"></i>A4.3-安装<small id="A4dot3" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A4dot4/Index');"><i class="glyphicon glyphicon-hand-right"></i>A4.4试运<small id="A4dot4" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A5dot1/A5');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A5-现场管理</span>&nbsp;<small id="A5" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A5dot1/Index0');"><i class="glyphicon glyphicon-hand-right"></i>A5.1-设备完好<small id="A5dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A5dot2/Index1');"><i class="glyphicon glyphicon-hand-right"></i>A5.2-竖向管理<small id="A5dot2" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A6dot1/A6');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A6-设备使用维护</span>&nbsp;<small id="A6" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A6dot1/Index');"><i class="glyphicon glyphicon-hand-right"></i>A6.1-操作规程<small id="A6dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A6dot2/Index0');"><i class="glyphicon glyphicon-hand-right"></i>A6.2-润滑管理<small id="A6dot2" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A6dot3/Index');"><i class="glyphicon glyphicon-hand-right"></i>A6.3-备用设备管理<small id="A6dot3" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', 'http://10.128.189.203/drbpm_GyNnGraphPage.aspx');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A7-设备运行管理</span>&nbsp;<small id="A7" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A7dot1/Index');"><i class="glyphicon glyphicon-hand-right"></i>A7.1-三检特护及状态监测<small id="A7dot1dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A7dot2/Index');"><i class="glyphicon glyphicon-hand-right"></i>A7.2-工艺能效监察<small id="A7dot2" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A7dot3/Index');"><i class="glyphicon glyphicon-hand-right"></i>A7.3-工艺环境变更<small id="A7dot3" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A8dot2/A8');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A8-检修维修</span>&nbsp;<small id="A8" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');"><i class="glyphicon glyphicon-hand-right"></i>A8.1-配件管理<small id="A8dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A8dot2/Index');"><i class="glyphicon glyphicon-hand-right"></i>A8.2-检修计划实施<small id="A8dot2" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A9-修理费&nbsp;<small id="A9" class="label bg-green" title="该流程有待处理的任务！"></small></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A10-停用闲置报废</span>&nbsp;<small id="A10" class="label bg-green" title="该流程有待处理的任务！"></small>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A11dot2/A11');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A11-风险管理</span>&nbsp;<small id="A11" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A11dot1/Index');"><i class="glyphicon glyphicon-hand-right"></i>A11.1-风险评估<small id="A11dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A11dot2/Index');"><i class="glyphicon glyphicon-hand-right"></i>A11.2-隐患排查<small id="A11dot2" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A11dot3/Index');"><i class="glyphicon glyphicon-hand-right"></i>A11.3-风险管控<small id="A11dot3" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A11dot4/Index');"><i class="glyphicon glyphicon-hand-right"></i>A11.4-风险预评估<small id="A11dot4" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A12-变更管理</span>&nbsp;<small id="A12" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A12dot1/Index');"><i class="glyphicon glyphicon-hand-right"></i>A12.1-设备本体改造<small id="A12dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A12dot2/Index');"><i class="glyphicon glyphicon-hand-right"></i>A12.2-工艺变更管理<small id="A12dot2" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A13dot1/A13');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A13-故障缺陷管理</span>&nbsp;<small id="A13" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A13dot1/Index1');"><i class="glyphicon glyphicon-hand-right"></i>A13.1-缺陷故障管理<small id="A13dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A13dot2/Index');"><i class="glyphicon glyphicon-hand-right"></i>A13.2-DRBPM紧急检修<small id="A13dot2" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A14dot1/A14');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A14-检验测试预防性维修</span>&nbsp;<small id="A14" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A14dot1/Index');"><i class="glyphicon glyphicon-hand-right"></i>A14.1-DRBPM预防性计划<small id="A14dot1" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A14dot2/Index');"><i class="glyphicon glyphicon-hand-right"></i>A14.2-重点设备预防性维护<small id="A14dot2" class=""></small></a></li>
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A14dot3/Index');"><i class="glyphicon glyphicon-hand-right"></i>A14.3-计划管理<small id="A14dot2" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A15-绩效评估与纠正预防措施</span>&nbsp;<small id="A15" class="label bg-green" title="该流程有待处理的任务！"></small><i class="fa fa-angle-left pull-right"> </i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/A15dot1/Index');"><i class="glyphicon glyphicon-hand-right"></i>A15.1-设备绩效管理<small id="A15dot1" class=""></small></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>A16-管理评审与持续改进</span>&nbsp;<small id="A16" class="label bg-green" title="该流程有待处理的任务！"></small>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/TempJob/Index');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>临时性事物管理</span>&nbsp;
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/DingShi/Index');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>定时性事物管理</span>&nbsp;
+                            </a>
+                        </li>
+                        
+                            @*@foreach (var item in Model.mt)
+            {
+                if (item.level == 0 && item.Childs.Count > 0)
+                {
+                    <li class="treeview"  >
+                        <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '@item.Link_Url');">
+                            <i class="@item.Menu_Icon"></i><span >@item.Menu_Name</span><i class="fa fa-angle-left pull-right"> </i>
+                        </a>
+                        <ul class="treeview-menu">
+                            @foreach (var ii in Model.mt)
+                            {
+                                if (ii.level == 1 && ii.Parent_id == item.Menu_Id)
+                                {
+                                    <li><a href="javascript:void(0);" onclick="$('#runtime').attr('src', '@ii.Link_Url');"><i class="@ii.Menu_Icon"></i>@ii.Menu_Name<small id="@ii.url_id" class=""></small></a></li>}
+                            }
+                        </ul>
+                    </li>}
+                if (item.level == 0 && item.Childs.Count == 0)
+                {
+                    <li>
+                        <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '@item.Link_Url');">
+                            <i class="@item.Menu_Icon"></i><span>@item.Menu_Name</span>
+                        </a>
+                    </li>
+                }
+
+            }*@
+
+<li>
+            <a href="javascript:void(0);" onclick=" $('#runtime').attr('src', '/files/武汉石化设备完整性管理系统说明文档.pdf');">
+                <i class="fa fa-user"></i> <span>系统帮助文档</span>
+            </a>
+        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick=" $('#runtime').attr('src', '/files/武汉石化设备完整性管理系统使用培训.pdf');">
+                                <i class="fa fa-user"></i> <span>系统培训文档</span>
+                            </a>
+                        </li>
+        @*<li>
+            <a href="javascript:void(0);" onclick="$('#Index').html('A4.2'); $('#runtime').attr('src', '/A4dot2/ZytdConfirmEquip');">
+                <i class="fa fa-user"></i> <span>测试</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/Query/Index');">
+                <i class="fa fa-user"></i> <span>查询</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/UserManager/Index');">
+                <i class="fa fa-user"></i> <span>测试添加用户</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="javascript:void(0);" onclick="$('#Index').html('A7.1');$('#runtime').attr('src', '/A7dot1dot1/Index');">
+                <i class="fa fa-user"></i> <span>测试A7.1.1特护记录</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="sidebar-menu">
+
+        <li id="mms" class="header" style="font:bolder;font-size:medium"><strong>设备信息查询</strong></li>
+        <li>
+            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/Admin/Index');">
+                <i class="fa fa-list-ul"></i> <span>设备基础信息查询</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/Admin/Index');">
+                <i class="fa fa-list-ul"></i> <span>设备检修信息查询</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/Admin/Index');">
+                <i class="fa fa-list-ul"></i> <span>设备改造信息查询</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/Admin/Index');">
+                <i class="fa fa-list-ul"></i> <span>设备特护记录查询</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="sidebar-menu">
+        <li class="header">HEADER</li>
+        <!-- Optionally, you can add icons to the links -->
+        <li class="active"><a href="#"><span>Link</span></a><</li>
+        <li><a href="#"><span>Another Link</span></a></li>
+        <li class="treeview">
+            <a href="#"><span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a href="#">Link in level 2</a></li>
+                <li><a href="#">Link in level 2</a></li>
+            </ul>
+        </li>
+    </ul><!-- /.sidebar-menu  测试-->
+
+    <ul class="sidebar-menu">
+        <li class="header" style="cursor:pointer;" onclick="$('#runtime').attr('src', '/Admin/Index');">
+            ADMIN MANAGMENT
+        </li>
+        @*<li>
+            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/UserInfo/Index');">
+                <i class="fa fa-user"></i> <span>用户管理</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/Admin/Index');">
+                <i class="fa fa-key"></i> <span>权限管理</span>
+            </a>
+        </li>*@
+              @if (Model.isManager == 1)
+                  {    <li id="mm" class="header" style="font:bolder;font-size:medium"><strong>系统管理</strong></li>
+                       
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/PersonAndWorkflows/Index');">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i><span>人员工作流权限</span>&nbsp;
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/SysMenu/Index');">
+                                <i class="fa fa-list-ul"></i> <span>菜单管理</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/Specialty/Index');">
+                                <i class="fa fa-list-ul"></i> <span>专业管理</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/EquipArchi/Index');">
+                                <i class="fa fa-list-ul"></i> <span>设备管理</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/Query/Index');">
+                                <i class="fa  fa-list-ul"></i> <span>查询</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/UserManager/Index');">
+                                <i class="fa  fa-list-ul"></i> <span>测试添加用户</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" onclick="$('#runtime').attr('src', '/QuickEntrance/Index');">
+                                <i class="fa fa-user"></i> <span>测试添加快捷入口</span>
+                            </a>
+                        </li>
+                     
+              }
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <p> </p>
+                    <ol class="breadcrumb">
+                        <li><a href="~/Main/index0"><i class="fa fa-dashboard"></i> 返回主页</a></li>
+                        <li id="Index" class="active">Index</li>
+                    </ol>
+                </section>
+                <!-- Main content -->
+                <section class="content">
+                    <!-- Info boxes -->
+                    <div class="row">
+                        <div id="framecon" class="col-md-12" style="height:100%;padding-bottom:100%">
+
+                            <iframe id="runtime" name="runtime" src="/Main/Home" width="100%" height="100%" style="border:0px;overflow:auto;background-color:#ecf0f5;"></iframe>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <footer class="main-footer">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> 1.0.0
+                </div>
+                <strong>Copyright &copy; 2016-2018 <a href="">中国石化武汉分公司 & 武汉检安石化工程有限公司 & 武汉科技大学</a>.</strong> All rights reserved.
+            </footer>
+            <aside class="control-sidebar control-sidebar-dark" style="
+    margin-top: 100px;
+">
+                <!-- Create the tabs -->
+                <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                    <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                    <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <!-- Home tab content -->
+                    <div class="tab-pane" id="control-sidebar-home-tab">
+                        <h3 class="control-sidebar-heading">Recent Activity</h3>
+                        <ul class="control-sidebar-menu">
+                            <li>
+                                <a href="javascript::;">
+                                    <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+                                    <div class="menu-info">
+                                        <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+                                        <p>Will be 23 on April 24th</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript::;">
+                                    <i class="menu-icon fa fa-user bg-yellow"></i>
+                                    <div class="menu-info">
+                                        <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+                                        <p>New phone +1(800)555-1234</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript::;">
+                                    <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+                                    <div class="menu-info">
+                                        <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+                                        <p>nora@example.com</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript::;">
+                                    <i class="menu-icon fa fa-file-code-o bg-green"></i>
+                                    <div class="menu-info">
+                                        <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+                                        <p>Execution time 5 seconds</p>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul><!-- /.control-sidebar-menu -->
+                        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+                        <ul class="control-sidebar-menu">
+                            <li>
+                                <a href="javascript::;">
+                                    <h4 class="control-sidebar-subheading">
+                                        Custom Template Design
+                                        <span class="label label-danger pull-right">70%</span>
+                                    </h4>
+                                    <div class="progress progress-xxs">
+                                        <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript::;">
+                                    <h4 class="control-sidebar-subheading">
+                                        Update Resume
+                                        <span class="label label-success pull-right">95%</span>
+                                    </h4>
+                                    <div class="progress progress-xxs">
+                                        <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript::;">
+                                    <h4 class="control-sidebar-subheading">
+                                        Laravel Integration
+                                        <span class="label label-warning pull-right">50%</span>
+                                    </h4>
+                                    <div class="progress progress-xxs">
+                                        <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript::;">
+                                    <h4 class="control-sidebar-subheading">
+                                        Back End Framework
+                                        <span class="label label-primary pull-right">68%</span>
+                                    </h4>
+                                    <div class="progress progress-xxs">
+                                        <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul><!-- /.control-sidebar-menu -->
+                    </div><!-- /.tab-pane -->
+                    <!-- Settings tab content -->
+                    <div class="tab-pane" id="control-sidebar-settings-tab">
+                        <form method="post">
+                            <h3 class="control-sidebar-heading">General Settings</h3>
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Report panel usage
+                                    <input type="checkbox" class="pull-right" checked>
+                                </label>
+                                <p>
+                                    Some information about this general settings option
+                                </p>
+                            </div><!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Allow mail redirect
+                                    <input type="checkbox" class="pull-right" checked>
+                                </label>
+                                <p>
+                                    Other sets of options are available
+                                </p>
+                            </div><!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Expose author name in posts
+                                    <input type="checkbox" class="pull-right" checked>
+                                </label>
+                                <p>
+                                    Allow the user to show his name in blog posts
+                                </p>
+                            </div><!-- /.form-group -->
+                            <h3 class="control-sidebar-heading">Chat Settings</h3>
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Show me as online
+                                    <input type="checkbox" class="pull-right" checked>
+                                </label>
+                            </div><!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Turn off notifications
+                                    <input type="checkbox" class="pull-right">
+                                </label>
+                            </div><!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Delete chat history
+                                    <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+                                </label>
+                            </div><!-- /.form-group -->
+                        </form>
+                    </div><!-- /.tab-pane -->
+                </div>
+            </aside>
+            <div class="control-sidebar-bg " style="position: fixed; height: auto;margin-top: 100px;"></div>
+        </div>
+
+    </div>
+@section js{
+    <script src="~/Plugins/jquery.ba-resize.js"></script>
+    <script>
+        //验证系统是否超时
+        setInterval("CheckTimeOut()", 600000); //CheckTimeOut()
+
+        function CheckTimeOut()
+        {
+            $.ajax({
+                url: '/Main/checktimeout',
+                dataType: 'json',
+                type: 'post',
+                success: function (backdata) {
+                    if (backdata != "True")
+                        location.href = "/Login/chaoshi";
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
+        $(function () {
+            $.ajax({
+                url: '/Main/task_mission',
+                dataType: 'json',
+                type: 'post',
+                success: function (backdata) {
+                    for (var i = 0; i < backdata.length; i++) {//循环后台传来的值
+                        var url_id = backdata[i].url_name;//后台传的值1
+                        var url_num = backdata[i].url_count;// 后台传的值2
+                        if (url_id.indexOf("?wfe_id") != -1)
+                            continue;
+                        
+                        if (url_id == "A7dot1")
+                            url_id = "A7dot1dot1";
+                        var mm = document.getElementById(url_id);//获取页面id值等于后台传值1的对象，document.getElementById()与jquery选择器功能相同
+                        mm.innerText = url_num;//给这个对象赋值
+                        mm.className = "label pull-right bg-green";//给这个对象添加class属性
+                        mm.title = "该流程有" + url_num + "项待处理的任务！";//给对象添加title，鼠标放在标志上时的提示信息
+                        //   alert($("#"+url_id+"").text());
+                        //var Html1 = "<i title=\"该项有未完成的任务！\" class=\"fa fa-exclamation  \" style=\"size:20px;  color:red;\">" + "</i>";
+
+                        //if ($("#" + url_id + "").text() != "" && $("#" + url_id + "").parent().parent().parent().parent().children('a').html() != Html1) {
+
+                        //    $("#" + url_id + "").parent().parent().parent().parent().children('a').append(Html1); //找到根目录节点位置
+                        //}
+                        // $("#" + url_id + "").parent().parent().parent().children('ul').html();
+
+                    }
+
+                    var s3 = Number($("#A3dot1").text()) + Number($("#A3dot2").text()) + Number($("#A3dot3").text());
+                    if (s3 != 0) {
+                        $("#A3").text(s3);
+                    }
+
+                    var s4 = Number($("#A4dot1").text()) + Number($("#A4dot2").text()) + Number($("#A4dot3").text()) + Number($("#A4dot4").text());
+                    if (s4 != 0) {
+                        $("#A4").text(s4);
+                    }
+
+
+                    var s5 = Number($("#A5dot1").text()) + Number($("#A5dot2").text());
+                    if (s5 != 0) {
+                        $("#A5").text(s5);
+                    };
+                    var s6 = Number($("#A6dot1").text()) + Number($("#A6dot2").text()) + Number($("#A6dot3").text());
+                    if (s6 != 0) {
+                        $("#A6").text(s6);
+                    }
+                    var s7 = Number($("#A7dot1dot1").text()) + Number($("#A7dot2").text()) + Number($("#A7dot3").text());
+                    if (s7 != 0) {
+                        $("#A7").text(s7);
+                    }
+                    var s8 = Number($("#A8dot1").text()) + Number($("#A8dot2").text());
+                    if (s8 != 0) {
+                        $("#A8").text(s8);
+                    }
+                    var s11 = Number($("#A11dot1").text()) + Number($("#A11dot2").text()) + Number($("#A11dot3").text());
+                    if (s11 != 0) {
+                        $("#A11").text(s11);
+                    }
+                    var s12 = Number($("#A12dot1").text()) + Number($("#A12dot2").text());
+                    if (s12 != 0) {
+                        $("#A12").text(s12);
+                    }
+                    var s13 = Number($("#A13dot1").text()) + Number($("#A13dot2").text());
+                    if (s13 != 0) {
+                        $("#A13").text(s13);
+                    }
+                    var s14 = Number($("#A14dot1").text()) + Number($("#A14dot2").text());
+                    if (s14 != 0) {
+                        $("#A14").text(s14);
+                    }
+                    var s15 = Number($("#A15dot1").text());
+                    if (s15 != 0) {
+                        $("#A15").text(s15);
+                    }
+                    refresh();
+                    //alert($("#A4dot2").text());
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+
+
+
+
+
+            $('#framecon').resize(function () {
+                var elem = $(this);
+
+                elem.css({ height: elem.parent().width(), 'padding-bottom': '0px' });
+                $('#runtime').css({ height: elem.height() - 1 });
+            });
+            $('#framecon').resize();
+            //$('#Message_List').click(function () {
+            //    $.ajax({
+            //        url: '/Main/ListMission',
+            //        dataType: 'json',
+            //        type: 'post',
+            //        success: function (backdata) {
+            //            if (backdata) {
+            //                $('#Mission_Menu').html("");
+            //                $('#Miss_Num').html("你有" + backdata.length + "件操作");
+            //                $('#Miss_Num_Small').html(backdata.length);
+            //                for (var i = 0; i < backdata.length; i++) {
+            //                    var itemHtml = "<li>" +
+            //                                "<a onclick=\" $('#runtime').attr('src', '" + backdata[i].MISS_Url + "'); \" href=\"javascript:void(0);\">" +
+            //                                "   <div class=\"pull-left\">" +
+            //                                "       <i class=\"" + backdata[i].WF_ICON + "\"></i>" +
+            //                                "   </div>" +
+            //                                "   <h4>" +
+            //                                "       " + backdata[i].WF_Name +
+            //                                "       <small><i class=\"fa fa-clock-o\"></i>" + backdata[i].TIME_Last + "</small>" +
+            //                                "   </h4>" +
+            //                                "   <p>" + backdata[i].MISS_Name + "</p>" +
+            //                                "</a>" +
+            //                                "</li>";
+
+            //                    $('#Mission_Menu').append(itemHtml);
+            //                }
+            //            }
+            //            else {
+            //                alert("增加失败");
+            //            }
+            //        },
+            //        error: function (error) {
+            //            console.log(error);
+            //        }
+            //    });
+            //});
+
+            //$('#Process_List').click(function () {
+            //    $.ajax({
+            //        url: '/Main/ListProcess',
+            //        dataType: 'json',
+            //        type: 'post',
+            //        success: function (backdata) {
+            //            if (backdata) {
+            //                $('#Process_Menu').html("");
+            //                //$('#Process_Num').html("You have " + backdata.length + " messages");
+            //                $('#Process_Num_Small').html(backdata.length);
+            //                for (var i = 0; i < backdata.length; i++) {
+            //                    var itemHtml = "<li>" +
+            //                                   "    <a href=\"#\">" +
+            //                                   "        <h3>" +
+            //                                   "          " + backdata[i].WF_Name +
+            //                                   "          <small class=\"pull-right\">" + backdata[i].MISS_Name + "</small>" +
+            //                                   "        </h3>" +
+            //                                   "        <div class=\"progress xs active\">" +
+            //                                   "            <div class=\"progress-bar progress-bar-primary progress-bar-striped\" style=\"width: " + backdata[i].MISS_Present + "%\" role=\"progressbar\" aria-valuenow=\"20\" aria-valuemin=\"0\" aria-valuemax=\"100\">" +
+            //                                   "                <span class=\"sr-only\">20% Complete</span>" +
+            //                                   "            </div>" +
+            //                                   "         </div>" +
+            //                                   "     </a>" +
+            //                                   "</li>";
+
+            //                    $('#Process_Menu').append(itemHtml);
+            //                }
+            //            }
+            //            else {
+            //                alert("增加失败");
+            //            }
+            //        },
+            //        error: function (error) {
+            //            console.log(error);
+            //        }
+            //    });
+            //});
+
+            //$('#Message_List').click();
+            //$('#Process_List').click();
+            //$('#Process_List').click();
+        });
+
+
+        function login_out() {
+            $.ajax({
+                url: '/Main/login_out',
+                success: function (data) {
+                    location.href = data;
+
+                }
+
+            })
+
+
+
+
+        }
+        //$("#mm").click(function()
+        //{ $("#mm").after( "<li><a href=\"javascript:void(0);\" onclick=\"$('#runtime').attr('src', '" +"/StateMonitor/ProblemClassification');\"> <i class=\"fa fa-user\"></i> <span>状态监测及三检特护问题分类</span>  </a></li>")})
+   
+        //定时刷新任务提示
+        function refresh() {
+
+            $.ajax({
+                url: '/Main/task_mission',
+                dataType: 'json',
+                type: 'post',
+                success: function (backdata) {
+                    for (var i = 0; i < backdata.length; i++) {//循环后台传来的值
+                        var url_id = backdata[i].url_name;//后台传的值1
+                        var url_num = backdata[i].url_count;// 后台传的值2
+                        if (url_id.indexOf("?wfe_id") != -1)
+                            continue;
+
+                        if (url_id == "A7dot1")
+                            url_id = "A7dot1dot1";
+                        var mm = document.getElementById(url_id);//获取页面id值等于后台传值1的对象，document.getElementById()与jquery选择器功能相同
+                        if (url_id == "A7dot1dot1")
+                        {
+                            if (mm.innerText != '')
+                                mm.innerText = parseInt(mm.innerText) + url_num;//给这个对象赋值
+                            else
+                                mm.innerText = url_num;
+                        }
+                        else
+                            mm.innerText = url_num;//给这个对象赋值
+                        mm.className = "label pull-right bg-green";//给这个对象添加class属性
+                        mm.title = "该流程有" + url_num + "项待处理的任务！";//给对象添加title，鼠标放在标志上时的提示信息
+                        //   alert($("#"+url_id+"").text());
+                        //var Html1 = "<i title=\"该项有未完成的任务！\" class=\"fa fa-exclamation  \" style=\"size:20px;  color:red;\">" + "</i>";
+
+                        //if ($("#" + url_id + "").text() != "" && $("#" + url_id + "").parent().parent().parent().parent().children('a').html() != Html1) {
+
+                        //    $("#" + url_id + "").parent().parent().parent().parent().children('a').append(Html1); //找到根目录节点位置
+                        //}
+                        // $("#" + url_id + "").parent().parent().parent().children('ul').html();
+
+                    }
+
+                    var s3 = Number($("#A3dot1").text()) + Number($("#A3dot2").text()) + Number($("#A3dot3").text());
+                    if (s3 != 0) {
+                        $("#A3").text(s3);
+                    }
+
+                    var s4 = Number($("#A4dot1").text()) + Number($("#A4dot2").text()) + Number($("#A4dot3").text()) + Number($("#A4dot4").text());
+                    if (s4 != 0) {
+                        $("#A4").text(s4);
+                    }
+
+
+                    var s5 = Number($("#A5dot1").text()) + Number($("#A5dot2").text());
+                    if (s5 != 0) {
+                        $("#A5").text(s5);
+                    };
+                    var s6 = Number($("#A6dot1").text()) + Number($("#A6dot2").text()) + Number($("#A6dot3").text());
+                    if (s6 != 0) {
+                        $("#A6").text(s6);
+                    }
+                    var s7 = Number($("#A7dot1dot1").text()) + Number($("#A7dot2").text()) + Number($("#A7dot3").text());
+                    if (s7 != 0) {
+                        $("#A7").text(s7);
+                    }
+                    var s8 = Number($("#A8dot1").text()) + Number($("#A8dot2").text());
+                    if (s8 != 0) {
+                        $("#A8").text(s8);
+                    }
+                    var s11 = Number($("#A11dot1").text()) + Number($("#A11dot2").text()) + Number($("#A11dot3").text());
+                    if (s11 != 0) {
+                        $("#A11").text(s11);
+                    }
+                    var s12 = Number($("#A12dot1").text()) + Number($("#A12dot2").text());
+                    if (s12 != 0) {
+                        $("#A12").text(s12);
+                    }
+                    var s13 = Number($("#A13dot1").text()) + Number($("#A13dot2").text());
+                    if (s13 != 0) {
+                        $("#A13").text(s13);
+                    }
+                    var s14 = Number($("#A14dot1").text()) + Number($("#A14dot2").text());
+                    if (s14 != 0) {
+                        $("#A14").text(s14);
+                    }
+                    var s15 = Number($("#A15dot1").text());
+                    if (s15 != 0) {
+                        $("#A15").text(s15);
+                    }
+                    //alert($("#A4dot2").text());
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+
+        }
+        setInterval("refresh()", 300000); //每5分钟执行一次refresh()
+    
+    
+     </script>
+
+
+       
+    
+
+   
+    }
